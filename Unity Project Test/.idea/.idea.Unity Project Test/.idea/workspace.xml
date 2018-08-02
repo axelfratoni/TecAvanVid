@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e08b87e7-31be-495c-91dc-b3ecb5408236" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="TCPClient.cs" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Assets/Scripts/TCPClient.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="105">
+              <caret line="17" column="8" lean-forward="true" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+              <folding>
+                <marker date="1533251928432" expanded="false" signature="6:161" ph="..." />
+                <marker date="1533251928432" expanded="true" signature="202:2772" ph="{...}" />
+                <marker date="1533251928432" expanded="false" signature="206:321" ph="private members" />
+                <marker date="1533251928432" expanded="true" signature="374:407" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="465:592" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="511:584" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="664:936" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="675:843" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="869:931" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="1045:1954" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="1056:1813" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="1186:1800" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="1301:1791" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="1451:1780" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="1865:1946" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="2038:2770" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="2073:2092" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="2099:2663" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="2226:2659" ph="{...}" />
+                <marker date="1533251928432" expanded="true" signature="2705:2767" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TCPServer.cs" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Scripts/TCPServer.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="705">
+              <caret line="47" column="53" lean-forward="true" selection-start-line="47" selection-start-column="53" selection-end-line="47" selection-end-column="53" />
+              <folding>
+                <marker date="1533252170492" expanded="true" signature="6:179" ph="..." />
+                <marker date="1533252170492" expanded="true" signature="220:3345" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="226:651" ph="private members" />
+                <marker date="1533252170492" expanded="true" signature="253:361" ph="/// TCPListener to listen for incomming TCP connection &#9; ... " />
+                <marker date="1533252170492" expanded="true" signature="398:479" ph="/// Background thread for TcpServer workload. &#9; ... " />
+                <marker date="1533252170492" expanded="true" signature="519:598" ph="/// Create handle to connected tcp client. &#9; ... " />
+                <marker date="1533252170492" expanded="true" signature="704:911" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="969:1059" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1009:1054" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1066:1179" ph="/// Runs in background TcpServerThread; Handles incomming TcpClient requests &#9; ... " />
+                <marker date="1533252170492" expanded="true" signature="1224:2367" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1235:2238" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1509:2231" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1579:2222" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1700:2211" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="1856:2198" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="2284:2359" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="2372:2460" ph="/// Send message to client using socket connection. &#9; ... " />
+                <marker date="1533252170492" expanded="true" signature="2489:3342" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="2528:2566" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="2580:3210" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="2715:3199" ph="{...}" />
+                <marker date="1533252170492" expanded="true" signature="3256:3337" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/TCPClient.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/TCPServer.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Assets/Scripts/TCPServer.cs" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodePackageJsonFileManager">
+    <packageJsonPaths />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="240" />
+    <option name="y" value="126" />
+    <option name="width" value="1440" />
+    <option name="height" value="765" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="UnityExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="UnityExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="Unity Project Test" type="483dac07:UnityExplorerNode$Root" />
+            </path>
+            <path>
+              <item name="" type="ad4990d8:FileSystemViewPaneBase$ProjectViewPaneTreeStructure$createRoot$1" />
+              <item name="Unity Project Test" type="483dac07:UnityExplorerNode$Root" />
+              <item name="" type="1045f7f1:UnityExplorerNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-hidden-items" value="false" />
+      </pane>
+      <pane id="SolutionExplorer">
+        <option name="show-file-system" value="false" />
+        <option name="show-all-items" value="false" />
+      </pane>
+      <pane id="Scratches" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" pid="12616">
+      <option name="listenPortForConnections" value="false" />
+      <option name="pid" value="12616" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e08b87e7-31be-495c-91dc-b3ecb5408236" name="Default" comment="" />
+      <created>1533250692338</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1533250692338</updated>
+      <workItem from="1533250697511" duration="2167000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2167000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="192" y="101" width="1152" height="612" extended-state="0" />
+    <layout>
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="right" id="Errors In Solution" />
+      <window_info anchor="bottom" id="Event Log" sideWeight="0.50091577" side_tool="true" visible="true" weight="0.32983193" />
+      <window_info anchor="bottom" id="Unit Tests" />
+      <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Version Control" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unity" />
+      <window_info anchor="bottom" id="Inspection Results" sideWeight="0.49908423" visible="true" weight="0.32983193" />
+      <window_info anchor="right" id="Database" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49908423" weight="0.39915967" />
+      <window_info id="Favorites" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="NuGet" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Message" order="0" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/TCPServer.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="705">
+          <caret line="47" column="53" lean-forward="true" selection-start-line="47" selection-start-column="53" selection-end-line="47" selection-end-column="53" />
+          <folding>
+            <marker date="1533252170492" expanded="true" signature="6:179" ph="..." />
+            <marker date="1533252170492" expanded="true" signature="220:3345" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="226:651" ph="private members" />
+            <marker date="1533252170492" expanded="true" signature="253:361" ph="/// TCPListener to listen for incomming TCP connection &#9; ... " />
+            <marker date="1533252170492" expanded="true" signature="398:479" ph="/// Background thread for TcpServer workload. &#9; ... " />
+            <marker date="1533252170492" expanded="true" signature="519:598" ph="/// Create handle to connected tcp client. &#9; ... " />
+            <marker date="1533252170492" expanded="true" signature="704:911" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="969:1059" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1009:1054" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1066:1179" ph="/// Runs in background TcpServerThread; Handles incomming TcpClient requests &#9; ... " />
+            <marker date="1533252170492" expanded="true" signature="1224:2367" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1235:2238" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1509:2231" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1579:2222" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1700:2211" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="1856:2198" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="2284:2359" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="2372:2460" ph="/// Send message to client using socket connection. &#9; ... " />
+            <marker date="1533252170492" expanded="true" signature="2489:3342" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="2528:2566" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="2580:3210" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="2715:3199" ph="{...}" />
+            <marker date="1533252170492" expanded="true" signature="3256:3337" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/TCPClient.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="17" column="8" lean-forward="true" selection-start-line="17" selection-start-column="8" selection-end-line="17" selection-end-column="8" />
+          <folding>
+            <marker date="1533251928432" expanded="false" signature="6:161" ph="..." />
+            <marker date="1533251928432" expanded="true" signature="202:2772" ph="{...}" />
+            <marker date="1533251928432" expanded="false" signature="206:321" ph="private members" />
+            <marker date="1533251928432" expanded="true" signature="374:407" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="465:592" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="511:584" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="664:936" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="675:843" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="869:931" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="1045:1954" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="1056:1813" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="1186:1800" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="1301:1791" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="1451:1780" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="1865:1946" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="2038:2770" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="2073:2092" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="2099:2663" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="2226:2659" ph="{...}" />
+            <marker date="1533251928432" expanded="true" signature="2705:2767" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
