@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-public class TCPServer : MonoBehaviour {  	
-	#region private members 	
+public class UDPServer : MonoBehaviour {  	
+	/*#region private members 	
 	/// <summary> 	
 	/// TCPListener to listen for incomming TCP connection 	
 	/// requests. 	
@@ -17,7 +17,7 @@ public class TCPServer : MonoBehaviour {
 	/// <summary> 
 	/// Background thread for TcpServer workload. 	
 	/// </summary> 	
-	private Thread tcpListenerThread;  	
+	private Thread udpListenerThread;  	
 	/// <summary> 	
 	/// Create handle to connected tcp client. 	
 	/// </summary> 	
@@ -27,9 +27,9 @@ public class TCPServer : MonoBehaviour {
 	// Use this for initialization
 	void Start () { 		
 		// Start TcpServer background thread 		
-		tcpListenerThread = new Thread (new ThreadStart(ListenForIncommingRequests)); 		
-		tcpListenerThread.IsBackground = true; 		
-		tcpListenerThread.Start(); 	
+		udpListenerThread = new Thread (new ThreadStart(ListenForIncommingRequests)); 		
+		udpListenerThread.IsBackground = true; 		
+		udpListenerThread.Start(); 	
 	}  	
 	
 	// Update is called once per frame
@@ -38,6 +38,33 @@ public class TCPServer : MonoBehaviour {
 			SendMessage();         
 		} 	
 	}  	
+	
+	struct Received
+	{
+		public IPEndPoint Sender;
+		public string Message;
+	}
+
+	abstract class UdpBase
+	{
+		protected UdpClient Client;
+
+		protected UdpBase()
+		{
+			Client = new UdpClient();
+		}
+
+		public async Task<Received> Receive()
+		{
+			var result = Client.Receive();
+				.ReceiveAsync();
+			return new Received()
+			{
+				Message = Encoding.ASCII.GetString(result.Buffer, 0, result.Buffer.Length),
+				Sender = result.RemoteEndPoint
+			};
+		}
+	}
 	
 	/// <summary> 	
 	/// Runs in background TcpServerThread; Handles incomming TcpClient requests 	
@@ -94,4 +121,68 @@ public class TCPServer : MonoBehaviour {
 			Debug.Log("Socket exception: " + socketException);         
 		} 	
 	} 
+	
+}*/
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
+using System.Threading;
+using UnityEngine;
+
+public class UDPServer : MonoBehaviour {
+
+	UdpClient listener;
+	IPEndPoint anyClient = new IPEndPoint(IPAddress.Any, 0);
+	private static bool created = false;
+	Thread listenThread;
+
+	// Use this for initialization
+	void Start () {
+	}
+
+	// Update is called once per frame
+	void Update () {
+		
+	}
+
+	private void Awake()
+	{
+		if (!created) {
+			created = true;
+			DontDestroyOnLoad(this.gameObject);
+			listener = new UdpClient(11000);
+			ListenForConnections();
+		}
+	}
+
+	private void ListenForConnections()
+	{
+		listenThread = new Thread(() =>
+		{
+			while (true)
+			{
+				try
+				{
+					Byte[] receivedBytes = listener.Receive(ref anyClient);
+					string receivedString = Encoding.ASCII.GetString(receivedBytes);
+					Debug.Log(receivedString);
+					Byte[] returnString = Encoding.ASCII.GetBytes("UDP Server says: " + receivedString);
+					listener.Send(returnString, returnString.Length, anyClient);
+				}
+				catch (Exception e)
+				{
+					Debug.Log(e.ToString());
+				}
+			}
+		});
+		listenThread.Start();
+	}
+
+	private void OnDestroy()
+	{
+		//listenThread.Abort();
+	}
 }
