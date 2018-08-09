@@ -5,6 +5,9 @@
     <e p="D:\Users\ericn\OneDrive\Documentos\GitHub\TecAvanVid\Unity Project Test" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
+        <e p="Libs" t="Include">
+          <e p="BitBuffer.cs" t="Include" />
+        </e>
         <e p="Scripts" t="Include">
           <e p="TCPClient.cs" t="Include" />
           <e p="TCPServer.cs" t="Include" />
