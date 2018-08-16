@@ -73,36 +73,36 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UDPServer.cs" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UDPServer.cs" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/UDPServer.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="45">
-              <caret line="204" column="20" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
+            <state relative-caret-position="187">
+              <caret line="206" column="65" selection-start-line="206" selection-start-column="65" selection-end-line="206" selection-end-column="65" />
               <folding>
-                <marker date="1534459029572" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
-                <marker date="1534459029572" expanded="false" signature="3817:4002" ph="..." />
-                <marker date="1534459029572" expanded="true" signature="4043:6824" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4246:4554" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4362:4428" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4460:4488" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4523:4551" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4603:4607" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4661:4813" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4690:4810" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4836:5015" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="4856:5012" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="5053:6422" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="5091:6393" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="5111:6389" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="5124:6318" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
-                <marker date="1534459029572" expanded="true" signature="5844:6042" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
-                <marker date="1534459029572" expanded="true" signature="6342:6384" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="6462:6468" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="6512:6576" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="6622:6686" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="6713:6745" ph="{...}" />
-                <marker date="1534459029572" expanded="true" signature="6772:6822" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
+                <marker date="1534461706461" expanded="false" signature="3817:4002" ph="..." />
+                <marker date="1534461706461" expanded="true" signature="4043:6897" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4246:4554" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4362:4428" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4460:4488" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4523:4551" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4603:4607" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4661:4813" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4690:4810" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4836:5015" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="4856:5012" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="5053:6495" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="5091:6466" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="5111:6462" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="5124:6391" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
+                <marker date="1534461706461" expanded="true" signature="5917:6115" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
+                <marker date="1534461706461" expanded="true" signature="6415:6457" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="6535:6541" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="6585:6649" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="6695:6759" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="6786:6818" ph="{...}" />
+                <marker date="1534461706461" expanded="true" signature="6845:6895" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -127,22 +127,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UDPClient.cs" pinned="false" current-in-tab="true">
+      <file leaf-file-name="UDPClient.cs" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Assets/Scripts/UDPClient.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="55" column="53" selection-start-line="55" selection-start-column="53" selection-end-line="55" selection-end-column="53" />
+            <state relative-caret-position="232">
+              <caret line="47" column="50" selection-start-line="47" selection-start-column="50" selection-end-line="47" selection-end-column="50" />
               <folding>
-                <marker date="1534459029760" expanded="true" signature="6:107" ph="..." />
-                <marker date="1534459029760" expanded="true" signature="148:2511" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="530:536" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="591:723" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="633:717" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="755:2435" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="773:2304" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="1588:1814" ph="/* bitBuffer.writeInt(33,0,255); // ! ... */" />
-                <marker date="1534459029760" expanded="true" signature="2346:2429" ph="{...}" />
-                <marker date="1534459029760" expanded="true" signature="2465:2509" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="6:107" ph="..." />
+                <marker date="1534461695821" expanded="true" signature="148:2352" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="533:539" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="594:726" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="636:720" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="758:2276" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="776:2145" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="1419:1645" ph="/* bitBuffer.writeInt(33,0,255); // ! ... */" />
+                <marker date="1534461695821" expanded="true" signature="2187:2270" ph="{...}" />
+                <marker date="1534461695821" expanded="true" signature="2306:2350" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -238,8 +238,8 @@
         <option value="$PROJECT_DIR$/Assets/Scripts/TCPClient.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/DragDrop.cs" />
         <option value="$PROJECT_DIR$/Assets/Libs/BitBuffer.cs" />
-        <option value="$PROJECT_DIR$/Assets/Scripts/UDPServer.cs" />
         <option value="$PROJECT_DIR$/Assets/Scripts/UDPClient.cs" />
+        <option value="$PROJECT_DIR$/Assets/Scripts/UDPServer.cs" />
       </list>
     </option>
   </component>
@@ -348,12 +348,12 @@
       <workItem from="1533858982274" duration="167000" />
       <workItem from="1534204737708" duration="3494000" />
       <workItem from="1534314483220" duration="9577000" />
-      <workItem from="1534453474388" duration="5548000" />
+      <workItem from="1534453474388" duration="7410000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="26531000" />
+    <option name="totallyTimeSpent" value="28393000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -484,40 +484,27 @@
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/UDPServer.cs</url>
-          <line>211</line>
-          <properties documentPath="$PROJECT_DIR$/Assets/Scripts/UDPServer.cs" initialLine="182">
-            <startOffsets>
-              <startOffset value="5688" />
-            </startOffsets>
-            <endOffsets>
-              <endOffset value="5758" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/UDPClient.cs</url>
-          <line>44</line>
+          <line>42</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Scripts/UDPClient.cs" initialLine="44">
             <startOffsets>
-              <startOffset value="1590" />
+              <startOffset value="1421" />
             </startOffsets>
             <endOffsets>
-              <endOffset value="1619" />
+              <endOffset value="1450" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/UDPServer.cs</url>
-          <line>221</line>
+          <line>222</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Scripts/UDPServer.cs" initialLine="222">
             <startOffsets>
-              <startOffset value="6060" />
+              <startOffset value="6133" />
             </startOffsets>
             <endOffsets>
-              <endOffset value="6124" />
+              <endOffset value="6197" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="19" />
@@ -537,13 +524,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/UDPServer.cs</url>
-          <line>217</line>
+          <line>218</line>
           <properties documentPath="$PROJECT_DIR$/Assets/Scripts/UDPServer.cs" initialLine="217">
             <startOffsets>
-              <startOffset value="5966" />
+              <startOffset value="6039" />
             </startOffsets>
             <endOffsets>
-              <endOffset value="6000" />
+              <endOffset value="6073" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="24" />
@@ -641,30 +628,30 @@
         <state relative-caret-position="780">
           <caret line="59" column="16" selection-start-line="59" selection-start-column="16" selection-end-line="59" selection-end-column="16" />
           <folding>
-            <marker date="1534459029572" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
-            <marker date="1534459029572" expanded="false" signature="3817:4002" ph="..." />
-            <marker date="1534459029572" expanded="true" signature="4043:6824" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4246:4554" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4362:4428" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4460:4488" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4523:4551" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4603:4607" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4661:4813" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4690:4810" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4836:5015" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4856:5012" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5053:6422" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5091:6393" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5111:6389" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5124:6318" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
-            <marker date="1534459029572" expanded="true" signature="5844:6042" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
-            <marker date="1534459029572" expanded="true" signature="6342:6384" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6462:6468" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6512:6576" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6622:6686" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6713:6745" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6772:6822" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
+            <marker date="1534461706461" expanded="false" signature="3817:4002" ph="..." />
+            <marker date="1534461706461" expanded="true" signature="4043:6897" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4246:4554" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4362:4428" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4460:4488" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4523:4551" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4603:4607" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4661:4813" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4690:4810" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4836:5015" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4856:5012" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5053:6495" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5091:6466" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5111:6462" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5124:6391" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
+            <marker date="1534461706461" expanded="true" signature="5917:6115" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
+            <marker date="1534461706461" expanded="true" signature="6415:6457" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6535:6541" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6585:6649" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6695:6759" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6786:6818" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6845:6895" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -969,30 +956,30 @@
         <state relative-caret-position="347">
           <caret line="171" column="104" selection-start-line="171" selection-start-column="104" selection-end-line="171" selection-end-column="104" />
           <folding>
-            <marker date="1534459029572" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
-            <marker date="1534459029572" expanded="false" signature="3817:4002" ph="..." />
-            <marker date="1534459029572" expanded="true" signature="4043:6824" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4246:4554" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4362:4428" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4460:4488" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4523:4551" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4603:4607" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4661:4813" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4690:4810" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4836:5015" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4856:5012" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5053:6422" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5091:6393" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5111:6389" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5124:6318" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
-            <marker date="1534459029572" expanded="true" signature="5844:6042" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
-            <marker date="1534459029572" expanded="true" signature="6342:6384" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6462:6468" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6512:6576" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6622:6686" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6713:6745" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6772:6822" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
+            <marker date="1534461706461" expanded="false" signature="3817:4002" ph="..." />
+            <marker date="1534461706461" expanded="true" signature="4043:6897" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4246:4554" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4362:4428" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4460:4488" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4523:4551" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4603:4607" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4661:4813" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4690:4810" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4836:5015" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4856:5012" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5053:6495" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5091:6466" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5111:6462" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5124:6391" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
+            <marker date="1534461706461" expanded="true" signature="5917:6115" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
+            <marker date="1534461706461" expanded="true" signature="6415:6457" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6535:6541" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6585:6649" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6695:6759" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6786:6818" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6845:6895" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1088,30 +1075,30 @@
         <state relative-caret-position="1725">
           <caret line="122" column="8" selection-start-line="122" selection-start-column="8" selection-end-line="122" selection-end-column="8" />
           <folding>
-            <marker date="1534459029572" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
-            <marker date="1534459029572" expanded="false" signature="3817:4002" ph="..." />
-            <marker date="1534459029572" expanded="true" signature="4043:6824" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4246:4554" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4362:4428" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4460:4488" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4523:4551" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4603:4607" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4661:4813" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4690:4810" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4836:5015" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4856:5012" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5053:6422" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5091:6393" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5111:6389" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5124:6318" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
-            <marker date="1534459029572" expanded="true" signature="5844:6042" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
-            <marker date="1534459029572" expanded="true" signature="6342:6384" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6462:6468" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6512:6576" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6622:6686" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6713:6745" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6772:6822" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
+            <marker date="1534461706461" expanded="false" signature="3817:4002" ph="..." />
+            <marker date="1534461706461" expanded="true" signature="4043:6897" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4246:4554" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4362:4428" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4460:4488" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4523:4551" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4603:4607" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4661:4813" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4690:4810" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4836:5015" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4856:5012" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5053:6495" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5091:6466" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5111:6462" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5124:6391" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
+            <marker date="1534461706461" expanded="true" signature="5917:6115" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
+            <marker date="1534461706461" expanded="true" signature="6415:6457" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6535:6541" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6585:6649" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6695:6759" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6786:6818" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6845:6895" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1186,30 +1173,30 @@
         <state relative-caret-position="780">
           <caret line="59" column="16" selection-start-line="59" selection-start-column="16" selection-end-line="59" selection-end-column="16" />
           <folding>
-            <marker date="1534459029572" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
-            <marker date="1534459029572" expanded="false" signature="3817:4002" ph="..." />
-            <marker date="1534459029572" expanded="true" signature="4043:6824" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4246:4554" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4362:4428" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4460:4488" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4523:4551" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4603:4607" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4661:4813" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4690:4810" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4836:5015" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4856:5012" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5053:6422" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5091:6393" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5111:6389" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5124:6318" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
-            <marker date="1534459029572" expanded="true" signature="5844:6042" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
-            <marker date="1534459029572" expanded="true" signature="6342:6384" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6462:6468" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6512:6576" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6622:6686" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6713:6745" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6772:6822" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
+            <marker date="1534461706461" expanded="false" signature="3817:4002" ph="..." />
+            <marker date="1534461706461" expanded="true" signature="4043:6897" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4246:4554" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4362:4428" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4460:4488" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4523:4551" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4603:4607" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4661:4813" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4690:4810" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4836:5015" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4856:5012" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5053:6495" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5091:6466" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5111:6462" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5124:6391" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
+            <marker date="1534461706461" expanded="true" signature="5917:6115" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
+            <marker date="1534461706461" expanded="true" signature="6415:6457" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6535:6541" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6585:6649" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6695:6759" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6786:6818" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6845:6895" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1553,54 +1540,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/UDPServer.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/UDPClient.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="204" column="20" selection-start-line="204" selection-start-column="20" selection-end-line="204" selection-end-column="20" />
+        <state relative-caret-position="232">
+          <caret line="47" column="50" selection-start-line="47" selection-start-column="50" selection-end-line="47" selection-end-column="50" />
           <folding>
-            <marker date="1534459029572" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
-            <marker date="1534459029572" expanded="false" signature="3817:4002" ph="..." />
-            <marker date="1534459029572" expanded="true" signature="4043:6824" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4246:4554" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4362:4428" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4460:4488" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4523:4551" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4603:4607" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4661:4813" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4690:4810" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4836:5015" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="4856:5012" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5053:6422" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5091:6393" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5111:6389" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5124:6318" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
-            <marker date="1534459029572" expanded="true" signature="5844:6042" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
-            <marker date="1534459029572" expanded="true" signature="6342:6384" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6462:6468" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6512:6576" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6622:6686" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6713:6745" ph="{...}" />
-            <marker date="1534459029572" expanded="true" signature="6772:6822" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="6:107" ph="..." />
+            <marker date="1534461695821" expanded="true" signature="148:2352" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="533:539" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="594:726" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="636:720" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="758:2276" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="776:2145" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="1419:1645" ph="/* bitBuffer.writeInt(33,0,255); // ! ... */" />
+            <marker date="1534461695821" expanded="true" signature="2187:2270" ph="{...}" />
+            <marker date="1534461695821" expanded="true" signature="2306:2350" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Scripts/UDPClient.cs">
+    <entry file="file://$PROJECT_DIR$/Assets/Scripts/UDPServer.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="55" column="53" selection-start-line="55" selection-start-column="53" selection-end-line="55" selection-end-column="53" />
+        <state relative-caret-position="187">
+          <caret line="206" column="65" selection-start-line="206" selection-start-column="65" selection-end-line="206" selection-end-column="65" />
           <folding>
-            <marker date="1534459029760" expanded="true" signature="6:107" ph="..." />
-            <marker date="1534459029760" expanded="true" signature="148:2511" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="530:536" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="591:723" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="633:717" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="755:2435" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="773:2304" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="1588:1814" ph="/* bitBuffer.writeInt(33,0,255); // ! ... */" />
-            <marker date="1534459029760" expanded="true" signature="2346:2429" ph="{...}" />
-            <marker date="1534459029760" expanded="true" signature="2465:2509" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="0:3810" ph="/* TCPListener to listen for incomming TCP connection &#9; ... */" />
+            <marker date="1534461706461" expanded="false" signature="3817:4002" ph="..." />
+            <marker date="1534461706461" expanded="true" signature="4043:6897" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4246:4554" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4362:4428" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4460:4488" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4523:4551" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4603:4607" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4661:4813" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4690:4810" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4836:5015" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="4856:5012" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5053:6495" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5091:6466" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5111:6462" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5124:6391" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="5197:5247" ph="/* parseBytes(receivedBytes); ... */" />
+            <marker date="1534461706461" expanded="true" signature="5917:6115" ph="/* long b = bitBuffer.readInt(0,255); ... */" />
+            <marker date="1534461706461" expanded="true" signature="6415:6457" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6535:6541" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6585:6649" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6695:6759" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6786:6818" ph="{...}" />
+            <marker date="1534461706461" expanded="true" signature="6845:6895" ph="{...}" />
           </folding>
         </state>
       </provider>

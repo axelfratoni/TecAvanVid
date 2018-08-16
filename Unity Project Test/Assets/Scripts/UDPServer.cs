@@ -202,14 +202,15 @@ public class UDPServer : MonoBehaviour {
 					/// 
 					
 					BitBuffer bitBuffer = new BitBuffer(receivedBytes);
-					float x = bitBuffer.readFloat(-31.0f,31.0f,1f);
-					float y = bitBuffer.readFloat(0.0f,3.0f,1f);
-					float z = bitBuffer.readFloat(-31.0f,31.0f,1f);
-					float qx = bitBuffer.readFloat(0.0f,1.0f,0.01f);
-					float qy = bitBuffer.readFloat(0.0f,1.0f,0.01f);
-					float qz = bitBuffer.readFloat(0.0f,1.0f,0.01f);
-					float qw = bitBuffer.readFloat(0.0f,1.0f,0.01f);
-					Debug.Log("Quaternion: " + qx + " " + qy + " " + qz + " " + qw + " ");
+					float x = bitBuffer.readFloat(-31.0f,31.0f,0.1f);
+					float y = bitBuffer.readFloat(0.0f,3.0f,0.1f);
+					float z = bitBuffer.readFloat(-31.0f,31.0f,0.1f);
+					float qx = bitBuffer.readFloat(-1.0f,1.0f,0.01f);
+					float qy = bitBuffer.readFloat(-1.0f,1.0f,0.01f);
+					float qz = bitBuffer.readFloat(-1.0f,1.0f,0.01f);
+					float qw = bitBuffer.readFloat(-1.0f,1.0f,0.01f);
+					Debug.Log("Ser Pos: " + x + " " + y + " " + z + " ");
+					Debug.Log("Ser Quaternion: " + qx + " " + qy + " " + qz + " " + qw + " ");
 					qqueue.Enqueue(new Move(new Vector3(x,y,z),new Quaternion(qx,qy,qz,qw)));
 
 					/*long b = bitBuffer.readInt(0,255);
