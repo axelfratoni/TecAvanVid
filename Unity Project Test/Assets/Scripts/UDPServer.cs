@@ -211,6 +211,12 @@ public class UDPServer : MonoBehaviour {
 					float qw = bitBuffer.readFloat(0.0f,1.0f,0.01f);
 					Debug.Log("Quaternion: " + qx + " " + qy + " " + qz + " " + qw + " ");
 					qqueue.Enqueue(new Move(new Vector3(x,y,z),new Quaternion(qx,qy,qz,qw)));
+
+					/*long b = bitBuffer.readInt(0,255);
+					long c = bitBuffer.readInt(0,255);
+					long d = bitBuffer.readInt(0,255);
+					long e = bitBuffer.readInt(0,255);
+					long f = bitBuffer.readInt(0,255);*/
 					
 					
 					string receivedString = Encoding.ASCII.GetString(receivedBytes);
@@ -243,5 +249,11 @@ public class UDPServer : MonoBehaviour {
 	private void OnDestroy()
 	{
 		//listenThread.Abort();
+	}
+
+	private void OnDisable()
+	{
+		listenThread.Abort();
+		listener.Close();
 	}
 }

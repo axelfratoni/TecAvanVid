@@ -23,10 +23,10 @@ namespace Libs
         
         public BitBuffer(byte[] buffer)
         {
-            bits = BitConverter.ToInt64(buffer, 0);
-            currentBitCount = 0;
+            currentBitCount = 32;
             this.buffer = new MemoryStream(buffer);
             mode = READ;
+            updateBuffer();
         }
 
         public void writeBit(bool toWriteBool){
@@ -39,7 +39,7 @@ namespace Libs
         public bool readBit(){
             bool value = (bits & (1 << currentBitCount)) > 0;
             currentBitCount++;
-            //writeBuffer();
+            updateBuffer();
             return value;
         }
 
@@ -55,7 +55,7 @@ namespace Libs
             long ans = 0;
             for (int i = 0; i < bitCount; i++)
             {
-                ans |= readBit() ? 1L : 0L << i;
+                ans |= (readBit() ? 1L : 0L) << i;
             }
 
             return ans;
@@ -105,22 +105,16 @@ namespace Libs
             }
         }
         
-        private void fillBuffer(long value, int bitCount){
-            //TODO
+        private void updateBuffer(){
             if (currentBitCount >= 32) {
                 if (buffer.Position + 4 > buffer.Capacity) {
-                    throw new InvalidOperationException("write buffer overflow");
+                    throw new InvalidOperationException("read buffer overflow");
                 }
-                int word = (int) bits;
-                byte a = (byte) (word);
-                byte b = (byte) (word >> 8);
-                byte c = (byte) (word >> 16);
-                byte d = (byte) (word >> 24);
-                buffer.WriteByte(d);
-                buffer.WriteByte(c);
-                buffer.WriteByte(b);
-                buffer.WriteByte(a);
-                bits >>= 32;
+                byte d = (byte) buffer.ReadByte();
+                byte c = (byte) buffer.ReadByte();
+                byte b = (byte) buffer.ReadByte();
+                byte a = (byte) buffer.ReadByte();
+                bits = a | (b << 8) | (c << 16) | (d << 24);
                 currentBitCount -= 32;
             }
         }
