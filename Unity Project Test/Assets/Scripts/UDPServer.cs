@@ -130,6 +130,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using Libs;
 using UnityEngine;
 
 public class UDPServer : MonoBehaviour {
@@ -138,6 +139,29 @@ public class UDPServer : MonoBehaviour {
 	IPEndPoint anyClient = new IPEndPoint(IPAddress.Any, 0);
 	private static bool created = false;
 	Thread listenThread;
+	Queue<Move> qqueue = new Queue<Move>();
+
+	private class Move
+	{
+		private Vector3 position;
+		private Quaternion rotation;
+
+		public Move(Vector3 position, Quaternion rotation)
+		{
+			this.position = position;
+			this.rotation = rotation;
+		}
+
+		public Vector3 getPosition()
+		{
+			return position;
+		}
+
+		public Quaternion getRotation()
+		{
+			return rotation;
+		}
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -145,7 +169,13 @@ public class UDPServer : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		
+
+		while (qqueue.Count > 0)
+		{
+			Move m = qqueue.Dequeue();
+			transform.position = m.getPosition();
+			transform.rotation = m.getRotation();
+		}
 	}
 
 	private void Awake()
@@ -154,12 +184,13 @@ public class UDPServer : MonoBehaviour {
 			created = true;
 			DontDestroyOnLoad(this.gameObject);
 			listener = new UdpClient(11000);
+			Debug.Log("Quaternion: ");
 			ListenForConnections();
 		}
 	}
 
 	private void ListenForConnections()
-	{
+	{	
 		listenThread = new Thread(() =>
 		{
 			while (true)
@@ -167,6 +198,21 @@ public class UDPServer : MonoBehaviour {
 				try
 				{
 					Byte[] receivedBytes = listener.Receive(ref anyClient);
+					//////////////parseBytes(receivedBytes);
+					/// 
+					
+					BitBuffer bitBuffer = new BitBuffer(receivedBytes);
+					float x = bitBuffer.readFloat(-31.0f,31.0f,1f);
+					float y = bitBuffer.readFloat(0.0f,3.0f,1f);
+					float z = bitBuffer.readFloat(-31.0f,31.0f,1f);
+					float qx = bitBuffer.readFloat(0.0f,1.0f,0.01f);
+					float qy = bitBuffer.readFloat(0.0f,1.0f,0.01f);
+					float qz = bitBuffer.readFloat(0.0f,1.0f,0.01f);
+					float qw = bitBuffer.readFloat(0.0f,1.0f,0.01f);
+					Debug.Log("Quaternion: " + qx + " " + qy + " " + qz + " " + qw + " ");
+					qqueue.Enqueue(new Move(new Vector3(x,y,z),new Quaternion(qx,qy,qz,qw)));
+					
+					
 					string receivedString = Encoding.ASCII.GetString(receivedBytes);
 					Debug.Log(receivedString);
 					Byte[] returnString = Encoding.ASCII.GetBytes("UDP Server says: " + receivedString);
@@ -179,6 +225,19 @@ public class UDPServer : MonoBehaviour {
 			}
 		});
 		listenThread.Start();
+	}
+
+	private void parseBytes(Byte[] bytes)
+	{
+	}
+
+	public void setPosition(Vector3 position)
+	{
+		GameObject.Find("Cubeq").transform.position = position;
+	}
+	public void setRotation(Quaternion rotation)
+	{
+		GameObject.Find("Cubeq").transform.rotation = rotation;
 	}
 
 	private void OnDestroy()

@@ -9,6 +9,7 @@
           <e p="BitBuffer.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
+          <e p="DragDrop.cs" t="Include" />
           <e p="TCPClient.cs" t="Include" />
           <e p="TCPServer.cs" t="Include" />
           <e p="UDPClient.cs" t="Include" />

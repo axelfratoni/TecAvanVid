@@ -6,6 +6,8 @@ namespace Libs
 {
     public class BitBuffer
     {
+        private static bool READ = true;
+        private static bool WRITE = false;
         private bool mode;
         private long bits;
         private int currentBitCount;
@@ -16,6 +18,15 @@ namespace Libs
             bits = 0;
             currentBitCount = 0;
             buffer = new MemoryStream(capacity:buffer_length);
+            mode = WRITE;
+        }
+        
+        public BitBuffer(byte[] buffer)
+        {
+            bits = BitConverter.ToInt64(buffer, 0);
+            currentBitCount = 0;
+            this.buffer = new MemoryStream(buffer);
+            mode = READ;
         }
 
         public void writeBit(bool toWriteBool){
@@ -29,7 +40,7 @@ namespace Libs
             bool value = (bits & (1 << currentBitCount)) > 0;
             currentBitCount++;
             //writeBuffer();
-            return value
+            return value;
         }
 
         public void writeBits(long value, int bitCount){
@@ -46,6 +57,8 @@ namespace Libs
             {
                 ans |= readBit() ? 1L : 0L << i;
             }
+
+            return ans;
         }
 
         public void writeInt(int value, int min, int max){
@@ -117,8 +130,11 @@ namespace Libs
             writeBuffer();
         }
 
-        public byte[] getBuffer(){
-            return buffer.GetBuffer();
+        public byte[] getBuffer()
+        {
+            byte[] ans = buffer.GetBuffer();
+            buffer = new MemoryStream(capacity:buffer.Capacity);
+            return ans;
         }
     }
 }
