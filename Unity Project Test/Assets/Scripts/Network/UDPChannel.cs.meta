@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< be5a3f90cdbdf1872eb9c01a36dda5dd7a914263:Unity Project Test/Assets/Scripts/Network/UDPClient.cs.meta
+guid: d97e5d2c8035a2440add2efb5da4f21d
+=======
+guid: 32a6d45bd4a30ae4c965c91cc9b9b168
+>>>>>>> UDP service refactored and ball buffer improved:Unity Project Test/Assets/Scripts/Network/UDPChannel.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

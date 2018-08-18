@@ -5,28 +5,28 @@ public class LocalBall : MonoBehaviour {
 
     public new Rigidbody rigidbody;
 
-    private UDPClient udpClient;
+    private UDPChannel udpSender;
     private BitBuffer bitBuffer;
-    private float SPEED = 10;
-    private static float CYCLE_TIME = 0.1f;
-    private float ctime;
+    private readonly float SPEED = 10;
+    private readonly static float CYCLE_TIME = 0.1f;
+    private float actualCycle;
     private float time;
 
     void Start () {
         rigidbody = GetComponent<Rigidbody>();
-        udpClient = new UDPClient("127.0.0.1", 11000);
+        udpSender = new UDPChannel("127.0.0.1", 11000);
         bitBuffer = new BitBuffer(1024);
-        ctime = Time.deltaTime;
-        time = Time.deltaTime;
+        actualCycle = 0;
+        time = 0;
     }
 	
 	void Update () {
-        ctime += Time.deltaTime;
+        actualCycle += Time.deltaTime;
         time += Time.deltaTime;
-        if (ctime > CYCLE_TIME)
+        if (actualCycle > CYCLE_TIME)
         {
             SendPosition(); 
-            ctime -= CYCLE_TIME;
+            actualCycle = 0;
         }
     }
 
@@ -37,7 +37,7 @@ public class LocalBall : MonoBehaviour {
         bitBuffer.writeFloat(transform.position.z, -31.0f, 31.0f, 0.1f);
         bitBuffer.writeFloat(time, 0.0f, 3600.0f, 0.01f);
         bitBuffer.flush();
-        udpClient.SendMessage(bitBuffer.getBuffer());
+        udpSender.SendMessage(bitBuffer.getBuffer());
     }
 
     private void FixedUpdate()
@@ -49,6 +49,6 @@ public class LocalBall : MonoBehaviour {
 
     private void OnDisable()
     {
-        udpClient.Disable();
+        udpSender.Disable();
     }
 }
