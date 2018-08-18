@@ -29,7 +29,7 @@ public class UDPClient : MonoBehaviour {
 	    time += Time.deltaTime; 
         if (ctime > cycleTime)
         {
-            Debug.Log("Send");
+            Debug.Log("Send" + time);
             SendMessage();
             ctime -= cycleTime;
         }

@@ -83,19 +83,20 @@ public class UDPServer : MonoBehaviour {
 				//Debug.Log(Time.deltaTime);
 				float time = lastTime + Time.deltaTime;
 				Move m;
-				int i = 0;
+				Move lastMove;
+				int i = 1;
 				//Get next saved move
 				do
 				{
 					m = moveList[i];
+					lastMove = moveList[i-1];
 					i++;
 					//Debug.Log("get"+ m.getTime() + " time" + time + "   " + moveList.Count);
 				} while (m.getTime() < time && i < moveList.Count);
 
-				Move lastMove = moveList[i - 2];
-
-				Vector3 temp = (m.getPosition() - lastMove.getPosition()) * Time.deltaTime / (m.getTime() - lastMove.getTime()) ;
+				Vector3 temp = (m.getPosition() - lastMove.getPosition()) * (time - lastMove.getTime())/ (m.getTime() - lastMove.getTime()) ;
 				Debug.Log("TEM" + temp +"TEM" + m + "Last" + lastMove.getPosition());
+				Debug.Log("Last" + Time.deltaTime);
 				transform.position = lastMove.getPosition() + temp;
 				lastTime += Time.deltaTime;
 			}
