@@ -45,7 +45,7 @@ public class TCPServer : MonoBehaviour {
 	private void ListenForIncommingRequests () { 		
 		try { 			
 			// Create listener on localhost port 8052. 			
-			tcpListener = new TcpListener(IPAddress.Parse("192.168.0.19"), 8052); 			
+			tcpListener = new TcpListener(IPAddress.Parse("10.17.68.211"), 8052); 			
 			tcpListener.Start();              
 			Debug.Log("Server is listening");              
 			Byte[] bytes = new Byte[1024];  			

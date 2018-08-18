@@ -8,7 +8,7 @@ using UnityEngine;
 public class UDPClient : MonoBehaviour {
 
     Socket sending_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-    IPEndPoint sending_end_point = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 11000);
+    IPEndPoint sending_end_point = new IPEndPoint(IPAddress.Parse("10.17.68.211"), 11000);
     //IPEndPoint sending_end_point = new IPEndPoint(IPAddress.Parse("10.17.68.213"), 11000);
     BitBuffer bitBuffer = new BitBuffer(1024);
 

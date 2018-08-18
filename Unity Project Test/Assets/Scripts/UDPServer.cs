@@ -12,7 +12,7 @@ public class UDPServer : MonoBehaviour {
 
 	UdpClient listener;
 	IPEndPoint anyClient = new IPEndPoint(IPAddress.Any, 0);
-	private static bool created = false;
+    private static bool created = false;
 	Thread listenThread;
 	Queue<Move> qqueue = new Queue<Move>();
 
