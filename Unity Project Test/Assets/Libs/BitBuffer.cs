@@ -6,9 +6,6 @@ namespace Libs
 {
     public class BitBuffer
     {
-        private static bool READ = true;
-        private static bool WRITE = false;
-        private bool mode;
         private long bits;
         private int currentBitCount;
         private MemoryStream buffer;
@@ -18,14 +15,12 @@ namespace Libs
             bits = 0;
             currentBitCount = 0;
             buffer = new MemoryStream(capacity:buffer_length);
-            mode = WRITE;
         }
         
         public BitBuffer(byte[] buffer)
         {
             currentBitCount = 32;
             this.buffer = new MemoryStream(buffer);
-            mode = READ;
             updateBuffer();
         }
 
