@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efdc54db46b47644ea0023214ddc4b14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  listeningPort: 11000
+  listeningPort: 11001
 --- !u!1 &140454993
 GameObject:
   m_ObjectHideFlags: 0
@@ -340,8 +340,8 @@ GameObject:
   - component: {fileID: 1262325612}
   - component: {fileID: 1262325611}
   m_Layer: 0
-  m_Name: MainCamera
-  m_TagString: MainCamera
+  m_Name: PlayerCamera
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -941,4 +941,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 2145416252}
   targetIP: 127.0.0.1
-  targetPort: 11000
+  targetPort: 11001

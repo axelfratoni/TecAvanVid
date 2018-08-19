@@ -25,7 +25,7 @@ public class DragDrop : MonoBehaviour {
 		Plane plane=new Plane(Vector3.up,new Vector3(0, 2, 0));
 		var w = Input.mousePosition;
 		var ww = Camera.main;
-		Ray ray=Camera.main.ScreenPointToRay(Input.mousePosition);
+		Ray ray= Camera.main.ScreenPointToRay(Input.mousePosition);
 		float distance;
 		if(plane.Raycast(ray, out distance)) {
 			transform.position=ray.GetPoint(distance);
