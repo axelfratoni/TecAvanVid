@@ -6,8 +6,6 @@ namespace Libs
 {
     public class BitBuffer
     {
-        private static bool READ = true;
-        private static bool WRITE = false;
         private long bits;
         private int currentBitCount;
         private MemoryStream buffer;

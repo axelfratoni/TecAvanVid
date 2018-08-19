@@ -6,17 +6,13 @@ using UnityEngine;
 public class NetworkBall : MonoBehaviour {
 
     private UDPChannel udpReceiver;
-    private SortedList sortedList;
-    private readonly int MAX_QUEUE_SIZE = 5;
-    private readonly System.Object lockThis = new System.Object();
-    private float previousTime;
-    private float acumTime;
+    private SortedList positionList;
+    private float time;
 
     void Start () {
         udpReceiver = new UDPChannel(11000, ListenAction);
-        sortedList = new SortedList();
-        previousTime = 0;
-        acumTime = 0;
+        positionList = new SortedList();
+        time = 0;
     }
 
     void ListenAction(Byte[] receivedBytes)
@@ -30,49 +26,40 @@ public class NetworkBall : MonoBehaviour {
 
         float time = bitBuffer.readFloat(0.0f, 3600.0f, 0.01f);
 
-        lock (lockThis)
-        {
-            if (sortedList.Count > 0 && time < (float)sortedList.GetKey(sortedList.Count - 1))
-                return;
+        if (positionList.Count > 3 && time < (float)positionList.GetKey(3))
+            return;
 
-            sortedList.Add(time, newPosition);
-            if(sortedList.Count > MAX_QUEUE_SIZE)
-            {
-                sortedList.RemoveAt(0);
-            }
-        }
+        positionList.Add(time, newPosition);
     }
 	
 	void Update () {
-        UpdatePosition();
+         UpdatePosition();
     }
 
     private void UpdatePosition()
     {
-        if (sortedList.Count > 2)
+        if (positionList.Count > 2)
         {
-            float newPreviousTime = (float)sortedList.GetKey(0);
-            if (previousTime < newPreviousTime)
+            if(time == 0)
             {
-                previousTime = newPreviousTime;
-                acumTime = 0;
+                time = (float)positionList.GetKey(0);
             }
-            float window = (float)sortedList.GetKey(1) - (float)sortedList.GetKey(0);
-            if(acumTime > window)
+            else
             {
-                sortedList.RemoveAt(0);
-                acumTime = 0;
-                previousTime = (float)sortedList.GetKey(0);
+                time += Time.deltaTime;
             }
-            window = (float)sortedList.GetKey(1) - (float)sortedList.GetKey(0);
-            float moveInterpolation = acumTime / window;
+            if (time > (float)positionList.GetKey(1))
+            {
+                positionList.RemoveAt(0);
+            }
 
-            Vector3 nextMove = (Vector3)sortedList.GetByIndex(1);
-            Vector3 previousMove = (Vector3)sortedList.GetByIndex(0);
-            Vector3 deltaMove = (nextMove - previousMove) * moveInterpolation;
+            Vector3 nextPosition = (Vector3)positionList.GetByIndex(1);
+            float nextPositionTime = (float)positionList.GetKey(1);
+            Vector3 previousPosition = (Vector3)positionList.GetByIndex(0);
+            float previousPositionTime = (float)positionList.GetKey(0);
+            Vector3 deltaPosition = (nextPosition - previousPosition) * ((time - previousPositionTime) / (nextPositionTime - previousPositionTime));
 
-            transform.position = previousMove + deltaMove;
-            acumTime += Time.deltaTime;
+            transform.position = previousPosition + deltaPosition;
         }
     }
 
