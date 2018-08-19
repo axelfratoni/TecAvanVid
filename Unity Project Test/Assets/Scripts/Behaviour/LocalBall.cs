@@ -4,6 +4,8 @@ using UnityEngine;
 public class LocalBall : MonoBehaviour {
 
     public new Rigidbody rigidbody;
+    public string targetIP = "127.0.0.1";
+    public int targetPort = 11000;
 
     private UDPChannel udpSender;
     private BitBuffer bitBuffer;
@@ -14,7 +16,7 @@ public class LocalBall : MonoBehaviour {
 
     void Start () {
         rigidbody = GetComponent<Rigidbody>();
-        udpSender = new UDPChannel("127.0.0.1", 11000);
+        udpSender = new UDPChannel(targetIP, targetPort);
         bitBuffer = new BitBuffer(1024);
         actualCycle = 0;
         time = 0;

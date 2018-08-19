@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class NetworkBall : MonoBehaviour {
 
+    public int listeningPort = 11000;
+
     private UDPChannel udpReceiver;
     private SortedList positionList;
     private float time;
 
     void Start () {
-        udpReceiver = new UDPChannel(11000, ListenAction);
+        udpReceiver = new UDPChannel(listeningPort, ListenAction);
         positionList = new SortedList();
         time = 0;
     }
