@@ -10,7 +10,7 @@ public class LocalBall : MonoBehaviour {
     private UDPChannel udpSender;
     private BitBuffer bitBuffer;
     private readonly float SPEED = 10;
-    private readonly static float CYCLE_TIME = 0.1f;
+    private readonly static float CYCLE_TIME = 0.01f;
     private float actualCycle;
     private float time;
 
@@ -21,13 +21,18 @@ public class LocalBall : MonoBehaviour {
         actualCycle = 0;
         time = 0;
     }
-	
-	void Update () {
+
+    private void FixedUpdate()
+    {
+        float verticalForce = Input.GetAxis("Vertical") * SPEED;
+        float horizontalForce = Input.GetAxis("Horizontal") * SPEED;
+        rigidbody.AddForce(new Vector3(horizontalForce, 0, verticalForce));
+
         actualCycle += Time.deltaTime;
         time += Time.deltaTime;
         if (actualCycle > CYCLE_TIME)
         {
-            SendPosition(); 
+            SendPosition();
             actualCycle = 0;
         }
     }
@@ -40,13 +45,6 @@ public class LocalBall : MonoBehaviour {
         bitBuffer.writeFloat(time, 0.0f, 3600.0f, 0.01f);
         bitBuffer.flush();
         udpSender.SendMessage(bitBuffer.getBuffer());
-    }
-
-    private void FixedUpdate()
-    {
-        float verticalForce = Input.GetAxis("Vertical") * SPEED;
-        float horizontalForce = Input.GetAxis("Horizontal") * SPEED;
-        rigidbody.AddForce(new Vector3(horizontalForce, 0, verticalForce));
     }
 
     private void OnDisable()
