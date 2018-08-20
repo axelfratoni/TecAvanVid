@@ -9,12 +9,14 @@ public class NetworkBall : MonoBehaviour {
 
     private UDPChannel udpReceiver;
     private SortedList positionList;
+    private NetworkBuffer<Vector3> networkBuffer;
     private float time;
 
     void Start () {
         udpReceiver = new UDPChannel(listeningPort, ListenAction);
         positionList = new SortedList();
         time = 0;
+        networkBuffer = new NetworkBuffer<Vector3>();
     }
 
     void ListenAction(Byte[] receivedBytes)
@@ -28,14 +30,27 @@ public class NetworkBall : MonoBehaviour {
 
         float time = bitBuffer.readFloat(0.0f, 3600.0f, 0.01f);
 
-        if (positionList.Count > 3 && time < (float)positionList.GetKey(3))
-            return;
+        networkBuffer.AddItem(newPosition, time);
 
-        positionList.Add(time, newPosition);
+        if (!(positionList.Count > 3 && time < (float)positionList.GetKey(3)))
+        {
+            positionList.Add(time, newPosition);
+        }
     }
 	
 	void Update () {
-         UpdatePosition();
+        UpdatePosition();
+        //UpdatePositionWithNetworkBuffer();
+    }
+
+    private void UpdatePositionWithNetworkBuffer()
+    {
+        NetworkBuffer<Vector3>.InterpolatedItem<Vector3> interpolatedItem = networkBuffer.GetNextItem();
+        if (interpolatedItem != null)
+        {
+            Vector3 temp = (interpolatedItem.next - interpolatedItem.previous) * interpolatedItem.interpolation;
+            transform.position = interpolatedItem.previous + temp;
+        }
     }
 
     private void UpdatePosition()

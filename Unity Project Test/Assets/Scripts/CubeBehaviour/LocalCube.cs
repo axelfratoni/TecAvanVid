@@ -44,13 +44,6 @@ public class LocalCube : MonoBehaviour {
         var qz = transform.rotation.z;
         var qw = transform.rotation.w;
 
-        //Debug.Log("Cli Pos: " + x + " " + y + " " + z + " ");
-        //Debug.Log("Cli Quaternion: " + qx + " " + qy + " " + qz + " " + qw + " ");
-        /*bitBuffer.writeInt(33,0,255); // !
-        bitBuffer.writeInt(40,0,255); // (
-        bitBuffer.writeInt(41,0,255); // )
-        bitBuffer.writeInt(64,0,255); // @
-        bitBuffer.writeInt(72,0,255); // H*/
         bitBuffer.writeFloat(-x * (-1), -31.0f, 31.0f, 0.1f);
         bitBuffer.writeFloat(y, -1.0f, 15.0f, 0.1f);
         bitBuffer.writeFloat(z - 1 + 1, -31.0f, 31.0f, 0.1f);
