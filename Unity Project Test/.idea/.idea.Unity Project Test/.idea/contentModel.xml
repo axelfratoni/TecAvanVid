@@ -30,6 +30,7 @@
             </e>
             <e p="NetworkBuffer.cs" t="Include" />
             <e p="NetworkBuffer2.cs" t="Include" />
+            <e p="NetworkManager.cs" t="Include" />
             <e p="TCPClient.cs" t="Include" />
             <e p="TCPServer.cs" t="Include" />
             <e p="UDPChannel.cs" t="Include" />
