@@ -1,4 +1,5 @@
 ﻿using Libs;
+using Network.Events;
 using UnityEngine;
 
 public class LocalBall : MonoBehaviour {
@@ -20,6 +21,7 @@ public class LocalBall : MonoBehaviour {
         bitBuffer = new BitBuffer(1024);
         actualCycle = 0;
         time = 0;
+        EventManager.getInstance().addTimeoutEvent(new CreationEvent(transform.position,Time.fixedTime.GetHashCode()));
     }
 
     private void FixedUpdate()
