@@ -22,13 +22,29 @@ public class UDPChannel
     public UDPChannel(int listeningPort, Action<Byte[]> receiveAction)
     {
         SetUpListener(listeningPort, receiveAction);
-    }
+    } 
 
     // Creates an UDP sender and receiver.
     public UDPChannel(String targetIP, int targetPort, int listeningPort, Action<Byte[]> receiveAction)
     {
         SetUpSender(targetIP, targetPort);
         SetUpListener(listeningPort, receiveAction);
+    }
+    
+    // Creates an UDP sender and receiver from sender
+    public UDPChannel(UDPChannel original, int listeningPort, Action<Byte[]> receiveAction)
+    {
+        sending_socket = original.sending_socket;
+        sendingEndPoint = original.sendingEndPoint;
+        SetUpListener(listeningPort, receiveAction);
+    }
+    
+    // Creates an UDP sender and receiver from receiver
+    public UDPChannel(UDPChannel original, String targetIP, int targetPort)
+    {
+        SetUpSender(targetIP, targetPort);
+        listener = original.listener;
+        listenThread = original.listenThread;
     }
 
     private void SetUpSender(String targetIP, int targetPort)
@@ -54,6 +70,8 @@ public class UDPChannel
                 {
                     Byte[] receivedBytes = listener.Receive(ref listeningEndPoint);
                     receiveAction(receivedBytes);
+                    int a = ((IPEndPoint)(listener.Client.RemoteEndPoint)).Port;
+                    Debug.Log(a);
                 }
                 catch (Exception e)
                 {

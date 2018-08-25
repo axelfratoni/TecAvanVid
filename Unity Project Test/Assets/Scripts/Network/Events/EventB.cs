@@ -2,7 +2,7 @@
 
 namespace Network.Events
 {
-    public class EventB : EventInterface
+    public class EventB : IEvent
     {
         public override byte[] GetByteArray()
         {

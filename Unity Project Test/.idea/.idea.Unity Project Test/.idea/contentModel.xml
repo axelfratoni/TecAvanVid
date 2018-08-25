@@ -7,6 +7,7 @@
       <e p="Assets" t="Include">
         <e p="Libs" t="Include">
           <e p="BitBuffer.cs" t="Include" />
+          <e p="TODO.txt" t="Include" />
         </e>
         <e p="Scripts" t="Include">
           <e p="BallBehaviour" t="Include">
@@ -25,8 +26,9 @@
               <e p="CreationEvent.cs" t="Include" />
               <e p="EventB.cs" t="Include" />
               <e p="EventEnum.cs" t="Include" />
-              <e p="EventInterface.cs" t="Include" />
               <e p="EventManager.cs" t="Include" />
+              <e p="EventTimeoutTypeEnum.cs" t="Include" />
+              <e p="IEvent.cs" t="Include" />
             </e>
             <e p="NetworkBuffer.cs" t="Include" />
             <e p="NetworkBuffer2.cs" t="Include" />
@@ -34,6 +36,36 @@
             <e p="TCPClient.cs" t="Include" />
             <e p="TCPServer.cs" t="Include" />
             <e p="UDPChannel.cs" t="Include" />
+          </e>
+        </e>
+        <e p="Unity Sample UI" t="Include">
+          <e p="Fonts" t="Include">
+            <e p="Jupiter" t="Include">
+              <e p="LICENSE.txt" t="Include" />
+            </e>
+          </e>
+          <e p="Materials" t="Include">
+            <e p="UI-Default-No-Alpha.shader" t="Include" />
+          </e>
+          <e p="Scripts" t="Include">
+            <e p="ActiveStateToggler.cs" t="Include" />
+            <e p="ApplicationManager.cs" t="Include" />
+            <e p="ChangeColor.cs" t="Include" />
+            <e p="DragMe.cs" t="Include" />
+            <e p="DragPanel.cs" t="Include" />
+            <e p="DropMe.cs" t="Include" />
+            <e p="PanelManager.cs" t="Include" />
+            <e p="ResizePanel.cs" t="Include" />
+            <e p="ScrollDetailTexture.cs" t="Include" />
+            <e p="ShowSliderValue.cs" t="Include" />
+            <e p="TiltWindow.cs" t="Include" />
+          </e>
+          <e p="Textures and Sprites" t="Include">
+            <e p="SF UI" t="Include">
+              <e p="Background" t="Include">
+                <e p="LICENSE.txt" t="Include" />
+              </e>
+            </e>
           </e>
         </e>
       </e>

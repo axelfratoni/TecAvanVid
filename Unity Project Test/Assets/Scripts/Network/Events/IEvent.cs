@@ -5,22 +5,21 @@ using System.Linq;
 using Libs;
 using UnityEngine;
 
-public abstract class EventInterface
+public abstract class IEvent
 {
 	public abstract byte[] GetByteArray();
-	protected EventEnum type;
+	protected EventEnum eventEnum;
 	protected BitBuffer buffer;
-	protected bool withTimeout;
 	protected int seq_id;
 	
-	public bool getWithTimeout()
-	{
-		return withTimeout;
-	}
-	
-	public int getSeqId()
+	public int GetSeqId()
 	{
 		return seq_id;
+	}
+	
+	public EventEnum GetEventEnum()
+	{
+		return eventEnum;
 	}
 
 }

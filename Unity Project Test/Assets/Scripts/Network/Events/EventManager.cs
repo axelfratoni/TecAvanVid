@@ -1,47 +1,92 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using UnityEditorInternal;
 
 namespace Network.Events
 {
     public class EventManager
     {
-        private SortedList<int,EventInterface> withTimeout = new SortedList<int,EventInterface>();
-        private SortedList<int,EventInterface> withoutTimeout = new SortedList<int,EventInterface>();
-
-        public void addTimeoutEvent(EventInterface eventt)
-        {
-            withTimeout.Add(eventt.getSeqId(),eventt);
-        }
-        public void addNoTimeoutEvent(EventInterface eventt)
-        {
-            withoutTimeout.Add(eventt.getSeqId(),eventt);
-        }
-        public void clearTimeoutEvent(int seq_id)
-        {
-            withTimeout = (SortedList<int,EventInterface>)withTimeout.Where((eventt,index) => index > seq_id);
-        }
-        public void clearNoTimeoutEvent(int seq_id)
-        {
-            withoutTimeout = (SortedList<int,EventInterface>)withoutTimeout.Where((eventt,index) => index > seq_id);
-        }
-
-        public List<EventInterface> getTimeoutEvents()
-        {
-            return (List<EventInterface>)withTimeout.Values;
-        }
-        public List<EventInterface> getNoTimeoutEvents()
-        {
-            return (List<EventInterface>)withoutTimeout.Values;
-        }
-
         private static EventManager instance = null;
         
-        private EventManager(){}
+        private SortedList<int, SortedList<int, IEvent>> eventListList = new SortedList<int, SortedList<int, IEvent>>();
 
-        public static EventManager getInstance()
+        private EventManager()
+        {
+            foreach (EventTimeoutTypeEnum eventTimeoutType in Enum.GetValues(typeof(EventTimeoutTypeEnum)))
+            {
+                eventListList.Add((int)eventTimeoutType,new SortedList<int,IEvent>());
+            }
+        }
+
+        public static EventManager GetInstance()
         {
             return instance ?? (instance = new EventManager());
+        }
+        
+        public void addEvent(IEvent iEvent)
+        {
+            SortedList<int, IEvent> eventList = GetEventSortedList(GetEventTimeoutType(iEvent.GetEventEnum()));
+            eventList.Add(iEvent.GetSeqId(),iEvent);
+        }
+        
+        public void clearEventList(EventTimeoutTypeEnum eventTimeoutType, int seq_id)
+        {
+            SortedList<int, IEvent> eventList = GetEventSortedList(eventTimeoutType);
+            int index = eventListList.IndexOfKey((int)eventTimeoutType);
+            eventListList[index] = (SortedList<int,IEvent>)eventList.Where((eventt,innerIndex) => innerIndex > seq_id);
+        }
+        public void clearEventList(EventEnum eventEnum, int seq_id)
+        {
+            clearEventList(GetEventTimeoutType(eventEnum),seq_id);
+        }
+        public void clearEventList(IEvent iEvent)
+        {
+            clearEventList(iEvent.GetEventEnum(),iEvent.GetSeqId());
+        }
+        
+        public SortedList<int,IEvent> GetEventSortedList(EventTimeoutTypeEnum eventTimeoutType)
+        {
+            int index = eventListList.IndexOfKey((int)eventTimeoutType);
+            return eventListList[index];
+        }
+        public SortedList<int,IEvent> GetEventSortedList(EventEnum eventEnum)
+        {
+            return GetEventSortedList(GetEventTimeoutType(eventEnum));
+        }
+        public SortedList<int,IEvent> GetEventSortedList(IEvent iEvent)
+        {
+            return GetEventSortedList(iEvent.GetEventEnum());
+        }
+        
+        public List<IEvent> getEventList(EventTimeoutTypeEnum eventTimeoutType)
+        {
+            return (List<IEvent>) GetEventSortedList(eventTimeoutType).Values;
+        }
+        public List<IEvent> getEventList(EventEnum eventEnum)
+        {
+            return (List<IEvent>) GetEventSortedList(eventEnum).Values;
+        }
+        public List<IEvent> getEventList(IEvent iEvent)
+        {
+            return (List<IEvent>) GetEventSortedList(iEvent).Values;
+        }
+        
+        // Scalable to multiple timeouts
+        public static EventTimeoutTypeEnum GetEventTimeoutType(EventEnum eventEnum)
+        {
+            switch (eventEnum)
+            {
+                case EventEnum.EventCreation:
+                    return EventTimeoutTypeEnum.TimeOut10;
+                    break;
+                case EventEnum.EventColor:
+                case EventEnum.EventNewProjectile:
+                    return EventTimeoutTypeEnum.NoTimeOut;
+                    break;
+            }
+            return EventTimeoutTypeEnum.Null;
         }
     }
 }

@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum EventEnum{
+public enum EventEnum
+{
 
-	EventCreationType = 1, EventNewProjectileType = 2, EventColorType = 3, total = 3
-	
+	EventCreation = 1,
+	EventNewProjectile = 2,
+	EventColor = 3,
+	Null = -1,
+	total = 3,
+
 }
