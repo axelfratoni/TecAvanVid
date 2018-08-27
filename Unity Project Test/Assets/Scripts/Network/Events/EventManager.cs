@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using UnityEditorInternal;
+using Libs;
 
 namespace Network.Events
 {
@@ -83,10 +82,41 @@ namespace Network.Events
                     break;
                 case EventEnum.EventColor:
                 case EventEnum.EventNewProjectile:
+                default:
                     return EventTimeoutTypeEnum.NoTimeOut;
                     break;
             }
-            return EventTimeoutTypeEnum.Null;
         }
+
+        public IEvent readEvent(BitBuffer bitBuffer)
+        {
+            //Read id;
+            int id = bitBuffer.readInt(1, GetTotalEventEnum());
+            IEvent iEvent;
+            switch ((EventEnum)id)
+            {
+                case EventEnum.EventCreation:
+                    iEvent = new CreationEvent(bitBuffer);
+                    break;
+                case EventEnum.EventColor:
+                    iEvent = null;
+                    break;
+                case EventEnum.EventNewProjectile:
+                    iEvent = null;
+                    break;               
+                default:
+                    iEvent = null;
+                    break;
+            }
+
+            return iEvent;
+        }
+        
+        public static int GetTotalEventEnum()
+        {
+            return Enum.GetValues(typeof(EventEnum)).Length;
+        }
+
     }
+    
 }

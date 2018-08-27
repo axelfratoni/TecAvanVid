@@ -111,4 +111,9 @@ public class UDPChannel
         if(listener != null)
             listener.Close();
     }
+
+    public void SetSenderFromListener()
+    {
+        SetUpSender(listeningEndPoint.Address.ToString(),listeningEndPoint.Port);
+    }
 }

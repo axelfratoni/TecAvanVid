@@ -72,13 +72,17 @@ namespace Libs
             return min + step * readInt((int) Math.Round((min) / step), (int) Math.Round((max) / step));
         } 
         
-        private static int GetBitsRequired(long value) {
+        public static int GetBitsRequired(long value) {
             int bitsRequired = 0;
             while (value > 0) {
                 bitsRequired++;
                 value >>= 1;
             }
             return bitsRequired;
+        }
+        
+        public static int GetBitsRequiredForFloat(float min, float max, float step) {
+            return GetBitsRequired((int)(Math.Round((max) / step) - Math.Round((min) / step)));
         }
 
         private void writeBuffer(){
