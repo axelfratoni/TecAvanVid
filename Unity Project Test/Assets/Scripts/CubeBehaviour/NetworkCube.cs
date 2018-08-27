@@ -15,7 +15,7 @@ public class NetworkCube : MonoBehaviour {
         networkBuffer = new NetworkBuffer<Move>();
     }
 
-    void ListenAction(Byte[] receivedBytes)
+    void ListenAction(UDPChannel udpChannel, Byte[] receivedBytes)
     {
         BitBuffer bitBuffer = new BitBuffer(receivedBytes);
         float x = bitBuffer.readFloat(-31.0f, 31.0f, 0.1f);

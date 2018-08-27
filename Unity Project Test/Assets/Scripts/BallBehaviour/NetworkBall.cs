@@ -18,7 +18,7 @@ public class NetworkBall : MonoBehaviour {
         networkBuffer2 = new NetworkBuffer2<Vector3>();
     }
 
-    void ListenAction(Byte[] receivedBytes)
+    void ListenAction(UDPChannel udpChannel, Byte[] receivedBytes)
     {
         BitBuffer bitBuffer = new BitBuffer(receivedBytes);
 

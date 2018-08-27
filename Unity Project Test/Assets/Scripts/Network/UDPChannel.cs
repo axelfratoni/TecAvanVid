@@ -19,20 +19,20 @@ public class UDPChannel
     }
 
     // Creates an UDP receiver.
-    public UDPChannel(int listeningPort, Action<Byte[]> receiveAction)
+    public UDPChannel(int listeningPort, Action<UDPChannel, Byte[]> receiveAction)
     {
         SetUpListener(listeningPort, receiveAction);
     } 
 
     // Creates an UDP sender and receiver.
-    public UDPChannel(String targetIP, int targetPort, int listeningPort, Action<Byte[]> receiveAction)
+    public UDPChannel(String targetIP, int targetPort, int listeningPort, Action<UDPChannel, Byte[]> receiveAction)
     {
         SetUpSender(targetIP, targetPort);
         SetUpListener(listeningPort, receiveAction);
     }
     
     // Creates an UDP sender and receiver from sender
-    public UDPChannel(UDPChannel original, int listeningPort, Action<Byte[]> receiveAction)
+    public UDPChannel(UDPChannel original, int listeningPort, Action<UDPChannel, Byte[]> receiveAction)
     {
         sending_socket = original.sending_socket;
         sendingEndPoint = original.sendingEndPoint;
@@ -53,14 +53,14 @@ public class UDPChannel
         sendingEndPoint = new IPEndPoint(IPAddress.Parse(targetIP), targetPort);
     }
 
-    private void SetUpListener(int listeningPort, Action<Byte[]> receiveAction)
+    private void SetUpListener(int listeningPort, Action<UDPChannel, Byte[]> receiveAction)
     {
         listener = new UdpClient(listeningPort);
         listeningEndPoint = new IPEndPoint(IPAddress.Any, 0);
         ListenForConnections(receiveAction);
     }
 
-    private void ListenForConnections(Action<Byte[]> receiveAction)
+    private void ListenForConnections(Action<UDPChannel, Byte[]> receiveAction)
     {
         listenThread = new Thread(() =>
         {
@@ -69,7 +69,7 @@ public class UDPChannel
                 try
                 {
                     Byte[] receivedBytes = listener.Receive(ref listeningEndPoint);
-                    receiveAction(receivedBytes);
+                    receiveAction(this, receivedBytes);
                     int a = ((IPEndPoint)(listener.Client.RemoteEndPoint)).Port;
                     Debug.Log(a);
                 }
@@ -115,5 +115,10 @@ public class UDPChannel
     public void SetSenderFromListener()
     {
         SetUpSender(listeningEndPoint.Address.ToString(),listeningEndPoint.Port);
+    }
+
+    public IPAddress GetRemoteIpAddress()
+    {
+        return listeningEndPoint.Address;
     }
 }

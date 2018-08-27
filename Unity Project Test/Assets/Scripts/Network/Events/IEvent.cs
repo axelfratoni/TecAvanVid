@@ -22,4 +22,6 @@ public abstract class IEvent
 		return eventEnum;
 	}
 
+	public abstract void Process(GameObject gameObject);
+
 }

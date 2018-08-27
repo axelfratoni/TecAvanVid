@@ -24,11 +24,11 @@
           <e p="Network" t="Include">
             <e p="Events" t="Include">
               <e p="CreationEvent.cs" t="Include" />
-              <e p="EventB.cs" t="Include" />
               <e p="EventEnum.cs" t="Include" />
               <e p="EventManager.cs" t="Include" />
               <e p="EventTimeoutTypeEnum.cs" t="Include" />
               <e p="IEvent.cs" t="Include" />
+              <e p="SnapshotEvent.cs" t="Include" />
             </e>
             <e p="NetworkBuffer.cs" t="Include" />
             <e p="NetworkBuffer2.cs" t="Include" />
