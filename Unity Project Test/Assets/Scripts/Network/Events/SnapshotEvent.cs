@@ -31,7 +31,7 @@ namespace Network.Events
 
         public SnapshotEvent(Vector3 pos, int seq_id)
         {
-            eventEnum = EventEnum.EventCreation;
+            eventEnum = EventEnum.Snapshot;
             buffer = new BitBuffer(bitsRequired);
             position = pos;
             this.seq_id = seq_id;

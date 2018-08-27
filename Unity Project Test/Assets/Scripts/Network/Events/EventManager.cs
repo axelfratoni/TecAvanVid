@@ -99,7 +99,7 @@ namespace Network.Events
                     iEvent = new CreationEvent(bitBuffer);
                     break;
                 case EventEnum.EventColor:
-                    iEvent = null;
+                    iEvent = new ColorEvent(bitBuffer);
                     break;
                 case EventEnum.EventNewProjectile:
                     iEvent = null;

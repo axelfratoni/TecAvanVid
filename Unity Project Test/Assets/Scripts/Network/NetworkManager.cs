@@ -66,8 +66,18 @@ namespace Network
                 do
                 {
                     iEvent = EventManager.GetInstance().readEvent(bitBuffer);
-                    //GET SEQ ID
-                    iEvents.Add(iEvent);
+                    //TODO GET SEQ ID (IGNORE SEQID if Snapshot)
+                    if (iEvent == null)
+                    {
+                        /*TODO Elaborate Exception (Not created exception received)
+                               OR IGNORE everything else until Create Exception*/
+                        //throw new NotFiniteNumberException();
+                    }
+                    else
+                    {
+                        iEvents.Add(iEvent);
+                    }
+
                 } while (!(iEvent is CreationEvent));
 
                 iEvents.RemoveAt(iEvents.IndexOf(iEvent));
@@ -87,10 +97,12 @@ namespace Network
             {
                 iEvent = EventManager.GetInstance().readEvent(bitBuffer);
                 if (iEvent != null)
+                {
+                    //TODO GET SEQ ID (IGNORE SEQID if Snapshot)
                     iEvent.Process(channel.GameObject);
+                }
             }while (iEvent != null);
-
-
+            //TODO Send ACKs, Deliver Events to other Channels
         }
     }
 }
