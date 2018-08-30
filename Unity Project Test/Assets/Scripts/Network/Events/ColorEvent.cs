@@ -10,8 +10,7 @@ namespace Network.Events
         private static int gBitsRequired;
         private static int bBitsRequired;
         private static int aBitsRequired;
-        private static int seqBitsRequired;
-        private static int bitsRequired;
+        private static int BitsRequired;
 
         private float _red;
         private float _green;
@@ -25,25 +24,25 @@ namespace Network.Events
             gBitsRequired = BitBuffer.GetBitsRequiredForFloat(0.0f,1.0f,0.001f);
             bBitsRequired = BitBuffer.GetBitsRequiredForFloat(0.0f,1.0f,0.001f);
             aBitsRequired = BitBuffer.GetBitsRequiredForFloat(0.0f,1.0f,0.001f);
-            seqBitsRequired = BitBuffer.GetBitsRequired(Int32.MaxValue);
-            bitsRequired = rBitsRequired + gBitsRequired + bBitsRequired + aBitsRequired + seqBitsRequired;
+            BitsRequired = rBitsRequired + gBitsRequired + bBitsRequired + aBitsRequired + seqBitsRequired + idBitsRequired;
         }
 
-        public static int GetBitsRequired()
+        public override int GetBitsRequired()
         {
-            return bitsRequired;
+            return BitsRequired;
         }
 
-        public ColorEvent(int red, int green, int blue, int alpha, int seq_id)
+        public ColorEvent(int red, int green, int blue, int alpha, int seq_id, int id)
         {
             
             eventEnum = EventEnum.EventColor;
-            buffer = new BitBuffer(bitsRequired);
+            buffer = new BitBuffer(BitsRequired);
             _red = red;
             _blue = blue;
             _green = green;
             _alpha = alpha;
             this.seq_id = seq_id;
+            this.id = id;
         }
 
         public ColorEvent(BitBuffer bitBuffer)
@@ -57,6 +56,7 @@ namespace Network.Events
             _green = green;
             _alpha = alpha;
             seq_id = bitBuffer.readInt(0, Int32.MaxValue);
+            id = bitBuffer.readInt(0, Int32.MaxValue);
         }
 
         public override void Process(GameObject gameObject)
@@ -74,6 +74,7 @@ namespace Network.Events
             buffer.writeFloat(_green, 0.0f, 1.0f, 0.001f);
             buffer.writeFloat(_alpha, 0.0f, 1.0f, 0.001f);
             buffer.writeInt(seq_id, 0, Int32.MaxValue);
+            buffer.writeInt(id, 0, Int32.MaxValue);
             return buffer.getBuffer();
         }
     }

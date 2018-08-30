@@ -20,7 +20,7 @@ namespace Network.Events
             BitsRequired = TimeoutTypeBitsRequired + SeqBitsRequired;
         }
 
-        public static int GetBitsRequired()
+        public override int GetBitsRequired()
         {
             return BitsRequired;
         }

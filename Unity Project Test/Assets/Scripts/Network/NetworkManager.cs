@@ -21,14 +21,14 @@ namespace Network
         private class Channel
         {
             private IPAddress _address;
-            private GameObject _gameObject;
+            private SortedList<int,GameObject> _gameObjects;
             private UDPChannel _sendingChannel;
             private EventManager _eventManager;
 
-            public Channel(IPAddress address, GameObject gameObject, UDPChannel sendingChannel, EventManager eventManager)
+            public Channel(IPAddress address, UDPChannel sendingChannel, EventManager eventManager)
             {
                 _address = address;
-                _gameObject = gameObject;
+                _gameObjects = new SortedList<int, GameObject>();
                 _sendingChannel = sendingChannel;
                 _eventManager = eventManager;
             }
@@ -37,12 +37,6 @@ namespace Network
             {
                 get { return _address; }
                 set { _address = value; }
-            }
-
-            public GameObject GameObject
-            {
-                get { return _gameObject; }
-                set { _gameObject = value; }
             }
 
             public UDPChannel SendingChannel
@@ -54,6 +48,16 @@ namespace Network
             public EventManager ChannelEventManager
             {
                 get { return _eventManager; }
+            }
+
+            public void AddGameObject(int id, GameObject gameObject)
+            {
+                _gameObjects.Add(id,gameObject);
+            }
+            
+            public GameObject GetGameObject(int id)
+            {
+                return _gameObjects[id];
             }
         }
 
@@ -79,6 +83,7 @@ namespace Network
             {
                 List<IEvent> iEvents = new List<IEvent>();
                 EventManager eventManager = new EventManager();
+                channel = new Channel(remoteAddress,udpChannel,eventManager);
                 do
                 {
                     iEvent = eventManager.readEvent(bitBuffer);
@@ -96,8 +101,8 @@ namespace Network
                 iEvents.RemoveAt(iEvents.IndexOf(iEvent));
                 iEvent.Process(null);
                 GameObject gameObject = ((CreationEvent) iEvent).GameObject;
+                channel.AddGameObject(iEvent.GetId(),gameObject);
                 UnityEngine.Object.Instantiate(gameObject);
-                channel = new Channel(remoteAddress,gameObject,udpChannel,eventManager);
                 channel.ChannelEventManager.addEvent(iEvent);
                 _channels.Add(remoteAddress,channel);
 
@@ -130,7 +135,7 @@ namespace Network
                     channel.ChannelEventManager.clearEventList((ACKEvent)iEvent);
                 }else if (iEvent.GetEventEnum() == EventEnum.Snapshot)
                 {
-                    iEvent.Process(channel.GameObject);
+                    iEvent.Process(channel.GetGameObject(iEvent.GetId()));
                 }
                 else
                 {
@@ -140,7 +145,7 @@ namespace Network
                     {
                         updatedACK[timeoutType] = true;
                         channel.ChannelEventManager.SetLastACK(timeoutType, seqId);
-                        iEvent.Process(channel.GameObject);
+                        iEvent.Process(channel.GetGameObject(iEvent.GetId()));
                         foreach (Channel cchannel in _channels.Values)
                         {
                             if (cchannel != channel)

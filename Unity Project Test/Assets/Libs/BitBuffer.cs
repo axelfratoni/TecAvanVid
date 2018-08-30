@@ -73,12 +73,12 @@ namespace Libs
         } 
         
         public static int GetBitsRequired(long value) {
-            int bitsRequired = 0;
+            int BitsRequired = 0;
             while (value > 0) {
-                bitsRequired++;
+                BitsRequired++;
                 value >>= 1;
             }
-            return bitsRequired;
+            return BitsRequired;
         }
         
         public static int GetBitsRequiredForFloat(float min, float max, float step) {

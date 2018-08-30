@@ -11,10 +11,24 @@ public abstract class IEvent
 	protected EventEnum eventEnum;
 	protected BitBuffer buffer;
 	protected int seq_id;
+	protected int id;
+	protected static int seqBitsRequired;
+	protected static int idBitsRequired;
+
+	static IEvent()
+	{
+		seqBitsRequired = BitBuffer.GetBitsRequired(Int32.MaxValue);
+		idBitsRequired = BitBuffer.GetBitsRequired(Int32.MaxValue);
+	}
 	
 	public int GetSeqId()
 	{
 		return seq_id;
+	}
+	
+	public int GetId()
+	{
+		return id;
 	}
 	
 	public EventEnum GetEventEnum()
@@ -23,5 +37,7 @@ public abstract class IEvent
 	}
 
 	public abstract void Process(GameObject gameObject);
+
+	public abstract int GetBitsRequired();
 
 }
