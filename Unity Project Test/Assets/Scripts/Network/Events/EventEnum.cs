@@ -7,5 +7,6 @@ public enum EventEnum
 	Snapshot = 0,
 	EventCreation = 1,
 	EventNewProjectile = 2,
-	EventColor = 3
+	EventColor = 3,
+	ACK = 4
 }

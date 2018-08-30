@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using Libs;
 using Network.Events;
+using UnityEditor;
 using UnityEngine;
 
 namespace Network
@@ -63,6 +64,13 @@ namespace Network
             Channel channel;
             IEvent iEvent;
             
+            SortedList<EventTimeoutTypeEnum,bool> updatedACK = new SortedList<EventTimeoutTypeEnum , bool>();
+
+            foreach (EventTimeoutTypeEnum eventTimeoutType in Enum.GetValues(typeof(EventTimeoutTypeEnum)))
+            {
+                updatedACK.Add(eventTimeoutType,false);
+            }
+            
             if (_channels.ContainsKey(remoteAddress))
             {
                 channel = _channels[remoteAddress];
@@ -74,12 +82,9 @@ namespace Network
                 do
                 {
                     iEvent = eventManager.readEvent(bitBuffer);
-                    //TODO GET SEQ ID (IGNORE SEQID if Snapshot)
                     if (iEvent == null)
                     {
-                        /*TODO Elaborate Exception (Not created exception received)
-                               OR IGNORE everything else until Create Exception*/
-                        //throw new NotFiniteNumberException();
+                        return;
                     }
                     else
                     {
@@ -92,25 +97,60 @@ namespace Network
                 iEvent.Process(null);
                 GameObject gameObject = ((CreationEvent) iEvent).GameObject;
                 UnityEngine.Object.Instantiate(gameObject);
+                channel = new Channel(remoteAddress,gameObject,udpChannel,eventManager);
+                channel.ChannelEventManager.addEvent(iEvent);
+                _channels.Add(remoteAddress,channel);
+
                 foreach (IEvent iEventt in iEvents)
                 {
-                    iEventt.Process(gameObject);
+                    processEvent(iEvent, channel, updatedACK);
                 }
-
-                channel = new Channel(remoteAddress,gameObject,udpChannel,eventManager);
-                _channels.Add(remoteAddress,channel);
             }
-
+            
             do
             {
                 iEvent = channel.ChannelEventManager.readEvent(bitBuffer);
-                if (iEvent != null)
+                processEvent(iEvent, channel, updatedACK);
+            }while (iEvent != null);
+            foreach (EventTimeoutTypeEnum eventTimeoutType in Enum.GetValues(typeof(EventTimeoutTypeEnum)))
+            {
+                if (updatedACK[eventTimeoutType])
                 {
-                    //TODO GET SEQ ID (IGNORE SEQID if Snapshot)
+                    channel.ChannelEventManager.addEvent(new ACKEvent(eventTimeoutType,channel.ChannelEventManager.GetLastACK(eventTimeoutType)));
+                }
+            }
+        }
+
+        void processEvent(IEvent iEvent, Channel channel, SortedList<EventTimeoutTypeEnum,bool> updatedACK)
+        {
+            if (iEvent != null)
+            {
+                if (iEvent.GetEventEnum() == EventEnum.ACK)
+                {
+                    channel.ChannelEventManager.clearEventList((ACKEvent)iEvent);
+                }else if (iEvent.GetEventEnum() == EventEnum.Snapshot)
+                {
                     iEvent.Process(channel.GameObject);
                 }
-            }while (iEvent != null);
-            //TODO Send ACKs, Deliver Events to other Channels
+                else
+                {
+                    int seqId = iEvent.GetSeqId();
+                    EventTimeoutTypeEnum timeoutType = EventManager.GetEventTimeoutType(iEvent.GetEventEnum());
+                    if (seqId >= channel.ChannelEventManager.GetLastACK(timeoutType))
+                    {
+                        updatedACK[timeoutType] = true;
+                        channel.ChannelEventManager.SetLastACK(timeoutType, seqId);
+                        iEvent.Process(channel.GameObject);
+                        foreach (Channel cchannel in _channels.Values)
+                        {
+                            if (cchannel != channel)
+                            {
+                                channel.ChannelEventManager.addEvent(iEvent);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

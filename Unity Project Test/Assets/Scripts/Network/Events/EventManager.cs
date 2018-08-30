@@ -8,14 +8,20 @@ namespace Network.Events
     public class EventManager
     {
         
-        //                 TimeoutType     SeqId
-        private SortedList<int, SortedList<int, IEvent>> eventListList = new SortedList<int, SortedList<int, IEvent>>();
+        //                 TimeoutType                     SeqId
+        private SortedList<EventTimeoutTypeEnum, SortedList<int, IEvent>> eventListList = new SortedList<EventTimeoutTypeEnum, SortedList<int, IEvent>>();
+        //         TimeoutType  LastSeqIdToACK
+        private SortedList<EventTimeoutTypeEnum, int> ackList = new SortedList<EventTimeoutTypeEnum, int>();
 
         public EventManager()
         {
             foreach (EventTimeoutTypeEnum eventTimeoutType in Enum.GetValues(typeof(EventTimeoutTypeEnum)))
             {
-                eventListList.Add((int)eventTimeoutType,new SortedList<int,IEvent>());
+                eventListList.Add(eventTimeoutType,new SortedList<int,IEvent>());
+            }
+            foreach (EventTimeoutTypeEnum eventTimeoutType in Enum.GetValues(typeof(EventTimeoutTypeEnum)))
+            {
+                ackList.Add(eventTimeoutType,0);
             }
         }
         
@@ -28,8 +34,7 @@ namespace Network.Events
         public void clearEventList(EventTimeoutTypeEnum eventTimeoutType, int seq_id)
         {
             SortedList<int, IEvent> eventList = GetEventSortedList(eventTimeoutType);
-            int index = eventListList.IndexOfKey((int)eventTimeoutType);
-            eventListList[index] = (SortedList<int,IEvent>)eventList.Where((eventt,innerIndex) => innerIndex > seq_id);
+            eventListList[eventTimeoutType] = (SortedList<int,IEvent>)eventList.Where((eventt,innerIndex) => innerIndex > seq_id);
         }
         public void clearEventList(EventEnum eventEnum, int seq_id)
         {
@@ -39,11 +44,15 @@ namespace Network.Events
         {
             clearEventList(iEvent.GetEventEnum(),iEvent.GetSeqId());
         }
+        public void clearEventList(ACKEvent ackEvent)
+        {
+            clearEventList(ackEvent.TimeoutTypeEnum,ackEvent.GetSeqId());
+        }
         
         public SortedList<int,IEvent> GetEventSortedList(EventTimeoutTypeEnum eventTimeoutType)
         {
-            int index = eventListList.IndexOfKey((int)eventTimeoutType);
-            return eventListList[index];
+            int index = eventListList.IndexOfKey(eventTimeoutType);
+            return eventListList[eventTimeoutType];
         }
         public SortedList<int,IEvent> GetEventSortedList(EventEnum eventEnum)
         {
@@ -110,6 +119,21 @@ namespace Network.Events
         public static int GetTotalEventEnum()
         {
             return Enum.GetValues(typeof(EventEnum)).Length;
+        }
+        
+        public static int GetTotalEventTimeoutTypeEnum()
+        {
+            return Enum.GetValues(typeof(EventTimeoutTypeEnum)).Length;
+        }
+
+        public int GetLastACK(EventTimeoutTypeEnum eventTimeoutTypeEnum)
+        {
+            return ackList[eventTimeoutTypeEnum];
+        }
+        
+        public int SetLastACK(EventTimeoutTypeEnum eventTimeoutTypeEnum, int value)
+        {
+            return ackList[eventTimeoutTypeEnum];
         }
 
     }

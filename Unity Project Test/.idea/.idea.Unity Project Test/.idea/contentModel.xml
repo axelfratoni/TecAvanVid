@@ -23,6 +23,7 @@
           </e>
           <e p="Network" t="Include">
             <e p="Events" t="Include">
+              <e p="ACKEvent.cs" t="Include" />
               <e p="ColorEvent.cs" t="Include" />
               <e p="CreationEvent.cs" t="Include" />
               <e p="EventEnum.cs" t="Include" />
