@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
+using Network;
 using UnityEngine;
 
 public class GameManagerController : MonoBehaviour {
 
-    private UDPChannel udpChannel;
+    private NetworkManager networkManager;
     public int localPort = 11001;
 
     public void InitializeServer(object[] messageContent)
@@ -14,7 +16,7 @@ public class GameManagerController : MonoBehaviour {
         Debug.Log("Server");
         try
         {
-            udpChannel = new UDPChannel(targetPort, ReceiveAction);
+            networkManager = new NetworkManager(targetPort);
             GameObject.Find("Menu").SetActive(false);
         }
         catch (Exception e)
@@ -30,7 +32,7 @@ public class GameManagerController : MonoBehaviour {
         Debug.Log("Client");
         try
         {
-            udpChannel = new UDPChannel(targetIP, targetPort, localPort, ReceiveAction);
+            networkManager= new NetworkManager(localPort, IPAddress.Parse(targetIP), targetPort);
             GameObject.Find("Menu").SetActive(false);
         }
         catch(Exception e)
@@ -51,6 +53,7 @@ public class GameManagerController : MonoBehaviour {
 
     private void OnDisable()
     {
-        udpChannel.Disable();
+        //TODO
+        //networkManager.Disable();
     }
 }

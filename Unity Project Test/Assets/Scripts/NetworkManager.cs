@@ -106,11 +106,7 @@ namespace Network
                     {
                         return;
                     }
-                    else
-                    {
-                        iEvents.Add(iEvent);
-                    }
-
+                    iEvents.Add(iEvent);
                 } while (!(iEvent is CreationEvent));
 
                 iEvents.RemoveAt(iEvents.IndexOf(iEvent));

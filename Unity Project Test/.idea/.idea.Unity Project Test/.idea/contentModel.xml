@@ -34,6 +34,7 @@
           </e>
           <e p="MainMenu" t="Include">
             <e p="ButtonController.cs" t="Include" />
+            <e p="ClientServerButton.cs" t="Include" />
           </e>
           <e p="NetworkBuffer.cs" t="Include" />
           <e p="NetworkBuffer2.cs" t="Include" />
