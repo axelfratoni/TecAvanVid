@@ -11,11 +11,21 @@ namespace Network
     public class NetworkManager
     {
         private SortedList<IPAddress,Channel> _channels;
+        private bool is_server;
 
         public NetworkManager(int port)
         {
-            new UDPChannel(11001, ListenAction);
+            new UDPChannel(port, ListenAction);
+            is_server = true;
             _channels = new SortedList<IPAddress, Channel>();
+        }
+        
+        public NetworkManager(int localPort, IPAddress remoteAddress, int remotePort)
+        {
+            is_server = false;
+            _channels = new SortedList<IPAddress, Channel>();
+            UDPChannel udpChannel = new UDPChannel(remoteAddress.ToString(), remotePort, localPort, ListenAction);
+            _channels.Add(remoteAddress,new Channel(remoteAddress, udpChannel, new EventManager()));
         }
 
         private class Channel
@@ -81,9 +91,14 @@ namespace Network
             }
             else
             {
+                if (!is_server)
+                {
+                    return;
+                }
                 List<IEvent> iEvents = new List<IEvent>();
                 EventManager eventManager = new EventManager();
                 channel = new Channel(remoteAddress,udpChannel,eventManager);
+                udpChannel.SetSenderFromListener();
                 do
                 {
                     iEvent = eventManager.readEvent(bitBuffer);

@@ -11,6 +11,7 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="BallBehaviour" t="Include">
+            <e p="GameManagerController.cs" t="Include" />
             <e p="LocalBall.cs" t="Include" />
             <e p="NetworkBall.cs" t="Include" />
             <e p="PlayerCamera.cs" t="Include" />
@@ -21,24 +22,25 @@
             <e p="LocalCube.cs" t="Include" />
             <e p="NetworkCube.cs" t="Include" />
           </e>
-          <e p="Network" t="Include">
-            <e p="Events" t="Include">
-              <e p="ACKEvent.cs" t="Include" />
-              <e p="ColorEvent.cs" t="Include" />
-              <e p="CreationEvent.cs" t="Include" />
-              <e p="EventEnum.cs" t="Include" />
-              <e p="EventManager.cs" t="Include" />
-              <e p="EventTimeoutTypeEnum.cs" t="Include" />
-              <e p="IEvent.cs" t="Include" />
-              <e p="SnapshotEvent.cs" t="Include" />
-            </e>
-            <e p="NetworkBuffer.cs" t="Include" />
-            <e p="NetworkBuffer2.cs" t="Include" />
-            <e p="NetworkManager.cs" t="Include" />
-            <e p="TCPClient.cs" t="Include" />
-            <e p="TCPServer.cs" t="Include" />
-            <e p="UDPChannel.cs" t="Include" />
+          <e p="Events" t="Include">
+            <e p="ACKEvent.cs" t="Include" />
+            <e p="ColorEvent.cs" t="Include" />
+            <e p="CreationEvent.cs" t="Include" />
+            <e p="EventEnum.cs" t="Include" />
+            <e p="EventManager.cs" t="Include" />
+            <e p="EventTimeoutTypeEnum.cs" t="Include" />
+            <e p="IEvent.cs" t="Include" />
+            <e p="SnapshotEvent.cs" t="Include" />
           </e>
+          <e p="MainMenu" t="Include">
+            <e p="ButtonController.cs" t="Include" />
+          </e>
+          <e p="NetworkBuffer.cs" t="Include" />
+          <e p="NetworkBuffer2.cs" t="Include" />
+          <e p="NetworkManager.cs" t="Include" />
+          <e p="TCPClient.cs" t="Include" />
+          <e p="TCPServer.cs" t="Include" />
+          <e p="UDPChannel.cs" t="Include" />
         </e>
         <e p="Unity Sample UI" t="Include">
           <e p="Fonts" t="Include">

@@ -21,8 +21,6 @@ public class LocalBall : MonoBehaviour {
         bitBuffer = new BitBuffer(1024);
         actualCycle = 0;
         time = 0;
-        EventManager.GetInstance().addEvent(new CreationEvent(Time.fixedTime.GetHashCode()));
-        EventManager.GetInstance().addEvent(new SnapshotEvent(transform.position,Time.fixedTime.GetHashCode()));
     }
 
     private void FixedUpdate()
