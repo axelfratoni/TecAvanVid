@@ -22,12 +22,14 @@ namespace Network
             private IPAddress _address;
             private GameObject _gameObject;
             private UDPChannel _sendingChannel;
+            private EventManager _eventManager;
 
-            public Channel(IPAddress address, GameObject gameObject, UDPChannel sendingChannel)
+            public Channel(IPAddress address, GameObject gameObject, UDPChannel sendingChannel, EventManager eventManager)
             {
                 _address = address;
                 _gameObject = gameObject;
                 _sendingChannel = sendingChannel;
+                _eventManager = eventManager;
             }
 
             public IPAddress Address
@@ -47,6 +49,11 @@ namespace Network
                 get { return _sendingChannel; }
                 set { _sendingChannel = value; }
             }
+
+            public EventManager ChannelEventManager
+            {
+                get { return _eventManager; }
+            }
         }
 
         void ListenAction(UDPChannel udpChannel, Byte[] receivedBytes)
@@ -63,9 +70,10 @@ namespace Network
             else
             {
                 List<IEvent> iEvents = new List<IEvent>();
+                EventManager eventManager = new EventManager();
                 do
                 {
-                    iEvent = EventManager.GetInstance().readEvent(bitBuffer);
+                    iEvent = eventManager.readEvent(bitBuffer);
                     //TODO GET SEQ ID (IGNORE SEQID if Snapshot)
                     if (iEvent == null)
                     {
@@ -89,13 +97,13 @@ namespace Network
                     iEventt.Process(gameObject);
                 }
 
-                channel = new Channel(remoteAddress,gameObject,udpChannel);
+                channel = new Channel(remoteAddress,gameObject,udpChannel,eventManager);
                 _channels.Add(remoteAddress,channel);
             }
 
             do
             {
-                iEvent = EventManager.GetInstance().readEvent(bitBuffer);
+                iEvent = channel.ChannelEventManager.readEvent(bitBuffer);
                 if (iEvent != null)
                 {
                     //TODO GET SEQ ID (IGNORE SEQID if Snapshot)

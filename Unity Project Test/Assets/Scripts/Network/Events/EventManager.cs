@@ -7,21 +7,16 @@ namespace Network.Events
 {
     public class EventManager
     {
-        private static EventManager instance = null;
         
+        //                 TimeoutType     SeqId
         private SortedList<int, SortedList<int, IEvent>> eventListList = new SortedList<int, SortedList<int, IEvent>>();
 
-        private EventManager()
+        public EventManager()
         {
             foreach (EventTimeoutTypeEnum eventTimeoutType in Enum.GetValues(typeof(EventTimeoutTypeEnum)))
             {
                 eventListList.Add((int)eventTimeoutType,new SortedList<int,IEvent>());
             }
-        }
-
-        public static EventManager GetInstance()
-        {
-            return instance ?? (instance = new EventManager());
         }
         
         public void addEvent(IEvent iEvent)

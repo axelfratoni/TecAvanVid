@@ -46,7 +46,7 @@ namespace Network.Events
 
         public override void Process(GameObject gameObject)
         {
-            // New Object
+            // TODO New Object
             return;
         }
 
