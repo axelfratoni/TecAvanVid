@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657868, g: 0.4964127, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -867,13 +867,11 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 627971874}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0594d9adc13e75344ba104d315d3a4e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientCanvas: {fileID: 1888749897}
-  serverCanvas: {fileID: 1057215725}
 --- !u!114 &627971877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1280,6 +1278,7 @@ GameObject:
   - component: {fileID: 1064969413}
   - component: {fileID: 1064969412}
   - component: {fileID: 1064969411}
+  - component: {fileID: 1064969415}
   m_Layer: 5
   m_Name: Menu
   m_TagString: MainMenu
@@ -1368,6 +1367,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1064969415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1064969410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ea394a782102224a8d093709f90e0eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1217162278
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,14 +1931,11 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1733814805}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4bc312c92ac517847844a6615481bab0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetIP: {fileID: 459454930}
-  targetPort: {fileID: 371112530}
-  hostingPort: {fileID: 1770613064}
 --- !u!1 &1770613062
 GameObject:
   m_ObjectHideFlags: 0
@@ -2503,7 +2510,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: 62270e6329023314592618cf6bee546f, type: 2}
+  - {fileID: 2100000, guid: fe223586968431c45958905c6daf3389, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
