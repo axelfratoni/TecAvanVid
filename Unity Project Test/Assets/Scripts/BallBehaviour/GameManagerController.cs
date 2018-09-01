@@ -53,7 +53,6 @@ public class GameManagerController : MonoBehaviour {
 
     private void OnDisable()
     {
-        //TODO
-        //networkManager.Disable();
+        networkManager.Disable();
     }
 }

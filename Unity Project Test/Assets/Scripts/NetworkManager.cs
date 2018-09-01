@@ -13,9 +13,11 @@ namespace Network
         private SortedList<IPAddress,Channel> _channels;
         private bool is_server;
 
+        private UDPChannel _initialServerUdpChannel;
+        
         public NetworkManager(int port)
         {
-            new UDPChannel(port, ListenAction);
+            _initialServerUdpChannel = new UDPChannel(port, ListenAction);
             is_server = true;
             _channels = new SortedList<IPAddress, Channel>();
         }
@@ -68,6 +70,11 @@ namespace Network
             public GameObject GetGameObject(int id)
             {
                 return _gameObjects[id];
+            }
+
+            public void Disable()
+            {
+                _sendingChannel.Disable();
             }
         }
 
@@ -166,6 +173,19 @@ namespace Network
                         }
                     }
                 }
+            }
+        }
+
+        public void Disable()
+        {
+            if (_initialServerUdpChannel != null)
+            {
+                _initialServerUdpChannel.Disable();
+            }
+
+            foreach (Channel channel in _channels.Values)
+            {
+                channel.Disable();
             }
         }
     }
