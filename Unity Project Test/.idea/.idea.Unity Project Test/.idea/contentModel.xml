@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ContentModelStore">
-    <e p="C:\Users\Axel\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Axel\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Unity Project Test.-1162898584.00" t="ExcludeRecursive" />
-    <e p="D:\Unity Projects\TecAvanVid\Unity Project Test" t="IncludeRecursive">
+    <e p="C:\Users\ericn\.Rider2018.1\system\resharper-host\Local\Transient\ReSharperHost\v12\SolutionCaches\_Unity Project Test.-162948100.00" t="ExcludeRecursive" />
+    <e p="D:\Users\ericn\OneDrive\Documentos\GitHub\TecAvanVid\Unity Project Test" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Libs" t="Include">
@@ -12,9 +11,12 @@
         </e>
         <e p="Scripts" t="Include">
           <e p="BallBehaviour" t="Include">
+            <e p="BallEric.cs" t="Include" />
             <e p="GameManagerController.cs" t="Include" />
             <e p="LocalBall.cs" t="Include" />
+            <e p="LocalBallEric.cs" t="Include" />
             <e p="NetworkBall.cs" t="Include" />
+            <e p="NetworkBallEric.cs" t="Include" />
             <e p="PlayerCamera.cs" t="Include" />
           </e>
           <e p="CubeBehaviour" t="Include">
@@ -34,8 +36,6 @@
             <e p="SnapshotEvent.cs" t="Include" />
           </e>
           <e p="MainMenu" t="Include">
-            <e p="ButtonController.cs" t="Include" />
-            <e p="ClientServerButton.cs" t="Include" />
             <e p="MenuController.cs" t="Include" />
           </e>
           <e p="NetworkBuffer.cs" t="Include" />
@@ -44,36 +44,6 @@
           <e p="TCPClient.cs" t="Include" />
           <e p="TCPServer.cs" t="Include" />
           <e p="UDPChannel.cs" t="Include" />
-        </e>
-        <e p="Unity Sample UI" t="Include">
-          <e p="Fonts" t="Include">
-            <e p="Jupiter" t="Include">
-              <e p="LICENSE.txt" t="Include" />
-            </e>
-          </e>
-          <e p="Materials" t="Include">
-            <e p="UI-Default-No-Alpha.shader" t="Include" />
-          </e>
-          <e p="Scripts" t="Include">
-            <e p="ActiveStateToggler.cs" t="Include" />
-            <e p="ApplicationManager.cs" t="Include" />
-            <e p="ChangeColor.cs" t="Include" />
-            <e p="DragMe.cs" t="Include" />
-            <e p="DragPanel.cs" t="Include" />
-            <e p="DropMe.cs" t="Include" />
-            <e p="PanelManager.cs" t="Include" />
-            <e p="ResizePanel.cs" t="Include" />
-            <e p="ScrollDetailTexture.cs" t="Include" />
-            <e p="ShowSliderValue.cs" t="Include" />
-            <e p="TiltWindow.cs" t="Include" />
-          </e>
-          <e p="Textures and Sprites" t="Include">
-            <e p="SF UI" t="Include">
-              <e p="Background" t="Include">
-                <e p="LICENSE.txt" t="Include" />
-              </e>
-            </e>
-          </e>
         </e>
       </e>
       <e p="Library" t="ExcludeRecursive" />

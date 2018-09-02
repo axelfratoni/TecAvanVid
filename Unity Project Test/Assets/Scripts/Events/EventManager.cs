@@ -28,7 +28,7 @@ namespace Network.Events
         public void addEvent(IEvent iEvent)
         {
             SortedList<int, IEvent> eventList = GetEventSortedList(GetEventTimeoutType(iEvent.GetEventEnum()));
-            eventList.Add(iEvent.GetSeqId(),iEvent);
+            eventList.Add(iEvent.SeqId,iEvent);
         }
         
         public void clearEventList(EventTimeoutTypeEnum eventTimeoutType, int seq_id)
@@ -42,11 +42,11 @@ namespace Network.Events
         }
         public void clearEventList(IEvent iEvent)
         {
-            clearEventList(iEvent.GetEventEnum(),iEvent.GetSeqId());
+            clearEventList(iEvent.GetEventEnum(),iEvent.SeqId);
         }
         public void clearEventList(ACKEvent ackEvent)
         {
-            clearEventList(ackEvent.TimeoutTypeEnum,ackEvent.GetSeqId());
+            clearEventList(ackEvent.TimeoutTypeEnum,ackEvent.SeqId);
         }
         
         public SortedList<int,IEvent> GetEventSortedList(EventTimeoutTypeEnum eventTimeoutType)

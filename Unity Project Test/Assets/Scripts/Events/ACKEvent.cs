@@ -57,5 +57,10 @@ namespace Network.Events
         {
             get { return _timeoutTypeEnum; }
         }
+        
+        public override object Clone()
+        {
+            return new ACKEvent(_timeoutTypeEnum,seq_id);
+        }
     }
 }

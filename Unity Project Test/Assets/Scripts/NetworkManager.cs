@@ -5,6 +5,7 @@ using Libs;
 using Network.Events;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Experimental.XR;
 
 namespace Network
 {
@@ -12,6 +13,7 @@ namespace Network
     {
         private SortedList<IPAddress,Channel> _channels;
         private bool is_server;
+        private static int _localLastId = 0;
 
         private UDPChannel _initialServerUdpChannel;
         
@@ -34,6 +36,8 @@ namespace Network
         {
             private IPAddress _address;
             private SortedList<int,GameObject> _gameObjects;
+            //                channel, local
+            private SortedList<int,int> _idsList;
             private UDPChannel _sendingChannel;
             private EventManager _eventManager;
 
@@ -41,6 +45,7 @@ namespace Network
             {
                 _address = address;
                 _gameObjects = new SortedList<int, GameObject>();
+                _idsList = new SortedList<int, int>();
                 _sendingChannel = sendingChannel;
                 _eventManager = eventManager;
             }
@@ -119,7 +124,7 @@ namespace Network
                 iEvents.RemoveAt(iEvents.IndexOf(iEvent));
                 iEvent.Process(null);
                 GameObject gameObject = ((CreationEvent) iEvent).GameObject;
-                channel.AddGameObject(iEvent.GetId(),gameObject);
+                channel.AddGameObject(iEvent.Id,gameObject);
                 UnityEngine.Object.Instantiate(gameObject);
                 channel.ChannelEventManager.addEvent(iEvent);
                 _channels.Add(remoteAddress,channel);
@@ -153,17 +158,17 @@ namespace Network
                     channel.ChannelEventManager.clearEventList((ACKEvent)iEvent);
                 }else if (iEvent.GetEventEnum() == EventEnum.Snapshot)
                 {
-                    iEvent.Process(channel.GetGameObject(iEvent.GetId()));
+                    iEvent.Process(channel.GetGameObject(iEvent.Id));
                 }
                 else
                 {
-                    int seqId = iEvent.GetSeqId();
+                    int seqId = iEvent.Id;
                     EventTimeoutTypeEnum timeoutType = EventManager.GetEventTimeoutType(iEvent.GetEventEnum());
                     if (seqId >= channel.ChannelEventManager.GetLastACK(timeoutType))
                     {
                         updatedACK[timeoutType] = true;
                         channel.ChannelEventManager.SetLastACK(timeoutType, seqId);
-                        iEvent.Process(channel.GetGameObject(iEvent.GetId()));
+                        iEvent.Process(channel.GetGameObject(iEvent.Id));
                         foreach (Channel cchannel in _channels.Values)
                         {
                             if (cchannel != channel)
@@ -187,6 +192,31 @@ namespace Network
             {
                 channel.Disable();
             }
+        }
+
+        public void AddEvent(IEvent iEvent)
+        {
+            foreach (Channel channel in _channels.Values)
+            {
+                IEvent partialIEvent = (IEvent)iEvent.Clone();
+                partialIEvent.Id = channel.GetGameObject()
+                channel.ChannelEventManager.addEvent(iEvent);
+            }
+        }
+
+        public bool IsServer
+        {
+            get { return is_server; }
+        }
+
+        public static int GetNewLocalId()
+        {
+            return _localLastId++;
+        }
+
+        public void Loop()
+        {
+            
         }
     }
 }

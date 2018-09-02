@@ -5,7 +5,7 @@ using System.Linq;
 using Libs;
 using UnityEngine;
 
-public abstract class IEvent
+public abstract class IEvent : ICloneable
 {
 	public abstract byte[] GetByteArray();
 	protected EventEnum eventEnum;
@@ -21,16 +21,6 @@ public abstract class IEvent
 		idBitsRequired = BitBuffer.GetBitsRequired(Int32.MaxValue);
 	}
 	
-	public int GetSeqId()
-	{
-		return seq_id;
-	}
-	
-	public int GetId()
-	{
-		return id;
-	}
-	
 	public EventEnum GetEventEnum()
 	{
 		return eventEnum;
@@ -40,4 +30,17 @@ public abstract class IEvent
 
 	public abstract int GetBitsRequired();
 
+	public int SeqId
+	{
+		get { return seq_id; }
+		set { seq_id = value; }
+	}
+
+	public int Id
+	{
+		get { return id; }
+		set { id = value; }
+	}
+
+	public abstract object Clone();
 }

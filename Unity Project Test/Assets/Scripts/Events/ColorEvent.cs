@@ -32,7 +32,7 @@ namespace Network.Events
             return BitsRequired;
         }
 
-        public ColorEvent(int red, int green, int blue, int alpha, int seq_id, int id)
+        public ColorEvent(float red, float green, float blue, float alpha, int seq_id, int id)
         {
             
             eventEnum = EventEnum.EventColor;
@@ -76,6 +76,11 @@ namespace Network.Events
             buffer.writeInt(seq_id, 0, Int32.MaxValue);
             buffer.writeInt(id, 0, Int32.MaxValue);
             return buffer.getBuffer();
+        }
+
+        public override object Clone()
+        {
+            return new ColorEvent(_red, _green, _blue, _alpha, seq_id, id);
         }
     }
 }

@@ -62,5 +62,10 @@ namespace Network.Events
             buffer.writeInt(id, 0, Int32.MaxValue);
             return buffer.getBuffer();
         }
+        
+        public override object Clone()
+        {
+            return new SnapshotEvent(new Vector3(position.x,position.y,position.z), seq_id, id);
+        }
     }
 }

@@ -54,6 +54,11 @@ namespace Network.Events
         {
             get { return _gameObject; }
         }
+        
+        public override object Clone()
+        {
+            return new CreationEvent(seq_id, id);
+        }
     }    
     
 }
