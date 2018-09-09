@@ -13,6 +13,7 @@ public class GameManagerController : MonoBehaviour {
 
     private NetworkManager networkManager;
     public int localPort = 11001;
+	GameObject localGameObject;
 
     public void InitializeServer(object[] messageContent)
     {
@@ -37,7 +38,11 @@ public class GameManagerController : MonoBehaviour {
         try
         {
             networkManager= new NetworkManager(localPort, IPAddress.Parse(targetIP), targetPort);
-	        networkManager.AddEvent(new CreationEvent(0,0));
+	        //TODO FILL NEXT LINE CORRECTLY TO BE A BALL
+	        localGameObject = new GameObject();
+	        int localId = networkManager.AddNewObject(localGameObject);
+	        // TODO MAKE NEXT LINE WORK, SEE BallEric
+	        localGameObject.SetLocalId(localId);
             GameObject.Find("Menu").SetActive(false);
         }
         catch(Exception e)
@@ -62,7 +67,7 @@ public class GameManagerController : MonoBehaviour {
 		else
 	    {
 		    networkManager.UpdateSeq();
-			networkManager.AddEvent(new SnapshotEvent(new Vector3(0f,0f,0f),0,0));
+			networkManager.AddEvent(new SnapshotEvent(new Vector3(0f,0f,0f),0,0),localGameObject.GetLocalID);
 			if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.A))
 			{
 				Random random = new Random();
@@ -70,7 +75,7 @@ public class GameManagerController : MonoBehaviour {
 				float green = (float) random.NextDouble();
 				float blue = (float) random.NextDouble();
 				Color color = new Color(red, green, blue, 1.0f);
-				networkManager.AddEvent(new ColorEvent(red, green, blue, 1.0f, 0, 0));
+				networkManager.AddEvent(new ColorEvent(red, green, blue, 1.0f, 0, 0),localGameObject.GetLocalID);
 			}
 			networkManager.Loop();
 		}

@@ -310,7 +310,7 @@ public class NetworkManager
     }
 
 
-    public void AddNewObject(GameObject gameObject)
+    public int AddNewObject(GameObject gameObject)
     {
         CreationEvent creationEvent = new CreationEvent(0,0);
         int newLocalId = GetNewLocalId();
@@ -320,6 +320,7 @@ public class NetworkManager
             channel.AddGameObjectId(newLocalId);
         }
         AddNewEvent(creationEvent,newLocalId);
+        return newLocalId;
     }
 
     public bool IsServer
