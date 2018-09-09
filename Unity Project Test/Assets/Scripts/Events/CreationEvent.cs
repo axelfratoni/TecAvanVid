@@ -47,6 +47,8 @@ namespace Network.Events
 
         public override void Process(GameObject gameObject)
         {
+            //TODO GET A RANDOM MOVING BALL
+            _gameObject = new GameObject("er");
             return;
         }
 
