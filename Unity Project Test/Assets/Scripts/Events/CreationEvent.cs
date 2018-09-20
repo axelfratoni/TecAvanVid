@@ -10,7 +10,8 @@ namespace Network.Events
     public class CreationEvent : IEvent
     {
         private static int BitsRequired;
-        private GameObject _gameObject;
+        private BallEric _ball;
+        private int _playerId;
 
         //This will run only once
         static CreationEvent(){
@@ -23,12 +24,23 @@ namespace Network.Events
             return BitsRequired;
         }
 
-        public CreationEvent(int seq_id, int id)
+        /*Server use*/
+        public CreationEvent(int seq_id, int id, int clientId)
         {
             eventEnum = EventEnum.EventCreation;
             buffer = new BitBuffer(BitsRequired);
             this.seq_id = seq_id;
             this.id = id;
+            _playerId = clientId;
+        }
+        
+        /*Client use*/
+        public CreationEvent(int seq_id, int clientId)
+        {
+            eventEnum = EventEnum.EventCreation;
+            buffer = new BitBuffer(BitsRequired);
+            this.seq_id = seq_id;
+            _playerId = clientId;
         }
 
         public CreationEvent(BitBuffer bitBuffer)
@@ -45,16 +57,16 @@ namespace Network.Events
             return buffer.getBuffer();
         }
 
-        public override void Process(GameObject gameObject)
+        public override void Process(BallEric ball)
         {
-            //TODO GET A RANDOM MOVING BALL
-            _gameObject = new GameObject("er");
+            //TODO CALL MANAGER AND GET A RANDOM MOVING BALL
+            //_ball = new BallEric();
             return;
         }
 
-        public GameObject GameObject
+        public BallEric Ball
         {
-            get { return _gameObject; }
+            get { return _ball; }
         }
         
         public override object Clone()

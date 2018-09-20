@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 using Libs;
+using Network;
 using Network.Events;
 using UnityEngine;
 
@@ -17,9 +18,21 @@ public class NetworkManager
 
     // List of channels sorted by IP
     private readonly SortedList<IPAddress,Channel> _channels = new SortedList<IPAddress, Channel>();
-    // List of local GameObject, referenced by ID
-    //                     local_id Object
-    private readonly SortedList<int,GameObject> _gameObjects = new SortedList<int, GameObject>();
+    // List of local BallEric, referenced by ID
+    //                           id Object
+    // TODO List of balls must be placed in GameManager
+    private readonly SortedList<int,BallEric> _balls = new SortedList<int, BallEric>();
+    
+    
+    /***************************
+     TODO CHANGE IDS TO BE UNIQUE
+     Client -> [Creation Event (ClientId)] -> Server
+     Server -> [Creation Event (ClientId,ObjId)] -> Client
+     
+     TODO
+     LOST IMPLEMETION OF LOCAL/REMOTE BALL
+     it's local if has own clientId, it's remote otherwise
+     ***************************/
         
     //Server Constructor
     public NetworkManager(int port)
@@ -43,22 +56,16 @@ public class NetworkManager
     {
         // Addres from
         private IPAddress _address;
-        // Map of localId to channelId
-        //                local, channel
-        private readonly SortedList<int,int> _idsList;
         //Actual UDP Channel
         private UDPChannel _sendingChannel;
         //Channel's Event Manager
         private readonly EventManager _eventManager;
-        // Last assignedID reference
-        private int _channelLastId = 1;
         // Server reference to assing ids
         private readonly bool _imServer;
 
         public Channel(IPAddress address, UDPChannel sendingChannel, EventManager eventManager, bool imServer)
         {
             _address = address;
-            _idsList = new SortedList<int, int>();
             _sendingChannel = sendingChannel;
             _eventManager = eventManager;
             _imServer = imServer;
@@ -79,40 +86,6 @@ public class NetworkManager
         public EventManager ChannelEventManager
         {
             get { return _eventManager; }
-        }
-
-        //Called if getting id
-        public void AddGameObjectId(int localId, int channelId)
-        {
-            _idsList.Add(localId,channelId);
-        }
-        
-        //Called to add a new object
-        public void AddGameObjectId(int localId)
-        {
-            _idsList.Add(localId,GetNewChannelId());
-        }
-            
-        public int GetGameObjectChannelId(int localId)
-        {
-            return _idsList[localId];
-        }
-            
-        public int GetGameObjectLocalId(int channelId)
-        {
-            if (_idsList.ContainsValue(channelId))
-            {
-                int index = _idsList.IndexOfValue(channelId);
-                return _idsList.Keys[index];
-            }
-            return -1;
-        }
-        
-        private int GetNewChannelId()
-        {
-            int cached = _channelLastId;
-            _channelLastId += 2;
-            return _imServer?cached:cached+1;
         }
 
         public void Disable()
@@ -158,9 +131,9 @@ public class NetworkManager
             // Set the channel bidirectional
             udpChannel.SetSenderFromListener();
             // As i'm server and have a new client, notify of all already existing objects
-            foreach (int localId in _gameObjects.Keys)
+            foreach (int localId in _balls.Keys)
             {
-                channel.AddGameObjectId(localId);
+                //TODO CHANGE TO UNIQUE ID channel.AddBallId(localId);
                 channel.ChannelEventManager.addEvent(new CreationEvent(0,localId));
             }
             // Temp IEvent list up to Creation Event Received
@@ -181,20 +154,19 @@ public class NetworkManager
             
             //remove CreationEvent from temp List
             iEvents.RemoveAt(iEvents.IndexOf(iEvent));
-            //Process it (actually create the GameObject Object), and broadcast
+            //Process it (actually create the BallEric Object), and broadcast
             ProcessEvent(iEvent,channel,updatedAck);
             
-            //Get GameObject
-            GameObject gameObject = ((CreationEvent) iEvent).GameObject;
+            //Get Ball
+            BallEric ball = ((CreationEvent) iEvent).Ball;
             //Get new local Id to assign
             int newLocalId = GetNewLocalId();
             //And add it to the list
-            _gameObjects.Add(newLocalId,gameObject);
-            //And to the channel
-            channel.AddGameObjectId(newLocalId,iEvent.Id);
+            _balls.Add(newLocalId,ball);
+            
             //TODO CHECK if shows it
             //Instantiate it
-            UnityEngine.Object.Instantiate(gameObject);
+            //UnityEngine.Object.Instantiate(gameObject);
             
             // Add channel to list
             _channels.Add(remoteAddress,channel);
@@ -235,7 +207,7 @@ public class NetworkManager
             //If its an snapshot, update and Broadcast it
             else if (iEvent.GetEventEnum() == EventEnum.Snapshot)
             {
-                iEvent.Process(_gameObjects[channel.GetGameObjectLocalId(iEvent.Id)]);
+                iEvent.Process(_balls[channel.GetBallLocalId(iEvent.Id)]);
                 BroadcastEvent(channel,iEvent);
             }
             //Every else, should check sequence to process it
@@ -254,7 +226,7 @@ public class NetworkManager
                     }
                     else
                     {
-                        iEvent.Process(_gameObjects[channel.GetGameObjectLocalId(iEvent.Id)]);
+                        iEvent.Process(_balls[channel.GetBallLocalId(iEvent.Id)]);
                         
                     }
                     BroadcastEvent(channel,iEvent);
@@ -267,12 +239,8 @@ public class NetworkManager
     {
         foreach (Channel cchannel in _channels.Values)
         {
-            //For each channel except the sender
-            if (cchannel != sendingChannel)
-            {
-                //Add the event
-                sendingChannel.ChannelEventManager.addEvent(iEvent);
-            }
+            //Add the event
+            sendingChannel.ChannelEventManager.addEvent(iEvent);
         }
     }
 
@@ -289,38 +257,12 @@ public class NetworkManager
         }
     }
 
-    private void AddNewEvent(IEvent iEvent, int localId)
-    {
-        foreach (Channel channel in _channels.Values)
-        {
-            IEvent partialIEvent = (IEvent)iEvent.Clone();
-            partialIEvent.Id = channel.GetGameObjectChannelId(localId);
-            channel.ChannelEventManager.addEvent(iEvent);
-        }
-    }
-
     public void AddEvent(IEvent iEvent, int localId)
     {
-        if (iEvent is CreationEvent)
-        {
-            //TODO THROW ERROR
-            return;
-        }
-        AddNewEvent(iEvent,localId);
-    }
-
-
-    public int AddNewObject(GameObject gameObject)
-    {
-        CreationEvent creationEvent = new CreationEvent(0,0);
-        int newLocalId = GetNewLocalId();
-        _gameObjects.Add(newLocalId,gameObject);
         foreach (Channel channel in _channels.Values)
         {
-            channel.AddGameObjectId(newLocalId);
+            channel.ChannelEventManager.addEvent(iEvent);
         }
-        AddNewEvent(creationEvent,newLocalId);
-        return newLocalId;
     }
 
     public bool IsServer

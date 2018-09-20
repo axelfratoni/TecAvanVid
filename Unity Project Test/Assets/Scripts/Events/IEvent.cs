@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Libs;
+using Network;
 using UnityEngine;
 
 public abstract class IEvent : ICloneable
@@ -26,7 +27,7 @@ public abstract class IEvent : ICloneable
 		return eventEnum;
 	}
 
-	public abstract void Process(GameObject gameObject);
+	public abstract void Process(BallEric ball);
 
 	public abstract int GetBitsRequired();
 

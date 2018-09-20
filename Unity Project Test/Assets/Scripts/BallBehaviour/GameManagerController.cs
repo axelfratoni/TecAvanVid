@@ -13,7 +13,8 @@ public class GameManagerController : MonoBehaviour {
 
     private NetworkManager networkManager;
     public int localPort = 11001;
-	GameObject localGameObject;
+	/*PASS FROM MODEL TO MVC*/
+	BallEric localBallEric;
 
     public void InitializeServer(object[] messageContent)
     {
@@ -39,10 +40,9 @@ public class GameManagerController : MonoBehaviour {
         {
             networkManager= new NetworkManager(localPort, IPAddress.Parse(targetIP), targetPort);
 	        //TODO FILL NEXT LINE CORRECTLY TO BE A BALL
-	        localGameObject = new GameObject();
-	        int localId = networkManager.AddNewObject(localGameObject);
-	        // TODO MAKE NEXT LINE WORK, SEE BallEric
-	        localGameObject.SetLocalId(localId);
+	        int localId = networkManager.AddNewBall(localBallEric);
+	        localBallEric = new BallEric(new Vector3(0,0,0), localId);
+	        
             GameObject.Find("Menu").SetActive(false);
         }
         catch(Exception e)
@@ -66,8 +66,8 @@ public class GameManagerController : MonoBehaviour {
 	    }
 		else
 	    {
-		    networkManager.UpdateSeq();
-			networkManager.AddEvent(new SnapshotEvent(new Vector3(0f,0f,0f),0,0),localGameObject.GetLocalID);
+		    int seq = networkManager.UpdateSeq();
+			networkManager.AddEvent(new SnapshotEvent(new Vector3(0f,0f,0f),0,0),localBallEric.LocalId);
 			if (Input.anyKeyDown && Input.GetKeyDown(KeyCode.A))
 			{
 				Random random = new Random();
@@ -75,7 +75,7 @@ public class GameManagerController : MonoBehaviour {
 				float green = (float) random.NextDouble();
 				float blue = (float) random.NextDouble();
 				Color color = new Color(red, green, blue, 1.0f);
-				networkManager.AddEvent(new ColorEvent(red, green, blue, 1.0f, 0, 0),localGameObject.GetLocalID);
+				networkManager.AddEvent(new ColorEvent(red, green, blue, 1.0f, 0, 0),localBallEric.LocalId);
 			}
 			networkManager.Loop();
 		}

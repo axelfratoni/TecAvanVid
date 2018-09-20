@@ -46,9 +46,9 @@ namespace Network.Events
             id = bitBuffer.readInt(0, Int32.MaxValue);
         }
 
-        public override void Process(GameObject gameObject)
+        public override void Process(BallEric ball)
         {
-            gameObject.transform.position = position;
+            ball.Position = position;
         }
 
         public override byte[] GetByteArray()

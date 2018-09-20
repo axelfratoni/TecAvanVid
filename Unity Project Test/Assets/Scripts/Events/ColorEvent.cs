@@ -59,10 +59,11 @@ namespace Network.Events
             id = bitBuffer.readInt(0, Int32.MaxValue);
         }
 
-        public override void Process(GameObject gameObject)
+        public override void Process(BallEric ball)
         {
-            Renderer renderer = gameObject.GetComponent<Renderer>();
-            renderer.material.color = new Color(_red,_green,_blue,_alpha);
+            /*TODO change color and call control*/
+            //Renderer renderer = ball.GetComponent<Renderer>();
+            //renderer.material.color = new Color(_red,_green,_blue,_alpha);
         }
 
         public override byte[] GetByteArray()

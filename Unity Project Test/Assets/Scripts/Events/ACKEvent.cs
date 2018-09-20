@@ -40,7 +40,7 @@ namespace Network.Events
             seq_id = bitBuffer.readInt(0, Int32.MaxValue);
         }
 
-        public override void Process(GameObject gameObject)
+        public override void Process(BallEric ball)
         {
             // Do Nothing
         }
