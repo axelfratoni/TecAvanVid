@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.Experimental.UIElements;
 using Random = System.Random;
 
-public class GameManagerController : MonoBehaviour {
+public class GameManager : MonoBehaviour {
 
     private NetworkManager networkManager;
     public int localPort = 11001;

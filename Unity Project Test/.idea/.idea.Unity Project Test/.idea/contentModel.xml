@@ -10,12 +10,8 @@
           <e p="BitBuffer.cs" t="Include" />
           <e p="TODO.txt" t="Include" />
         </e>
-        <e p="Models" t="Include">
-          <e p="BallEric.cs" t="Include" />
-        </e>
         <e p="Scripts" t="Include">
           <e p="BallBehaviour" t="Include">
-            <e p="GameManagerController.cs" t="Include" />
             <e p="LocalBall.cs" t="Include" />
             <e p="LocalBallEric.cs" t="Include" />
             <e p="NetworkBall.cs" t="Include" />
@@ -41,10 +37,17 @@
           <e p="MainMenu" t="Include">
             <e p="MenuController.cs" t="Include" />
           </e>
+          <e p="Managers" t="Include">
+            <e p="GameManager.cs" t="Include" />
+            <e p="NetworkManager.cs" t="Include" />
+            <e p="NetworkManager2.cs" t="Include" />
+          </e>
+          <e p="Models" t="Include">
+            <e p="BallEric.cs" t="Include" />
+          </e>
           <e p="Networking" t="Include">
             <e p="NetworkBuffer.cs" t="Include" />
             <e p="NetworkBuffer2.cs" t="Include" />
-            <e p="NetworkManager.cs" t="Include" />
             <e p="TCPClient.cs" t="Include" />
             <e p="TCPServer.cs" t="Include" />
             <e p="UDPChannel.cs" t="Include" />
