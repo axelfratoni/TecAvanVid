@@ -10,7 +10,7 @@ public class NetworkManager
 {
     // final variable to manage being server or not
     private readonly bool _isServer;
-    // Get record of ids in local enviroment
+    // Get record of ids in local environment
     private static int _localLastId = 1;
 
     // Get reference of server initial Channel
