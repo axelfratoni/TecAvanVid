@@ -1,5 +1,4 @@
 ﻿using Libs;
-using Network.Events;
 using UnityEngine;
 
 public class LocalBall : MonoBehaviour {

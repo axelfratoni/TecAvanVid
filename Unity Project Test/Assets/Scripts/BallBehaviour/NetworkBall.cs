@@ -1,6 +1,7 @@
 ﻿using Libs;
 using System;
 using System.Collections;
+using System.Net;
 using UnityEngine;
 
 public class NetworkBall : MonoBehaviour {
@@ -18,7 +19,7 @@ public class NetworkBall : MonoBehaviour {
         networkBuffer2 = new NetworkBuffer2<Vector3>();
     }
 
-    void ListenAction(UDPChannel udpChannel, Byte[] receivedBytes)
+    void ListenAction(Byte[] receivedBytes, IPEndPoint remoteEndpoint)
     {
         BitBuffer bitBuffer = new BitBuffer(receivedBytes);
 

@@ -1,5 +1,6 @@
 ﻿using Libs;
 using System;
+using System.Net;
 using UnityEngine;
 
 public class NetworkCube : MonoBehaviour {
@@ -15,7 +16,7 @@ public class NetworkCube : MonoBehaviour {
         networkBuffer = new NetworkBuffer<Move>();
     }
 
-    void ListenAction(UDPChannel udpChannel, Byte[] receivedBytes)
+    void ListenAction( Byte[] receivedBytes, IPEndPoint remoteEndpoint)
     {
         BitBuffer bitBuffer = new BitBuffer(receivedBytes);
         float x = bitBuffer.readFloat(-31.0f, 31.0f, 0.1f);

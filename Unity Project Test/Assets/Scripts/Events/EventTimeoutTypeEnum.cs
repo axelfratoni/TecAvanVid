@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum EventTimeoutTypeEnum
 {
+	Unreliable = -1,
 	NoTimeOut = 0,
-	TimeOut10 = 10
+	TimeOut = 1
 }

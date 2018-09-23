@@ -13,9 +13,7 @@
         <e p="Scripts" t="Include">
           <e p="BallBehaviour" t="Include">
             <e p="LocalBall.cs" t="Include" />
-            <e p="LocalBallEric.cs" t="Include" />
             <e p="NetworkBall.cs" t="Include" />
-            <e p="NetworkBallEric.cs" t="Include" />
             <e p="PlayerCamera.cs" t="Include" />
           </e>
           <e p="CubeBehaviour" t="Include">
@@ -25,22 +23,26 @@
             <e p="NetworkCube.cs" t="Include" />
           </e>
           <e p="Events" t="Include">
-            <e p="ACKEvent.cs" t="Include" />
-            <e p="ColorEvent.cs" t="Include" />
-            <e p="CreationEvent.cs" t="Include" />
+            <e p="Actions" t="Include">
+              <e p="ColorAction.cs" t="Include" />
+              <e p="CreationAction.cs" t="Include" />
+              <e p="EventAction.cs" t="Include" />
+              <e p="MovementAction.cs" t="Include" />
+              <e p="SnapshotAction.cs" t="Include" />
+            </e>
+            <e p="Connection.cs" t="Include" />
+            <e p="Event.cs" t="Include" />
             <e p="EventEnum.cs" t="Include" />
-            <e p="EventManager.cs" t="Include" />
             <e p="EventTimeoutTypeEnum.cs" t="Include" />
-            <e p="IEvent.cs" t="Include" />
-            <e p="SnapshotEvent.cs" t="Include" />
+            <e p="ReliableEventQueue.cs" t="Include" />
           </e>
           <e p="MainMenu" t="Include">
             <e p="MenuController.cs" t="Include" />
           </e>
           <e p="Managers" t="Include">
+            <e p="EventManager.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
             <e p="NetworkManager.cs" t="Include" />
-            <e p="NetworkManager2.cs" t="Include" />
           </e>
           <e p="Models" t="Include">
             <e p="BallEric.cs" t="Include" />

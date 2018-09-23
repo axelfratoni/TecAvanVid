@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using UnityEngine.Analytics;
 
 namespace Libs
@@ -14,13 +15,13 @@ namespace Libs
         {
             bits = 0;
             currentBitCount = 0;
-            buffer = new MemoryStream(capacity:buffer_length);
+            buffer = new MemoryStream(buffer_length);
         }
         
         public BitBuffer(byte[] buffer)
         {
             currentBitCount = 32;
-            this.buffer = new MemoryStream(buffer);
+            this.buffer = new MemoryStream(buffer, 0, buffer.Length, true, true);
             updateBuffer();
         }
 
@@ -126,8 +127,17 @@ namespace Libs
         public byte[] getBuffer()
         {
             byte[] ans = buffer.GetBuffer();
-            buffer = new MemoryStream(capacity:buffer.Capacity);
+            buffer = new MemoryStream(buffer.Capacity);
             return ans;
+        }
+        
+        public byte[] GetBuffer(int bitCount) // TODO: Check this
+        {
+            long bufferAsLong = readBits(bitCount);
+            BitBuffer bitBuffer = new BitBuffer(bitCount);
+            bitBuffer.writeInt((int) bufferAsLong, 0, (int) bufferAsLong);
+            bitBuffer.flush();
+            return bitBuffer.getBuffer();
         }
     }
 }
