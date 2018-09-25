@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using UnityEngine;
 
@@ -8,29 +9,29 @@ namespace Events
         private readonly int _id;
         private readonly UDPChannel _channel;
         private readonly IPEndPoint _sendingEndPoint;
-        private int seqId;
+        private int _seqId;
 
         public Connection(int id, UDPChannel channel, IPEndPoint sendingEndPoint)
         {
             _id = id;
             _channel = channel;
             _sendingEndPoint = sendingEndPoint;
-            seqId = 0;
+            _seqId = 0;
         }
 
         public void Send(Event iEvent)
         {
-            Debug.Log("Sending client "+ iEvent.ClientId + " size "+ iEvent.GetPayload().Length +" ack " + iEvent.Ack);
-            if (iEvent.Ack)
-            {
-                Debug.Log(_sendingEndPoint);
-            }
-            _channel.SendTo(iEvent.Serialize(), _sendingEndPoint);
+            _channel.SendMessageTo(iEvent.Serialize(), _sendingEndPoint);
         }
 
         public int Id
         {
             get { return _id; }
+        }
+
+        public IPEndPoint GetSendingEndpoint()
+        {
+            return _sendingEndPoint;
         }
 
         public bool IsThisEndpoint(IPEndPoint endPoint)
@@ -40,7 +41,7 @@ namespace Events
 
         public EventBuilder AddSeqId(EventBuilder eventBuilder)
         {
-            return eventBuilder.SetSeqId(seqId++);
+            return eventBuilder.SetSeqId(_seqId++);
         }
 
         public void Disable()

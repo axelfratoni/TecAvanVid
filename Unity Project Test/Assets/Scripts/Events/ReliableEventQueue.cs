@@ -31,12 +31,12 @@ namespace Events
         // The last acked event will be stored in order to check if it has been already processed.
         public void AckEvent(Event ievent)
         {
-            _eventQueue = (List<Event>) _eventQueue.Where(ev => !(ev.ClientId == ievent.ClientId &&
-                                                                  ev.GetEventEnum().Equals(ievent.GetEventEnum()) &&
-                                                                  ev.SeqId <= ievent.SeqId));
+            _eventQueue = _eventQueue.Where(ev => !(ev.ClientId == ievent.ClientId &&
+                                                    ev.GetEventEnum().Equals(ievent.GetEventEnum()) &&
+                                                    ev.SeqId <= ievent.SeqId)) as List<Event>;
             
-            _lastAcked = (List<Event>) _lastAcked.Where(ev => !(ev.ClientId == ievent.ClientId &&
-                                                                ev.GetEventEnum().Equals(ievent.GetEventEnum())));
+            _lastAcked = _lastAcked.Where(ev => !(ev.ClientId == ievent.ClientId &&
+                                                  ev.GetEventEnum().Equals(ievent.GetEventEnum()))) as List<Event>;
             _lastAcked.Add(ievent);
         }
 

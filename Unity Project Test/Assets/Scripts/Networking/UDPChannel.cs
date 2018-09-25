@@ -2,15 +2,17 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using Libs;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class UDPChannel
 {
 
-    Socket sending_socket;
-    IPEndPoint sendingEndPoint, remoteEndPoint;
-    UdpClient listener;
-    Thread listenThread;
+    private Socket _sendingSocket;
+    private IPEndPoint _sendingEndPoint, _remoteEndPoint;
+    private UdpClient _listener;
+    private Thread _listenThread;
 
     // Creates an UDP sender.
     public UDPChannel(String targetIP, int targetPort)
@@ -33,27 +35,27 @@ public class UDPChannel
 
     private void SetUpSender(String targetIP, int targetPort)
     {
-        sending_socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        sendingEndPoint = new IPEndPoint(IPAddress.Parse(targetIP), targetPort);
+        _sendingSocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+        _sendingEndPoint = new IPEndPoint(IPAddress.Parse(targetIP), targetPort);
     }
 
     private void SetUpListener(int listeningPort, Action<Byte[], IPEndPoint> receiveAction)
     {
-        listener = new UdpClient(listeningPort);
-        remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
+        _listener = new UdpClient(listeningPort);
+        _remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
         ListenForConnections(receiveAction);
     }
 
     private void ListenForConnections(Action<Byte[], IPEndPoint> receiveAction)
     {
-        listenThread = new Thread(() =>
+        _listenThread = new Thread(() =>
         {
             while (true)
             {
                 try
                 {
-                    Byte[] receivedBytes = listener.Receive(ref remoteEndPoint);
-                    receiveAction(receivedBytes, remoteEndPoint);
+                    Byte[] receivedBytes = _listener.Receive(ref _remoteEndPoint);
+                    receiveAction(receivedBytes, _remoteEndPoint);
                 }
                 catch (Exception e)
                 {
@@ -61,26 +63,33 @@ public class UDPChannel
                 }
             }
         });
-        listenThread.Start();
+        _listenThread.Start();
     }
 
-    public void SendTo(byte[] buffer, IPEndPoint endPoint)
+    public void SetUpListenerFromSender(Action<Byte[], IPEndPoint> receiveAction)
     {
-        listener.Send(buffer, buffer.Length, endPoint.Address.ToString(), endPoint.Port);
+        _listener = new UdpClient{Client = _sendingSocket};
+        ListenForConnections(receiveAction);
     }
 
     public void SendMessage(byte[] buffer)
     {
-        if (sending_socket == null)
+        if (_sendingSocket == null)
             throw new Exception("Socket has not been initialized.");
         try
         {
-            sending_socket.SendTo(buffer, sendingEndPoint);
+            _sendingSocket.SendTo(buffer, _sendingEndPoint);
         }
         catch (Exception socketException)
         {
             Debug.Log("Socket exception: " + socketException);
         }
+    }
+
+    public void SendMessageTo(byte[] buffer, IPEndPoint endPoint)
+    {
+        _listener.Connect(endPoint);
+        _listener.Send(buffer, buffer.Length);
     }
 
     public void SendMessage(byte[] buffer, String targetIP, int targetPort)
@@ -91,11 +100,16 @@ public class UDPChannel
 
     public void Disable()
     {
-        if(sending_socket != null)
-            sending_socket.Close();
-        if(listenThread != null)
-            listenThread.Abort();
-        if(listener != null)
-            listener.Close();
+        if(_sendingSocket != null)
+            _sendingSocket.Close();
+        if(_listenThread != null)
+            _listenThread.Abort();
+        if(_listener != null)
+            _listener.Close();
+    }
+
+    ~UDPChannel()
+    {
+        Disable();
     }
 }

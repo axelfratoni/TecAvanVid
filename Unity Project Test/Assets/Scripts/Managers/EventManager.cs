@@ -18,7 +18,7 @@ namespace Events
             _networkManager = new NetworkManager(localPort, this);
             _eventQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
             {
-                {EventTimeoutTypeEnum.NoTimeOut, new ReliableEventQueue(0, SendEventsInQueue)},
+                {EventTimeoutTypeEnum.NoTimeOut, new ReliableEventQueue(70, SendEventsInQueue)},
                 {EventTimeoutTypeEnum.TimeOut, new ReliableEventQueue(1000, SendEventsInQueue)}
             };
         }
@@ -117,6 +117,7 @@ namespace Events
 
         public void ConnectToServer(IPEndPoint serverEndPoint)
         {
+            Debug.Log("Connecting to server.");
             int serverId = _networkManager.AddConnection(serverEndPoint);
             EventBuilder eventBuilder = _networkManager.AddNetworkInfo(new EventBuilder(), serverId);
             Event connectionEvent = eventBuilder.SetAck(false)
@@ -128,6 +129,11 @@ namespace Events
             _networkManager.SendEvent(connectionEvent);
             
             AddEventToReliableQueue(connectionEvent);
+        }
+
+        public void ConfirmConnection()
+        {
+            _gameManager.InitializeGame();
         }
 
         public void Disable()

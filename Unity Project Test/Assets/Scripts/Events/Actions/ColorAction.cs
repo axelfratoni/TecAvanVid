@@ -4,19 +4,22 @@ namespace Events.Actions
 {
     public class ColorAction : EventAction
     {
+        public ColorAction()
+        {
+        }
+        
         public ColorAction(byte[] payload)
         {
-            
         }
         
         public byte[] Serialize()
         {
-            throw new System.NotImplementedException();
+            return new byte[0];
         }
 
         public void Execute(GameManager gameManager)
         {
-            throw new System.NotImplementedException();
+            gameManager.ProcessColorAction();
         }
 
         public EventTimeoutTypeEnum GetTimeoutType()

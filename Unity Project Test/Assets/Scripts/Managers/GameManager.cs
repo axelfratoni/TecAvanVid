@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using Events;
+using Events.Actions;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -26,9 +27,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // This runs after connecting to the server.
+    public void InitializeGame()
+    {
+        Debug.Log("Initializing game.");
+        Debug.Log("Sending color action.");
+        _eventManager.SendEventAction(new ColorAction(), 1);
+    }
+
     public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)
     {
-        
+    }
+
+    public void ProcessColorAction()
+    {
+        Debug.Log("Color action in server.");
     }
 
     private void OnDisable()
