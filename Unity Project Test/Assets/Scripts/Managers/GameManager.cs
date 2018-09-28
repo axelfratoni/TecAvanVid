@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     private bool _isConnected;
     private EventManager _eventManager;
+    private BehaviourManager _behaviourManager;
 
     private void Start()
     {
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
         {
             _isConnected = true;
             _eventManager = new EventManager(this, _serverPort);
+            _behaviourManager = new ServerManager();
         }
         else
         {
@@ -33,9 +35,22 @@ public class GameManager : MonoBehaviour
         if(_isConnected) return; 
         _isConnected = true;
         
+        _behaviourManager = new ClientManager(_eventManager);
+        
         Debug.Log("Initializing game.");
-        Debug.Log("Sending color action.");
-        _eventManager.SendEventAction(new ColorAction(45, _clientPort%300, 135), 1);
+    }
+
+    private void Update()
+    {
+        if (_behaviourManager != null)
+        {
+            _behaviourManager.Update();
+        }
+    }
+
+    public void ProcessInput(double time, InputEnum input)
+    {
+        Debug.Log("Received input: " + input);
     }
 
     public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)

@@ -38,7 +38,7 @@ namespace Events
             Event ievent = Event.Deserialize(receivedBytes).SetClientId(connectionId)
                                                            .Build();    
             
-            Debug.Log("Receiving from: " + remoteEndpoint + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum() );
+            //Debug.Log("Receiving from: " + remoteEndpoint + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum() );
             if (ievent.GetEventEnum().Equals(EventEnum.Connection))
             {
                 ievent = HandleConnectionEvent(ievent, remoteEndpoint);
@@ -51,7 +51,7 @@ namespace Events
             Connection connection = _connectionList.Find(con => con.Id == ievent.ClientId);
             if (connection != null)
             {
-                Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
+                //Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
                 connection.Send(ievent);
             }
             else

@@ -1,3 +1,4 @@
+using Events.Actions;
 using Network;
 using UnityEngine;
 
@@ -14,9 +15,14 @@ public class BallController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        float verticalForce = Input.GetAxis("Vertical") * SPEED;
-        float horizontalForce = Input.GetAxis("Horizontal") * SPEED;
-        _rigidBody.AddForce(new Vector3(horizontalForce, 0, verticalForce));
+        transform.position = _ball.Position;
+    }
+    
+    public void Move(double time, InputEnum input)
+    {
+        /*movement.Set(h, 0, v);
+        movement = movement.normalized * speed * Time.deltaTime;
+        playerRigidBody.MovePosition(transform.position + movement);*/
     }
 
 }
