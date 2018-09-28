@@ -33,10 +33,10 @@ namespace Events
         {
             _eventQueue = _eventQueue.Where(ev => !(ev.ClientId == ievent.ClientId &&
                                                     ev.GetEventEnum().Equals(ievent.GetEventEnum()) &&
-                                                    ev.SeqId <= ievent.SeqId)) as List<Event>;
+                                                    ev.SeqId <= ievent.SeqId)).ToList();
             
             _lastAcked = _lastAcked.Where(ev => !(ev.ClientId == ievent.ClientId &&
-                                                  ev.GetEventEnum().Equals(ievent.GetEventEnum()))) as List<Event>;
+                                                  ev.GetEventEnum().Equals(ievent.GetEventEnum()))).ToList();
             _lastAcked.Add(ievent);
         }
 
@@ -45,7 +45,7 @@ namespace Events
         {
             Event lastAckedEvent = _lastAcked.Find(ev => ev.ClientId == ievent.ClientId &&
                                                          ev.GetEventEnum().Equals(ievent.GetEventEnum()));
-            return lastAckedEvent != null && lastAckedEvent.SeqId >= ievent.SeqId;
+            return lastAckedEvent == null || lastAckedEvent.SeqId >= ievent.SeqId;
         }
 
         public void Disable()

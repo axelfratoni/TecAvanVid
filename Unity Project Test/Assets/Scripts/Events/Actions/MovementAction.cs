@@ -1,35 +1,32 @@
+using Libs;
+
 namespace Events.Actions
 {
     public class MovementAction : EventAction
     {
-        public MovementAction(byte[] payload)
+        public MovementAction(BitBuffer payload)
         {
             
         }
-        
-        public byte[] Serialize()
+
+        public override void Serialize(BitBuffer buffer)
         {
             throw new System.NotImplementedException();
         }
 
-        public void Execute(GameManager gameManager)
+        public override void Execute(GameManager gameManager)
         {
             throw new System.NotImplementedException();
         }
 
-        public EventTimeoutTypeEnum GetTimeoutType()
+        public override EventTimeoutTypeEnum GetTimeoutType()
         {
             return EventTimeoutTypeEnum.NoTimeOut;
         }
 
-        public EventEnum GetEventType()
+        public override EventEnum GetEventType()
         {
             return EventEnum.Movement;
-        }
-        
-        public static int GetPayloadBitSize()
-        {
-            return 0;
         }
     }
     

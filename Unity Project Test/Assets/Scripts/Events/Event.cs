@@ -1,4 +1,5 @@
 using System;
+using Events.Actions;
 using Libs;
 using UnityEngine;
 
@@ -15,9 +16,9 @@ namespace Events
         private readonly EventTimeoutTypeEnum _timeoutTypeEnum;
         
         // Message Content
-        private readonly byte[] _payload;
+        private readonly EventAction _payload;
 
-        public Event(int seqId, int clientId, bool ack, EventEnum eventEnum, EventTimeoutTypeEnum timeoutTypeEnum, byte[] payload)
+        public Event(int seqId, int clientId, bool ack, EventEnum eventEnum, EventTimeoutTypeEnum timeoutTypeEnum, EventAction payload)
         {
             _clientId = clientId;
             
@@ -32,20 +33,40 @@ namespace Events
         {
             BitBuffer buffer = new BitBuffer(1024);
             buffer.writeInt(_seqId, 0, Int32.MaxValue);
-            
             buffer.writeInt(_ack? 7 : 5, 0, 10); //TODO: ACK siempre llegaba en false, este es el hack para que ande
-            
             buffer.writeInt((int)_eventEnum, 0, Enum.GetValues(typeof(EventEnum)).Length);
             buffer.writeInt((int)_timeoutTypeEnum, 0, Enum.GetValues(typeof(EventTimeoutTypeEnum)).Length);
             
-            buffer.flush();
-            byte[] header = buffer.getBuffer();
-            
-            byte[] message = new byte[header.Length + _payload.Length];
-            header.CopyTo(message, 0);
-            _payload.CopyTo(message, header.Length);
+            _payload.Serialize(buffer);
 
-            return message;
+            buffer.flush();
+
+            return buffer.getBuffer();
+        }
+
+        public static EventBuilder Deserialize(byte[] message)
+        {
+            BitBuffer buffer = new BitBuffer(message);
+            
+            int seqId = buffer.readInt(0, Int32.MaxValue);
+            int preAck =  buffer.readInt(0, 10); // TODO: ACK siempre llegaba en false, este es el hack para que ande
+            bool ack = preAck == 6;
+            EventEnum eventType= (EventEnum) buffer.readInt(0, Enum.GetValues(typeof(EventEnum)).Length);
+            EventTimeoutTypeEnum eventTimeoutType =
+                (EventTimeoutTypeEnum) buffer.readInt(0, Enum.GetValues(typeof(EventTimeoutTypeEnum)).Length);
+            EventAction payload = EventAction.ExtractAction(buffer, eventType);
+            
+            EventBuilder eventBuilder = new EventBuilder().SetSeqId(seqId)
+                                                          .SetAck(ack)
+                                                          .SetEventType(eventType)
+                                                          .SetTimeoutType(eventTimeoutType)
+                                                          .SetPayload(payload);
+            return eventBuilder;
+        }
+
+        public void Execute(GameManager gameManager)
+        {
+            _payload.Execute(gameManager);
         }
 
         public int SeqId
@@ -73,7 +94,7 @@ namespace Events
             return _timeoutTypeEnum;
         }
 
-        public byte[] GetPayload()
+        public EventAction GetPayload()
         {
             return _payload;
         }
@@ -86,9 +107,7 @@ namespace Events
         private bool _ack;
         private EventEnum _eventEnum;
         private EventTimeoutTypeEnum _timeoutTypeEnum;
-        private byte[] _payload;
-
-        private static EventBitsRequired _eventBitsRequired = new EventBitsRequired();
+        private EventAction _payload;
         
         public EventBuilder(){}
 
@@ -100,26 +119,6 @@ namespace Events
             _eventEnum = ievent.GetEventEnum();
             _timeoutTypeEnum = ievent.GetTimeoutType();
             _payload = ievent.GetPayload();
-        }
-
-        public EventBuilder DeserializeMessage(byte[] message)
-        {
-            BitBuffer buffer = new BitBuffer(message);
-            
-            // Read Header
-            _seqId = buffer.readInt(0, Int32.MaxValue);
-            
-            int preAck =  buffer.readInt(0, 10); // TODO: ACK siempre llegaba en false, este es el hack para que ande
-            _ack = preAck == 6;
-            
-            _eventEnum = (EventEnum) buffer.readInt(0, Enum.GetValues(typeof(EventEnum)).Length);
-            _timeoutTypeEnum = (EventTimeoutTypeEnum) buffer.readInt(0, Enum.GetValues(typeof(EventTimeoutTypeEnum)).Length);
-            
-            // Read payload
-            //_payload = buffer.GetBuffer(_eventBitsRequired.GetBitsRequired(_eventEnum));
-            //_payload = buffer.getBuffer(); //TODO: Hacer que ande esto.
-            _payload = new byte[0];
-            return this;
         }
 
         public EventBuilder SetSeqId(int seqId)
@@ -152,7 +151,7 @@ namespace Events
             return this;
         }
 
-        public EventBuilder SetPayload(byte[] payload)
+        public EventBuilder SetPayload(EventAction payload)
         {
             _payload = payload;
             return this;
@@ -163,6 +162,4 @@ namespace Events
             return new Event(_seqId, _clientId, _ack, _eventEnum, _timeoutTypeEnum, _payload);
         }
     }
-    
-    
 }

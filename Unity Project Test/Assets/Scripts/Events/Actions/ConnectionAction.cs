@@ -2,21 +2,18 @@ using Libs;
 
 namespace Events.Actions
 {
-    public class CreationAction : EventAction
+    public class ConnectionAction : EventAction
     {
-        public CreationAction(BitBuffer payload)
-        {
-            
-        }
+        public ConnectionAction(){}
+        
+        public ConnectionAction(BitBuffer buffer){}
 
         public override void Serialize(BitBuffer buffer)
         {
-            throw new System.NotImplementedException();
         }
 
         public override void Execute(GameManager gameManager)
         {
-            throw new System.NotImplementedException();
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()
@@ -26,7 +23,7 @@ namespace Events.Actions
 
         public override EventEnum GetEventType()
         {
-            return EventEnum.Creation;
+            return EventEnum.Connection;
         }
     }
 }

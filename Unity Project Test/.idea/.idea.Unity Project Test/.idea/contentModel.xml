@@ -11,20 +11,13 @@
           <e p="TODO.txt" t="Include" />
         </e>
         <e p="Scripts" t="Include">
-          <e p="BallBehaviour" t="Include">
-            <e p="LocalBall.cs" t="Include" />
-            <e p="NetworkBall.cs" t="Include" />
-            <e p="PlayerCamera.cs" t="Include" />
-          </e>
-          <e p="CubeBehaviour" t="Include">
-            <e p="Curve.cs" t="Include" />
-            <e p="DragDrop.cs" t="Include" />
-            <e p="LocalCube.cs" t="Include" />
-            <e p="NetworkCube.cs" t="Include" />
+          <e p="Controller" t="Include">
+            <e p="BallController.cs" t="Include" />
           </e>
           <e p="Events" t="Include">
             <e p="Actions" t="Include">
               <e p="ColorAction.cs" t="Include" />
+              <e p="ConnectionAction.cs" t="Include" />
               <e p="CreationAction.cs" t="Include" />
               <e p="EventAction.cs" t="Include" />
               <e p="MovementAction.cs" t="Include" />
@@ -45,7 +38,7 @@
             <e p="NetworkManager.cs" t="Include" />
           </e>
           <e p="Models" t="Include">
-            <e p="BallEric.cs" t="Include" />
+            <e p="Ball.cs" t="Include" />
           </e>
           <e p="Networking" t="Include">
             <e p="NetworkBuffer.cs" t="Include" />

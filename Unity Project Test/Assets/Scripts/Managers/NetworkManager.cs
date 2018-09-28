@@ -35,23 +35,13 @@ namespace Events
             Connection connection = _connectionList.Find(con => con.IsThisEndpoint(remoteEndpoint));
             int connectionId = connection == null ? -1 : connection.Id;
             
-            Event ievent = new EventBuilder().DeserializeMessage(receivedBytes)
-                                             .SetClientId(connectionId)
-                                             .Build();
+            Event ievent = Event.Deserialize(receivedBytes).SetClientId(connectionId)
+                                                           .Build();    
             
-            Debug.Log("Receiving\n client: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum() + " - endpoint " + remoteEndpoint );
+            Debug.Log("Receiving from: " + remoteEndpoint + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum() );
             if (ievent.GetEventEnum().Equals(EventEnum.Connection))
             {
-                if (ievent.ClientId == -1)
-                {
-                    int newId = AddConnection(remoteEndpoint);
-                    ievent = new EventBuilder(ievent).SetClientId(newId)
-                                                     .Build();
-                }
-                else
-                {
-                    _eventManager.ConfirmConnection();
-                }
+                ievent = HandleConnectionEvent(ievent, remoteEndpoint);
             }
             _eventManager.ReceiveEvent(ievent);
         }
@@ -61,13 +51,26 @@ namespace Events
             Connection connection = _connectionList.Find(con => con.Id == ievent.ClientId);
             if (connection != null)
             {
-                Debug.Log("Sending\n client: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum() + " - endpoint " + connection.GetSendingEndpoint() );
+                Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
                 connection.Send(ievent);
             }
             else
             {
                 throw new Exception("No such connection " + ievent.ClientId);
             }
+        }
+
+        private Event HandleConnectionEvent(Event ievent, IPEndPoint remoteEndpoint)
+        {
+            if (ievent.ClientId == -1)
+            {
+                int newId = AddConnection(remoteEndpoint);
+                Event verifiedEvent = new EventBuilder(ievent).SetClientId(newId)
+                                                              .Build();
+                return verifiedEvent;
+            }
+            _eventManager.ConfirmConnection();
+            return ievent;
         }
 
         public EventBuilder AddNetworkInfo(EventBuilder eventBuilder, int connectionId)

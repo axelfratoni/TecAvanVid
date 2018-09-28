@@ -18,7 +18,7 @@ namespace Events
             _networkManager = new NetworkManager(localPort, this);
             _eventQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
             {
-                {EventTimeoutTypeEnum.NoTimeOut, new ReliableEventQueue(70, SendEventsInQueue)},
+                {EventTimeoutTypeEnum.NoTimeOut, new ReliableEventQueue(5, SendEventsInQueue)},
                 {EventTimeoutTypeEnum.TimeOut, new ReliableEventQueue(1000, SendEventsInQueue)}
             };
         }
@@ -38,14 +38,14 @@ namespace Events
                                        .SetClientId(clientId)
                                        .SetTimeoutType(eventAction.GetTimeoutType())
                                        .SetEventType(eventAction.GetEventType())
-                                       .SetPayload(eventAction.Serialize())
+                                       .SetPayload(eventAction)
                                        .Build();
             _networkManager.SendEvent(ievent);
 
             AddEventToReliableQueue(ievent);
         }
 
-        public void AddEventToReliableQueue(Event ievent)
+        private void AddEventToReliableQueue(Event ievent)
         {
             if (!ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
             {
@@ -72,46 +72,17 @@ namespace Events
                 }
                 else
                 {
-                    if (eventQueue.ShouldProcessEvent(ievent))
+                    if (eventQueue.ShouldProcessEvent(ievent) && ievent.GetPayload() != null)
                     {
-                        ProcessEvent(ievent);
+                        ievent.Execute(_gameManager);
                     }
+                    
+                    _networkManager.SendEvent(new EventBuilder(ievent).SetAck(true).Build());
                 }
             }
             else
             {
                 throw new Exception("No such timeout type " + ievent.GetTimeoutType());
-            }
-            _networkManager.SendEvent(new EventBuilder(ievent).SetAck(true)
-                                                               .Build());
-        }
-
-        private void ProcessEvent(Event ievent)
-        {
-            EventAction eventAction = null;
-            switch (ievent.GetEventEnum())
-            {
-                case EventEnum.Connection:
-                    break;
-                case EventEnum.Snapshot:
-                    eventAction = new SnapshotAction(ievent.GetPayload());
-                    break;
-                case EventEnum.Creation:
-                    eventAction = new CreationAction(ievent.GetPayload());
-                    break;
-                case EventEnum.Movement:
-                    eventAction = new MovementAction(ievent.GetPayload());
-                    break;
-                case EventEnum.Color:
-                    eventAction = new ColorAction(ievent.GetPayload());
-                    break;
-                default:
-                    throw new Exception("Invalid event type " + ievent.GetEventEnum());
-            }
-
-            if (eventAction != null)
-            {
-                eventAction.Execute(_gameManager);
             }
         }
 
@@ -119,12 +90,13 @@ namespace Events
         {
             Debug.Log("Connecting to server.");
             int serverId = _networkManager.AddConnection(serverEndPoint);
+            EventAction connectionAction = new ConnectionAction();
             EventBuilder eventBuilder = _networkManager.AddNetworkInfo(new EventBuilder(), serverId);
             Event connectionEvent = eventBuilder.SetAck(false)
                                                 .SetClientId(serverId)
-                                                .SetTimeoutType(EventTimeoutTypeEnum.TimeOut)
-                                                .SetEventType(EventEnum.Connection)
-                                                .SetPayload(new byte[0])
+                                                .SetTimeoutType(connectionAction.GetTimeoutType())
+                                                .SetEventType(connectionAction.GetEventType())
+                                                .SetPayload(connectionAction)
                                                 .Build();
             _networkManager.SendEvent(connectionEvent);
             
