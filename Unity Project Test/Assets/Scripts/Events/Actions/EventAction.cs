@@ -7,7 +7,7 @@ namespace Events.Actions
     {
         public abstract void Serialize(BitBuffer buffer);
                 
-        public abstract void Execute(GameManager gameManager);
+        public abstract void Execute(WorldManager worldManager);
 
         public abstract EventTimeoutTypeEnum GetTimeoutType();
 

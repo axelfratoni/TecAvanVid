@@ -10,11 +10,13 @@ namespace Events
     {
         private readonly GameManager _gameManager;
         private readonly NetworkManager _networkManager;
+        private readonly WorldManager _worldManager;
         private readonly Dictionary<EventTimeoutTypeEnum, ReliableEventQueue> _eventQueues;
         
-        public EventManager(GameManager gameManager, int localPort)
+        public EventManager(GameManager gameManager, WorldManager worldManager, int localPort)
         {
             _gameManager = gameManager;
+            _worldManager = worldManager;
             _networkManager = new NetworkManager(localPort, this);
             _eventQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
             {
@@ -74,7 +76,7 @@ namespace Events
                 {
                     if (eventQueue.ShouldProcessEvent(ievent) && ievent.GetPayload() != null)
                     {
-                        ievent.Execute(_gameManager);
+                        ievent.Execute(_worldManager);
                     }
                     
                     _networkManager.SendEvent(new EventBuilder(ievent).SetAck(true).Build());

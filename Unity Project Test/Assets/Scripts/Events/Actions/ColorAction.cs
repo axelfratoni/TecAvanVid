@@ -31,9 +31,9 @@ namespace Events.Actions
             buffer.writeInt(_b, 0, 300);
         }
 
-        public override void Execute(GameManager gameManager)
+        public override void Execute(WorldManager worldManager)
         {
-            gameManager.ProcessColorAction(_r, _g, _b);
+            worldManager.ProcessColorAction(_r, _g, _b);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

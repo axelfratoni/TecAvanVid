@@ -13,18 +13,20 @@ public class GameManager : MonoBehaviour
     private bool _isConnected;
     private EventManager _eventManager;
     private BehaviourManager _behaviourManager;
+    private WorldManager _worldManager;
 
     private void Start()
     {
+        _worldManager = new WorldManager();
         if (isServer)
         {
             _isConnected = true;
-            _eventManager = new EventManager(this, _serverPort);
+            _eventManager = new EventManager(this, _worldManager, _serverPort);
             _behaviourManager = new ServerManager();
         }
         else
         {
-            _eventManager = new EventManager(this, _clientPort);
+            _eventManager = new EventManager(this, _worldManager, _clientPort);
             _eventManager.ConnectToServer(new IPEndPoint(IPAddress.Parse(serverIP), _serverPort));
         }
     }
@@ -46,20 +48,6 @@ public class GameManager : MonoBehaviour
         {
             _behaviourManager.Update();
         }
-    }
-
-    public void ProcessInput(double time, InputEnum input)
-    {
-        Debug.Log("Received input: " + input);
-    }
-
-    public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)
-    {
-    }
-
-    public void ProcessColorAction(int r, int g, int b)
-    {
-        Debug.Log("Received color: r " + r + " g " + g + " b " + b);
     }
 
     private void OnDisable()

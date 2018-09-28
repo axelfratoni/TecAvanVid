@@ -14,7 +14,7 @@ namespace Events.Actions
             throw new System.NotImplementedException();
         }
 
-        public override void Execute(GameManager gameManager)
+        public override void Execute(WorldManager worldManager)
         {
             throw new System.NotImplementedException();
         }

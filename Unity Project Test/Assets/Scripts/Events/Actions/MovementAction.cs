@@ -28,9 +28,9 @@ namespace Events.Actions
             buffer.writeInt((int) _input, 0, Enum.GetValues(typeof(InputEnum)).Length);
         }
 
-        public override void Execute(GameManager gameManager)
+        public override void Execute(WorldManager worldManager)
         {
-            gameManager.ProcessInput(_time, _input);
+            worldManager.ProcessInput(_time, _input);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

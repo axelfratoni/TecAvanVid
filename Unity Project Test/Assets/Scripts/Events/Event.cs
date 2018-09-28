@@ -64,9 +64,9 @@ namespace Events
             return eventBuilder;
         }
 
-        public void Execute(GameManager gameManager)
+        public void Execute(WorldManager worldManager)
         {
-            _payload.Execute(gameManager);
+            _payload.Execute(worldManager);
         }
 
         public int SeqId

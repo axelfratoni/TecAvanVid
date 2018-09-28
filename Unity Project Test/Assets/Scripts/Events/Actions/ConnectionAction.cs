@@ -12,7 +12,7 @@ namespace Events.Actions
         {
         }
 
-        public override void Execute(GameManager gameManager)
+        public override void Execute(WorldManager worldManager)
         {
         }
 

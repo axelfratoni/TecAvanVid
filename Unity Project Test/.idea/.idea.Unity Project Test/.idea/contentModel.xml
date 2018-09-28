@@ -41,6 +41,7 @@
             <e p="EventManager.cs" t="Include" />
             <e p="GameManager.cs" t="Include" />
             <e p="NetworkManager.cs" t="Include" />
+            <e p="WorldManager.cs" t="Include" />
           </e>
           <e p="Models" t="Include">
             <e p="Ball.cs" t="Include" />
