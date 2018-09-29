@@ -39,7 +39,7 @@ namespace Events.Actions
             bitBuffer.writeFloat(_objectPosition.z, -31.0f, 31.0f, 0.1f);
         }
         
-        public override void Execute(WorldManager worldManager)
+        public override void Execute(WorldManager worldManager, int clientId)
         {
             worldManager.ProcessSnapshot(_objectId, _timeStamp, _objectPosition);
         }

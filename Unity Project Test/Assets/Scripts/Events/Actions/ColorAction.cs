@@ -31,7 +31,7 @@ namespace Events.Actions
             buffer.writeInt(_b, 0, 300);
         }
 
-        public override void Execute(WorldManager worldManager)
+        public override void Execute(WorldManager worldManager, int clientId)
         {
             worldManager.ProcessColorAction(_r, _g, _b);
         }

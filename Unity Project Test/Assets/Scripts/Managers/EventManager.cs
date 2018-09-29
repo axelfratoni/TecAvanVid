@@ -47,6 +47,11 @@ namespace Events
             AddEventToReliableQueue(ievent);
         }
 
+        public void BroadcastEventAction(EventAction eventAction)
+        {
+            _networkManager.GetClientIdList().ForEach(id => SendEventAction(eventAction, id));
+        }
+
         private void AddEventToReliableQueue(Event ievent)
         {
             if (!ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
@@ -105,9 +110,9 @@ namespace Events
             AddEventToReliableQueue(connectionEvent);
         }
 
-        public void ConfirmConnection()
+        public void ConfirmConnection(int serverId)
         {
-            _gameManager.InitializeGame();
+            _gameManager.InitializeGame(serverId);
         }
 
         public void Disable()

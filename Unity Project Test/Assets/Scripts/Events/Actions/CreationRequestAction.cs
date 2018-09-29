@@ -2,18 +2,19 @@ using Libs;
 
 namespace Events.Actions
 {
-    public class ConnectionAction : EventAction
+    public class CreationRequestAction : EventAction
     {
-        public ConnectionAction(){}
+        public CreationRequestAction(){}
         
-        public ConnectionAction(BitBuffer buffer){}
-
+        public CreationRequestAction(BitBuffer buffer){}
+        
         public override void Serialize(BitBuffer buffer)
         {
         }
 
         public override void Execute(WorldManager worldManager, int clientId)
         {
+            worldManager.ProcessCreationRequest(clientId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()
@@ -23,7 +24,7 @@ namespace Events.Actions
 
         public override EventEnum GetEventType()
         {
-            return EventEnum.Connection;
+            return EventEnum.CreationRequest;
         }
     }
 }

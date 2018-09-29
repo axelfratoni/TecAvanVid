@@ -28,7 +28,7 @@ namespace Events.Actions
             buffer.writeInt((int) _input, 0, Enum.GetValues(typeof(InputEnum)).Length);
         }
 
-        public override void Execute(WorldManager worldManager)
+        public override void Execute(WorldManager worldManager, int clientId)
         {
             worldManager.ProcessInput(_time, _input);
         }

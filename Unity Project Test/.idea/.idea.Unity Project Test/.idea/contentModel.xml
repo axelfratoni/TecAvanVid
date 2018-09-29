@@ -19,6 +19,7 @@
               <e p="ColorAction.cs" t="Include" />
               <e p="ConnectionAction.cs" t="Include" />
               <e p="CreationAction.cs" t="Include" />
+              <e p="CreationRequestAction.cs" t="Include" />
               <e p="EventAction.cs" t="Include" />
               <e p="MovementAction.cs" t="Include" />
               <e p="SnapshotAction.cs" t="Include" />

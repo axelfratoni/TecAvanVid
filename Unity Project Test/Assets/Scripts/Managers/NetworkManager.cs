@@ -69,7 +69,10 @@ namespace Events
                                                               .Build();
                 return verifiedEvent;
             }
-            _eventManager.ConfirmConnection();
+            if (ievent.ClientId != -1 && ievent.Ack)
+            {
+                _eventManager.ConfirmConnection(ievent.ClientId);
+            }
             return ievent;
         }
 
@@ -86,6 +89,13 @@ namespace Events
             }
 
             return eventBuilder;
+        }
+
+        public List<int> GetClientIdList()
+        {
+            List<int> clientIdList = new List<int>();
+            _connectionList.ForEach(connection => clientIdList.Add(connection.Id));
+            return clientIdList;
         }
 
         public void Disable()

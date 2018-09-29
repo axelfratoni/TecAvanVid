@@ -7,7 +7,7 @@ namespace Events.Actions
     {
         public abstract void Serialize(BitBuffer buffer);
                 
-        public abstract void Execute(WorldManager worldManager);
+        public abstract void Execute(WorldManager worldManager, int clientId);
 
         public abstract EventTimeoutTypeEnum GetTimeoutType();
 
@@ -23,6 +23,9 @@ namespace Events.Actions
                     break;
                 case EventEnum.Snapshot:
                     eventAction = new SnapshotAction(buffer);
+                    break;
+                case EventEnum.CreationRequest:
+                    eventAction = new CreationRequestAction(buffer);
                     break;
                 case EventEnum.Creation:
                     eventAction = new CreationAction(buffer);

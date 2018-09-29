@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _worldManager = new WorldManager();
+        _worldManager = GameObject.Find("WorldManager").GetComponent<WorldManager>();
         if (isServer)
         {
             _isConnected = true;
@@ -29,15 +29,16 @@ public class GameManager : MonoBehaviour
             _eventManager = new EventManager(this, _worldManager, _clientPort);
             _eventManager.ConnectToServer(new IPEndPoint(IPAddress.Parse(serverIP), _serverPort));
         }
+        _worldManager.SetEventManager(_eventManager);
     }
 
     // This runs after connecting to the server.
-    public void InitializeGame()
+    public void InitializeGame(int serverId)
     {
         if(_isConnected) return; 
         _isConnected = true;
         
-        _behaviourManager = new ClientManager(_eventManager);
+        _behaviourManager = new ClientManager(_eventManager, serverId);
         
         Debug.Log("Initializing game.");
     }
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
     {
         if (_behaviourManager != null)
         {
-            _behaviourManager.Update();
+            _behaviourManager.Update();            
         }
     }
 

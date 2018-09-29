@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
-    private readonly Ball _ball;
+    private Ball _ball;
     private Rigidbody _rigidBody;
 
     private readonly float SPEED = 10;
@@ -15,7 +15,12 @@ public class BallController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.position = _ball.Position;
+        //transform.position = _ball.Position;
+    }
+
+    public void SetBall(Ball ball)
+    {
+        _ball = ball;
     }
     
     public void Move(double time, InputEnum input)

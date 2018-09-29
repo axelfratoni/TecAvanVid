@@ -66,7 +66,7 @@ namespace Events
 
         public void Execute(WorldManager worldManager)
         {
-            _payload.Execute(worldManager);
+            _payload.Execute(worldManager, _clientId);
         }
 
         public int SeqId

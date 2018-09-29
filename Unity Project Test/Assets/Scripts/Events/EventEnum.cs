@@ -6,7 +6,8 @@ public enum EventEnum
 {
 	Connection = 0,
 	Snapshot = 1,
-	Creation = 2,
-	Movement = 3,
-	Color = 4,
+	CreationRequest = 2,
+	Creation = 3,
+	Movement = 4,
+	Color = 5,
 }
