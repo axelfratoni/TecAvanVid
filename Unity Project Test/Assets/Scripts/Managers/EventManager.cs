@@ -89,7 +89,14 @@ namespace Events
             }
             else
             {
-                throw new Exception("No such timeout type " + ievent.GetTimeoutType());
+                if (ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
+                {
+                    ievent.Execute(_worldManager);
+                }
+                else
+                {
+                    throw new Exception("No such timeout type " + ievent.GetTimeoutType());
+                }
             }
         }
 

@@ -30,8 +30,12 @@ public class BallController : MonoBehaviour
         
         Vector3 movement = new Vector3(h, 0, v);
         movement = movement.normalized * SPEED;
-        Debug.Log("Movement " + movement);
         _ball.MovePosition(movement);
+    }
+
+    public void ApplySnapshot(double time, Vector3 position)
+    {
+        _ball.SetPosition(position);
     }
 
     public Ball GetBall()

@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
         {
             _isConnected = true;
             _eventManager = new EventManager(this, _worldManager, _serverPort);
-            _behaviourManager = new ServerManager();
+            _behaviourManager = new ServerManager(_eventManager, _worldManager);
         }
         else
         {

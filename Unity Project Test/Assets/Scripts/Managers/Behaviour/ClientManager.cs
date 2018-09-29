@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Events.Actions;
+using Network;
 using UnityEngine;
 
 namespace Events
@@ -13,7 +14,7 @@ namespace Events
         {
             _eventManager = eventManager;
             _serverId = serverId;
-            eventManager.SendEventAction(new CreationRequestAction(), serverId);
+            eventManager.SendEventAction(new CreationRequestAction(new Vector3(0, 1, 2), ObjectEnum.Ball), serverId);
         }
 
         public void Update()

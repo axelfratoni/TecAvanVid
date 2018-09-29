@@ -34,5 +34,10 @@ namespace Network
         {
             get { return _position; }
         }
+
+        public void SetPosition(Vector3 position)
+        {
+            _position = position;
+        }
     }
 }

@@ -46,6 +46,7 @@
           </e>
           <e p="Models" t="Include">
             <e p="Ball.cs" t="Include" />
+            <e p="ObjectEnum.cs" t="Include" />
           </e>
           <e p="Networking" t="Include">
             <e p="NetworkBuffer.cs" t="Include" />
