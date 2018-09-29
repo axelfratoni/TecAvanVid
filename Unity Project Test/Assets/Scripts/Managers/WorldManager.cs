@@ -29,9 +29,11 @@ namespace Events
             }
         }
 
-        public void ProcessInput(double time, InputEnum input)
+        public void ProcessInput(double time, InputEnum input, int clientId) // TODO que reciba una lista de inputs
         {
-            Debug.Log("Received input: " + input);
+            Debug.Log("Received input");
+            BallController ballController = _balls.Find(ball => ball.GetBall().ClientId.Equals(clientId));
+            if(ballController != null) ballController.ApplyInput(time, input);
         }
 
         public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)

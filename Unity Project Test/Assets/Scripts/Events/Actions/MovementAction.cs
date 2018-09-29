@@ -7,10 +7,11 @@ namespace Events.Actions
 {
     public class MovementAction : EventAction
     {
-        private double _time;
-        private InputEnum _input;
+        private readonly double _time;
+        //private readonly List<InputEnum> _inputList;
+        private readonly InputEnum _input;
 
-        public MovementAction(double time, InputEnum input)
+        public MovementAction(double time, InputEnum input) // Todo hacer que reciba una lista de inputs
         {
             _time = time;
             _input = input;
@@ -20,17 +21,26 @@ namespace Events.Actions
         {
             _time = payload.readFloat( 0.0f, 3600.0f, 0.01f);
             _input = (InputEnum) payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length);
+            /*int inputListLength = payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length); TODO que reciba una lista de inputs
+            _inputList = new List<InputEnum>(inputListLength);
+            for (int i = 0; i < inputListLength; i++)
+            {
+                _inputList.Add((InputEnum) payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length));
+            }*/
         }
 
         public override void Serialize(BitBuffer buffer)
         {
             buffer.writeFloat((float) _time, 0.0f, 3600.0f, 0.01f);
             buffer.writeInt((int) _input, 0, Enum.GetValues(typeof(InputEnum)).Length);
+            /*buffer.writeInt(_inputList.Count, 0, Enum.GetValues(typeof(InputEnum)).Length); TODO que envie una lista de inputs
+            _inputList.ForEach(input => 
+                buffer.writeInt((int) input, 0, Enum.GetValues(typeof(InputEnum)).Length));*/
         }
 
         public override void Execute(WorldManager worldManager, int clientId)
         {
-            worldManager.ProcessInput(_time, _input);
+            worldManager.ProcessInput(_time, _input, clientId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

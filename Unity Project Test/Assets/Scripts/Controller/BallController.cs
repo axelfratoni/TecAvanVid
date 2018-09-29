@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Events.Actions;
 using Network;
 using UnityEngine;
@@ -7,7 +8,7 @@ public class BallController : MonoBehaviour
     private Ball _ball;
     private Rigidbody _rigidBody;
 
-    private readonly float SPEED = 10;
+    private readonly float SPEED = (float) 0.05;
 
     void Start () {
         _rigidBody = GetComponent<Rigidbody>();
@@ -15,19 +16,31 @@ public class BallController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //transform.position = _ball.Position;
+        _rigidBody.MovePosition(_ball.Position);
     }
 
+    
+    public void ApplyInput(double time, InputEnum input) // TODO: Hacer que reciba una lista de inputs
+    {
+        float v = 0; 
+        float h = 0; 
+        
+         v += input.Equals(InputEnum.W) ? 1 : input.Equals(InputEnum.S) ? -1 : 0;
+         h += input.Equals(InputEnum.D) ? 1 : input.Equals(InputEnum.A) ? -1 : 0;
+        
+        Vector3 movement = new Vector3(h, 0, v);
+        movement = movement.normalized * SPEED;
+        Debug.Log("Movement " + movement);
+        _ball.MovePosition(movement);
+    }
+
+    public Ball GetBall()
+    {
+        return _ball;
+    }
+    
     public void SetBall(Ball ball)
     {
         _ball = ball;
     }
-    
-    public void Move(double time, InputEnum input)
-    {
-        /*movement.Set(h, 0, v);
-        movement = movement.normalized * speed * Time.deltaTime;
-        playerRigidBody.MovePosition(transform.position + movement);*/
-    }
-
 }

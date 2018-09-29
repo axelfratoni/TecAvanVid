@@ -15,6 +15,11 @@ namespace Network
             _position = position;
         }
 
+        public void MovePosition(Vector3 movement)
+        {
+            _position += movement;
+        }
+
         public int ObjectId
         {
             get { return _objectId; }
@@ -28,7 +33,6 @@ namespace Network
         public Vector3 Position
         {
             get { return _position; }
-            set { _position = value; }
         }
     }
 }
