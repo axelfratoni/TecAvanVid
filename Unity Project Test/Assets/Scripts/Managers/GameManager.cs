@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _worldManager = GameObject.Find("WorldManager").GetComponent<WorldManager>();
+        _worldManager = gameObject.GetComponent<WorldManager>();
         if (isServer)
         {
             _isConnected = true;

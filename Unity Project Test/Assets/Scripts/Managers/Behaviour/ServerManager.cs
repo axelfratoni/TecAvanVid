@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Events.Actions;
 using Network;
+using UnityEngine;
 
 namespace Events
 {
@@ -18,11 +19,11 @@ namespace Events
         public void Update()
         {
             List<BallController> ballList = _worldManager.GetBallList();
-            /*ballList.ForEach(ball =>
+            ballList.ForEach(ball =>
             {
                 Ball ballData = ball.GetBall();
                 _eventManager.BroadcastEventAction(new SnapshotAction(ballData.ObjectId, ballData.Position, 0));
-            });*/
+            });
         }
     }
 }

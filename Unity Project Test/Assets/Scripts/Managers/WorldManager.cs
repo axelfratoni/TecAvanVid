@@ -51,7 +51,7 @@ namespace Events
 
         public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)
         {
-            Debug.Log("ReceiverSnapshot: " + objectPosition);
+            Debug.Log("Received Snapshot: " + objectPosition);
             BallController ballCont = _balls.Find(ball => ball.GetBall().ObjectId.Equals(objectId));
             if(ballCont != null) ballCont.ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1));
         }
