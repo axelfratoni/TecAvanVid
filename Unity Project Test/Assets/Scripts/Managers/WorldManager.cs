@@ -29,8 +29,9 @@ namespace Events
         {
             while (_creationRequests.Count > 0)
             {
-                Ball ball = _creationRequests.Dequeue();                
-                BallController ballController = Instantiate(ballPrefab).GetComponent<BallController>();
+                Ball ball = _creationRequests.Dequeue();
+                GameObject ballObject = Instantiate(ballPrefab);
+                BallController ballController = ballObject.GetComponent<BallController>();
                 ballController.SetBall(ball);
                 _balls.Add(ballController);
             }
@@ -41,18 +42,18 @@ namespace Events
             return _balls;
         }
 
-        public void ProcessInput(double time, InputEnum input, int clientId) // TODO que reciba una lista de inputs
+        public void ProcessInput(double time, List<InputEnum> inputList, int clientId) // TODO que reciba una lista de inputs
         {
             Debug.Log("Received input");
             BallController ballController = _balls.Find(ball => ball.GetBall().ClientId.Equals(clientId));
-            if(ballController != null) ballController.ApplyInput(time, input);
+            if(ballController != null) ballController.ApplyInput(time, inputList);
         }
 
         public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)
         {
-            //Debug.Log("ReceiverSnapshot: " + objectPosition);
+            Debug.Log("ReceiverSnapshot: " + objectPosition);
             BallController ballCont = _balls.Find(ball => ball.GetBall().ObjectId.Equals(objectId));
-            //if(ballCont != null) ballCont.ApplySnapshot(timeStamp, objectPosition);
+            if(ballCont != null) ballCont.ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1));
         }
 
         public void ProcessColorAction(int r, int g, int b)

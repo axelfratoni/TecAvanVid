@@ -34,7 +34,7 @@ namespace Libs
         }
 
         public bool readBit(){
-            bool value = (bits & (1 << currentBitCount)) > 0;
+            bool value = (bits & (1 << currentBitCount)) != 0;
             currentBitCount++;
             updateBuffer();
             return value;
@@ -130,30 +130,6 @@ namespace Libs
             byte[] ans = buffer.GetBuffer();
             buffer = new MemoryStream(buffer.Capacity);
             return ans;
-        }
-
-        public static byte[] GetBitsFromBuffer(byte[] buffer, int bitCount)
-        {
-            BitArray bitArray = new BitArray(buffer);
-            
-            int numBytes = bitCount / 8;
-            if (bitCount % 8 != 0) numBytes++;
-
-            byte[] bytes = new byte[numBytes];
-            int byteIndex = 0, bitIndex = 0;
-
-            for (int i = 0; i < bitCount; i++) {
-                if (bitArray[i])
-                    bytes[byteIndex] |= (byte)(1 << (7 - bitIndex));
-
-                bitIndex++;
-                if (bitIndex == 8) {
-                    bitIndex = 0;
-                    byteIndex++;
-                }
-            }
-
-            return bytes;
         }
     }
 }

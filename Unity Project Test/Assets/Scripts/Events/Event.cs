@@ -33,7 +33,7 @@ namespace Events
         {
             BitBuffer buffer = new BitBuffer(1024);
             buffer.writeInt(_seqId, 0, Int32.MaxValue);
-            buffer.writeInt(_ack? 7 : 5, 0, 10); //TODO: ACK siempre llegaba en false, este es el hack para que ande
+            buffer.writeBit(_ack);
             buffer.writeInt((int)_eventEnum, 0, Enum.GetValues(typeof(EventEnum)).Length);
             buffer.writeInt((int)_timeoutTypeEnum, 0, Enum.GetValues(typeof(EventTimeoutTypeEnum)).Length);
             
@@ -49,8 +49,7 @@ namespace Events
             BitBuffer buffer = new BitBuffer(message);
             
             int seqId = buffer.readInt(0, Int32.MaxValue);
-            int preAck =  buffer.readInt(0, 10); // TODO: ACK siempre llegaba en false, este es el hack para que ande
-            bool ack = preAck == 6;
+            bool ack = buffer.readBit();
             EventEnum eventType= (EventEnum) buffer.readInt(0, Enum.GetValues(typeof(EventEnum)).Length);
             EventTimeoutTypeEnum eventTimeoutType =
                 (EventTimeoutTypeEnum) buffer.readInt(0, Enum.GetValues(typeof(EventTimeoutTypeEnum)).Length);

@@ -20,13 +20,15 @@ public class BallController : MonoBehaviour
     }
 
     
-    public void ApplyInput(double time, InputEnum input) // TODO: Hacer que reciba una lista de inputs
+    public void ApplyInput(double time, List<InputEnum> inputList) 
     {
         float v = 0; 
         float h = 0; 
-        
-         v += input.Equals(InputEnum.W) ? 1 : input.Equals(InputEnum.S) ? -1 : 0;
-         h += input.Equals(InputEnum.D) ? 1 : input.Equals(InputEnum.A) ? -1 : 0;
+        inputList.ForEach(input =>
+        {
+             v += input.Equals(InputEnum.W) ? 1 : input.Equals(InputEnum.S) ? -1 : 0;
+             h += input.Equals(InputEnum.D) ? 1 : input.Equals(InputEnum.A) ? -1 : 0;
+        });
         
         Vector3 movement = new Vector3(h, 0, v);
         movement = movement.normalized * SPEED;
