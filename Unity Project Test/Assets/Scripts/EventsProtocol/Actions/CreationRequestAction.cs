@@ -37,9 +37,9 @@ namespace Events.Actions
             buffer.writeFloat(_creationPosition.z, -31.0f, 31.0f, 0.1f);
         }
 
-        public override void Execute(WorldManager worldManager, int clientId)
+        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
         {
-            worldManager.ProcessCreationRequest(clientId, _objectType, _creationPosition);
+            actionDispatcher.ProcessCreationRequest(clientId, _objectType, _creationPosition);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

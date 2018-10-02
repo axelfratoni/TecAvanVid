@@ -11,12 +11,14 @@
           <e p="TODO.txt" t="Include" />
         </e>
         <e p="Scripts" t="Include">
-          <e p="Controller" t="Include">
+          <e p="Controllers" t="Include">
             <e p="BallController.cs" t="Include" />
+            <e p="CameraController.cs" t="Include" />
           </e>
-          <e p="Events" t="Include">
+          <e p="EventsProtocol" t="Include">
+            <e p="ActionDispatcher.cs" t="Include" />
             <e p="Actions" t="Include">
-              <e p="ColorAction.cs" t="Include" />
+              <e p="AssignPlayerAction.cs" t="Include" />
               <e p="ConnectionAction.cs" t="Include" />
               <e p="CreationAction.cs" t="Include" />
               <e p="CreationRequestAction.cs" t="Include" />
@@ -25,28 +27,28 @@
               <e p="SnapshotAction.cs" t="Include" />
             </e>
             <e p="Connection.cs" t="Include" />
-            <e p="Event.cs" t="Include" />
-            <e p="EventEnum.cs" t="Include" />
-            <e p="EventTimeoutTypeEnum.cs" t="Include" />
+            <e p="Events" t="Include">
+              <e p="Event.cs" t="Include" />
+              <e p="EventEnum.cs" t="Include" />
+              <e p="EventTimeoutTypeEnum.cs" t="Include" />
+            </e>
+            <e p="ProtocolManagers" t="Include">
+              <e p="EventManager.cs" t="Include" />
+              <e p="NetworkManager.cs" t="Include" />
+            </e>
             <e p="ReliableEventQueue.cs" t="Include" />
           </e>
           <e p="MainMenu" t="Include">
             <e p="MenuController.cs" t="Include" />
           </e>
           <e p="Managers" t="Include">
-            <e p="Behaviour" t="Include">
-              <e p="BehaviourManager.cs" t="Include" />
-              <e p="ClientManager.cs" t="Include" />
-              <e p="ServerManager.cs" t="Include" />
-            </e>
-            <e p="EventManager.cs" t="Include" />
-            <e p="GameManager.cs" t="Include" />
-            <e p="NetworkManager.cs" t="Include" />
-            <e p="WorldManager.cs" t="Include" />
+            <e p="ClientManager.cs" t="Include" />
+            <e p="ServerManager.cs" t="Include" />
           </e>
           <e p="Models" t="Include">
             <e p="Ball.cs" t="Include" />
             <e p="ObjectEnum.cs" t="Include" />
+            <e p="Proyectile.cs" t="Include" />
           </e>
           <e p="Networking" t="Include">
             <e p="NetworkBuffer.cs" t="Include" />

@@ -12,7 +12,7 @@ namespace Events.Actions
         {
         }
 
-        public override void Execute(WorldManager worldManager, int clientId)
+        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
         {
         }
 

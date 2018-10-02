@@ -8,15 +8,13 @@ namespace Events
 {
     public class EventManager
     {
-        private readonly GameManager _gameManager;
         private readonly NetworkManager _networkManager;
-        private readonly WorldManager _worldManager;
+        private readonly ActionDispatcher _actionDispatcher;
         private readonly Dictionary<EventTimeoutTypeEnum, ReliableEventQueue> _eventQueues;
         
-        public EventManager(GameManager gameManager, WorldManager worldManager, int localPort)
+        public EventManager(ActionDispatcher actionDispatcher, int localPort)
         {
-            _gameManager = gameManager;
-            _worldManager = worldManager;
+            _actionDispatcher = actionDispatcher;
             _networkManager = new NetworkManager(localPort, this);
             _eventQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
             {
@@ -81,7 +79,7 @@ namespace Events
                 {
                     if (eventQueue.ShouldProcessEvent(ievent) && ievent.GetPayload() != null)
                     {
-                        ievent.Execute(_worldManager);
+                        ievent.Execute(_actionDispatcher);
                     }
                     
                     _networkManager.SendEvent(new EventBuilder(ievent).SetAck(true).Build());
@@ -91,7 +89,7 @@ namespace Events
             {
                 if (ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
                 {
-                    ievent.Execute(_worldManager);
+                    ievent.Execute(_actionDispatcher);
                 }
                 else
                 {
@@ -119,7 +117,7 @@ namespace Events
 
         public void ConfirmConnection(int serverId)
         {
-            _gameManager.InitializeGame(serverId);
+            _actionDispatcher.InitializeGame(serverId);
         }
 
         public void Disable()

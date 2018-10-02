@@ -42,9 +42,9 @@ namespace Events.Actions
             buffer.writeInt(_objectId, 0, Int32.MaxValue);
         }
 
-        public override void Execute(WorldManager worldManager, int clientId)
+        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
         {
-            worldManager.ProcessObjectCreation(_creationPosition, clientId, _objectId, _objectType);
+            actionDispatcher.ProcessObjectCreation(_creationPosition, clientId, _objectId, _objectType);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

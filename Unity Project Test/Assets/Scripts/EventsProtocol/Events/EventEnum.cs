@@ -9,5 +9,5 @@ public enum EventEnum
 	CreationRequest = 2,
 	Creation = 3,
 	Movement = 4,
-	Color = 5,
+	AssignPlayer = 5,
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Events.Actions;
 using Network;
@@ -6,59 +5,47 @@ using UnityEngine;
 
 namespace Events
 {
-    public class WorldManager : MonoBehaviour
+    public class ServerManager : MonoBehaviour
     {
         public GameObject ballPrefab;
+        public GameObject proyectilePrefab;
+        public int serverPort = 10000;
 
         private ObjectFactory _objectFactory;
         private EventManager _eventManager;
+        private ActionDispatcher _actionDispatcher;
         private readonly List<BallController> _balls = new List<BallController>();
         private readonly Queue<Ball> _creationRequests = new Queue<Ball>();
-
+        
         private void Start()
         {
             _objectFactory = new ObjectFactory();
-        }
-
-        public void SetEventManager(EventManager eventManager)
-        {
-            _eventManager = eventManager;
+            _actionDispatcher = new ActionDispatcher(this);
+            _eventManager = new EventManager(_actionDispatcher, serverPort);
         }
         
-        private void Update()
+        public void Update()
         {
             while (_creationRequests.Count > 0)
             {
                 Ball ball = _creationRequests.Dequeue();
-                GameObject ballObject = Instantiate(ballPrefab);
-                BallController ballController = ballObject.GetComponent<BallController>();
+                BallController ballController = Instantiate(ballPrefab).GetComponent<BallController>();
                 ballController.SetBall(ball);
                 _balls.Add(ballController);
             }
+            
+            _balls.ForEach(ball =>
+            {
+                Ball ballData = ball.GetBall();
+                _eventManager.BroadcastEventAction(new SnapshotAction(ballData.ObjectId, ballData.Position, 0));
+            });
         }
-
-        public List<BallController> GetBallList()
-        {
-            return _balls;
-        }
-
-        public void ProcessInput(double time, List<InputEnum> inputList, int clientId) // TODO que reciba una lista de inputs
+        
+        public void ProcessInput(double time, List<InputEnum> inputList, int clientId) 
         {
             Debug.Log("Received input");
             BallController ballController = _balls.Find(ball => ball.GetBall().ClientId.Equals(clientId));
             if(ballController != null) ballController.ApplyInput(time, inputList);
-        }
-
-        public void ProcessSnapshot(int objectId, double timeStamp, Vector3 objectPosition)
-        {
-            Debug.Log("Received Snapshot: " + objectPosition);
-            BallController ballCont = _balls.Find(ball => ball.GetBall().ObjectId.Equals(objectId));
-            if(ballCont != null) ballCont.ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1));
-        }
-
-        public void ProcessColorAction(int r, int g, int b)
-        {
-            Debug.Log("Received color: r " + r + " g " + g + " b " + b);
         }
 
         public void ProcessCreationRequest(int clientId, ObjectEnum objectType, Vector3 creationPosition)
@@ -69,17 +56,13 @@ namespace Events
                 Ball newBall = _objectFactory.CreateBall(creationPosition, clientId);
                 _creationRequests.Enqueue(newBall); 
                 _eventManager.BroadcastEventAction(new CreationAction(newBall.Position, newBall.ObjectId, ObjectEnum.Ball));
+                _eventManager.SendEventAction(new AssignPlayerAction(newBall.ObjectId), clientId);
             }
         }
-
-        public void ProcessObjectCreation(Vector3 creationPosition, int clientId, int objectId, ObjectEnum objectType)
+        
+        private void OnDisable()
         {
-            Debug.Log("Creation action received from server.");
-            if (objectType.Equals(ObjectEnum.Ball))
-            {
-                Ball newBall = new Ball(clientId, objectId, creationPosition);
-                _creationRequests.Enqueue(newBall); 
-            }
+            _eventManager.Disable();
         }
     }
 }

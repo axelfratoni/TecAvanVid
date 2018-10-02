@@ -39,9 +39,9 @@ namespace Events.Actions
             bitBuffer.writeFloat(_objectPosition.z, -31.0f, 31.0f, 0.1f);
         }
         
-        public override void Execute(WorldManager worldManager, int clientId)
+        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
         {
-            worldManager.ProcessSnapshot(_objectId, _timeStamp, _objectPosition);
+            actionDispatcher.ProcessSnapshot(_objectId, _timeStamp, _objectPosition);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

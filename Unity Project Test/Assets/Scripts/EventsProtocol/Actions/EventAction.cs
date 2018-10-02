@@ -7,7 +7,7 @@ namespace Events.Actions
     {
         public abstract void Serialize(BitBuffer buffer);
                 
-        public abstract void Execute(WorldManager worldManager, int clientId);
+        public abstract void Execute(ActionDispatcher actionDispatcher, int clientId);
 
         public abstract EventTimeoutTypeEnum GetTimeoutType();
 
@@ -33,8 +33,8 @@ namespace Events.Actions
                 case EventEnum.Movement:
                     eventAction = new MovementAction(buffer);
                     break;
-                case EventEnum.Color:
-                    eventAction = new ColorAction(buffer);
+                case EventEnum.AssignPlayer:
+                    eventAction = new AssignPlayerAction(buffer);
                     break;
                 default:
                     throw new Exception("No implementation for event type " + eventType);

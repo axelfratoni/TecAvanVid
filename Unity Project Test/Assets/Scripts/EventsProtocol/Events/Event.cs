@@ -63,9 +63,9 @@ namespace Events
             return eventBuilder;
         }
 
-        public void Execute(WorldManager worldManager)
+        public void Execute(ActionDispatcher actionDispatcher)
         {
-            _payload.Execute(worldManager, _clientId);
+            _payload.Execute(actionDispatcher, _clientId);
         }
 
         public int SeqId
