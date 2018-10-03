@@ -14,6 +14,7 @@
           <e p="Controllers" t="Include">
             <e p="BallController.cs" t="Include" />
             <e p="CameraController.cs" t="Include" />
+            <e p="ProjectileController.cs" t="Include" />
           </e>
           <e p="EventsProtocol" t="Include">
             <e p="ActionDispatcher.cs" t="Include" />
@@ -48,7 +49,7 @@
           <e p="Models" t="Include">
             <e p="Ball.cs" t="Include" />
             <e p="ObjectEnum.cs" t="Include" />
-            <e p="Proyectile.cs" t="Include" />
+            <e p="Projectile.cs" t="Include" />
           </e>
           <e p="Networking" t="Include">
             <e p="NetworkBuffer.cs" t="Include" />

@@ -10,7 +10,7 @@ namespace Events
     public class ClientManager : MonoBehaviour
     {
         public GameObject ballPrefab;
-        public GameObject proyectilePrefab;
+        public GameObject projectilePrefab;
         public GameObject Camera;
         public int _serverPort = 10000;
         public int _clientPort = 10001;

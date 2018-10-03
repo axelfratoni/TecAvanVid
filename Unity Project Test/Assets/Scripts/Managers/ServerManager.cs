@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Controllers;
 using Events.Actions;
 using Network;
 using UnityEngine;
@@ -8,14 +9,18 @@ namespace Events
     public class ServerManager : MonoBehaviour
     {
         public GameObject ballPrefab;
-        public GameObject proyectilePrefab;
+        public GameObject projectilePrefab;
         public int serverPort = 10000;
 
         private ObjectFactory _objectFactory;
         private EventManager _eventManager;
         private ActionDispatcher _actionDispatcher;
+        
+        private readonly Queue<Ball> _ballCreationRequests = new Queue<Ball>();
+        private readonly Queue<Projectile> _projectileCreationRequests = new Queue<Projectile>();
+        
         private readonly List<BallController> _balls = new List<BallController>();
-        private readonly Queue<Ball> _creationRequests = new Queue<Ball>();
+        private readonly List<ProjectileController> _proyectiles = new List<ProjectileController>();
         
         private void Start()
         {
@@ -26,12 +31,21 @@ namespace Events
         
         public void Update()
         {
-            while (_creationRequests.Count > 0)
+            while (_ballCreationRequests.Count > 0)
             {
-                Ball ball = _creationRequests.Dequeue();
+                Ball ball = _ballCreationRequests.Dequeue();
                 BallController ballController = Instantiate(ballPrefab).GetComponent<BallController>();
                 ballController.SetBall(ball);
                 _balls.Add(ballController);
+            }
+
+            while (_projectileCreationRequests.Count > 0)
+            {
+                Projectile projectile = _projectileCreationRequests.Dequeue();
+                ProjectileController projectileController =
+                    Instantiate(projectilePrefab).GetComponent<ProjectileController>();
+                projectileController.SetProjectile(projectile);
+                _proyectiles.Add(projectileController);
             }
             
             _balls.ForEach(ball =>
@@ -45,7 +59,16 @@ namespace Events
         {
             Debug.Log("Received input");
             BallController ballController = _balls.Find(ball => ball.GetBall().ClientId.Equals(clientId));
-            if(ballController != null) ballController.ApplyInput(time, inputList);
+            if (ballController != null)
+            {
+                ballController.ApplyInput(time, inputList);
+                if (inputList.Contains(InputEnum.ClickLeft))
+                {
+                    Projectile newProjectile =
+                        _objectFactory.CreateProjectile(ballController.GetBall().Position, clientId, false);
+                    _projectileCreationRequests.Enqueue(newProjectile);
+                }
+            }
         }
 
         public void ProcessCreationRequest(int clientId, ObjectEnum objectType, Vector3 creationPosition)
@@ -54,7 +77,7 @@ namespace Events
             if (objectType.Equals(ObjectEnum.Ball))
             {
                 Ball newBall = _objectFactory.CreateBall(creationPosition, clientId);
-                _creationRequests.Enqueue(newBall); 
+                _ballCreationRequests.Enqueue(newBall); 
                 _eventManager.BroadcastEventAction(new CreationAction(newBall.Position, newBall.ObjectId, ObjectEnum.Ball));
                 _eventManager.SendEventAction(new AssignPlayerAction(newBall.ObjectId), clientId);
             }
@@ -80,5 +103,11 @@ public class ObjectFactory
     {
         Ball newBall = new Ball(clientId, _objectId++, position);
         return newBall;
+    }
+
+    public Projectile CreateProjectile(Vector3 position, int clientId, bool isControlled)
+    {
+        Projectile newProjectile = new Projectile(clientId, _objectId++, position, isControlled);
+        return newProjectile;
     }
 }
