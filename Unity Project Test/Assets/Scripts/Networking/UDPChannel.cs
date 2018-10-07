@@ -2,8 +2,6 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Libs;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class UDPChannel
@@ -88,8 +86,8 @@ public class UDPChannel
 
     public void SendMessageTo(byte[] buffer, IPEndPoint endPoint)
     {
-        _listener.Connect(endPoint);
-        _listener.Send(buffer, buffer.Length);
+        //_listener.Connect(endPoint);
+        _listener.Send(buffer, buffer.Length, endPoint);
     }
 
     public void SendMessage(byte[] buffer, String targetIP, int targetPort)
