@@ -47,7 +47,8 @@ namespace Events
         {
             Event lastAckedEvent = _lastAcked.Find(ev => ev.ClientId == ievent.ClientId &&
                                                          ev.GetEventEnum().Equals(ievent.GetEventEnum()));
-            return lastAckedEvent == null || lastAckedEvent.SeqId >= ievent.SeqId;
+            return lastAckedEvent == null || 
+                   UnsignedCircularComparator.compareLong((ulong) ievent.SeqId, (ulong) lastAckedEvent.SeqId, (ulong) Connection.MAX_SEQ_ID) <= 1;
         }
 
         public void Disable()

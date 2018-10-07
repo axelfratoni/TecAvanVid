@@ -741,7 +741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &535403647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -750,10 +750,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 535403646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b1d371a110559b408a0b2dd1569338a, type: 3}
+  m_Script: {fileID: 11500000, guid: b8e43741e9796254bb9eacf231d46ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isServer: 0
+  ballPrefab: {fileID: 1386834863068080, guid: 1457d1f64649f2c48953d30eda26f9ce, type: 2}
+  projectilePrefab: {fileID: 1752738099451206, guid: 086d79e943bef144ebe87d8765fdde7b,
+    type: 2}
+  Camera: {fileID: 1262325610}
   _serverPort: 10000
   _clientPort: 10001
   serverIP: 127.0.0.1
@@ -776,12 +779,11 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 535403646}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 232c7dbf4da5486cbeb735aee34c0b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 1386834863068080, guid: 426643c6cb0e61d41b3665c62a759953, type: 2}
 --- !u!1 &627971874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1362,13 +1364,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1239274665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b1d371a110559b408a0b2dd1569338a, type: 3}
+  m_Script: {fileID: 11500000, guid: 211395ef57bd95845b63d2ef402d57d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isServer: 1
-  _serverPort: 10000
-  _clientPort: 10001
-  serverIP: 127.0.0.1
+  ballPrefab: {fileID: 1386834863068080, guid: 1457d1f64649f2c48953d30eda26f9ce, type: 2}
+  projectilePrefab: {fileID: 1752738099451206, guid: 086d79e943bef144ebe87d8765fdde7b,
+    type: 2}
+  serverPort: 10000
 --- !u!4 &1239274667
 Transform:
   m_ObjectHideFlags: 0
@@ -1388,12 +1390,11 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1239274665}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 232c7dbf4da5486cbeb735aee34c0b24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 1386834863068080, guid: 426643c6cb0e61d41b3665c62a759953, type: 2}
 --- !u!1 &1262325610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1420,7 +1421,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1262325610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e8ef2135d1f1b94d806dcf5e4263933, type: 3}
+  m_Script: {fileID: 11500000, guid: a81c476c9a16368469c9730e400fc48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!81 &1262325612
