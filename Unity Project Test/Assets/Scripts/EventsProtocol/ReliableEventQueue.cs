@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using Libs;
 using UnityEngine;
 
 namespace Events
@@ -33,7 +34,8 @@ namespace Events
         {
             _eventQueue = _eventQueue.Where(ev => !(ev.ClientId == ievent.ClientId &&
                                                     ev.GetEventEnum().Equals(ievent.GetEventEnum()) &&
-                                                    ev.SeqId <= ievent.SeqId)).ToList();
+                                                    UnsignedCircularComparator.compareLong((ulong) ev.SeqId, (ulong) ievent.SeqId, (ulong) Connection.MAX_SEQ_ID) < 1))
+                                                    .ToList();
             
             _lastAcked = _lastAcked.Where(ev => !(ev.ClientId == ievent.ClientId &&
                                                   ev.GetEventEnum().Equals(ievent.GetEventEnum()))).ToList();

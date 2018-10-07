@@ -1,5 +1,0 @@
-TODO List
-
-Portal (Client, pide ip y se conecta; Server, abre puerto y se conecta a localhost)
-Server, escucha conexiones, espera por evento de creacion, despues, escucha snapshots y eventos de color y proyectil
-Cliente, desp del portal, trata de conectarse, manda creacion, manda snapshots y evento

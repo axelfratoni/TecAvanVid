@@ -4,8 +4,10 @@ namespace Libs
 {
     public class UnsignedCircularComparator
     {
-        public static int compareLong(ulong a, ulong b, uint bits)
+        public static int compareLong(ulong a, ulong b, ulong maxNumber)
         {
+            uint bits = 0;
+            for (ulong max = maxNumber; max > 0; max >>= 1) bits++;
             if (a != b)
             {
                 ulong module = (ulong)Math.Pow(2,bits);
@@ -30,10 +32,7 @@ namespace Libs
                     }
                     return 1;
                 }
-                else
-                {
-                    return -1;
-                }
+                return -1;
             }
             return 0;
 

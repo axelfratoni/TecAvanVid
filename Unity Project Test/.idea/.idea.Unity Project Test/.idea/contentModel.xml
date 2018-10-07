@@ -8,7 +8,7 @@
       <e p="Assets" t="Include">
         <e p="Libs" t="Include">
           <e p="BitBuffer.cs" t="Include" />
-          <e p="TODO.txt" t="Include" />
+          <e p="UnsignedCircularComparator.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
           <e p="Controllers" t="Include">

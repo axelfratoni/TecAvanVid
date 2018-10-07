@@ -6,6 +6,8 @@ namespace Events
 {
     public class Connection
     {
+        public static int MAX_SEQ_ID = 500;
+        
         private readonly int _id;
         private readonly UDPChannel _channel;
         private readonly IPEndPoint _sendingEndPoint;
@@ -41,7 +43,9 @@ namespace Events
 
         public EventBuilder AddSeqId(EventBuilder eventBuilder)
         {
-            return eventBuilder.SetSeqId(_seqId++);
+            eventBuilder.SetSeqId(_seqId);
+            _seqId = _seqId < MAX_SEQ_ID ? _seqId + 1 : 0;
+            return eventBuilder;
         }
 
         public void Disable()
