@@ -10,4 +10,6 @@ public enum EventEnum
 	Creation = 3,
 	Movement = 4,
 	AssignPlayer = 5,
+	Destroy = 6,
+	ReceiveDamage = 7
 }

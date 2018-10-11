@@ -22,6 +22,8 @@
               <e p="ConnectionAction.cs" t="Include" />
               <e p="CreationAction.cs" t="Include" />
               <e p="CreationRequestAction.cs" t="Include" />
+              <e p="DamageAction.cs" t="Include" />
+              <e p="DestroyAction.cs" t="Include" />
               <e p="EventAction.cs" t="Include" />
               <e p="MovementAction.cs" t="Include" />
               <e p="SnapshotAction.cs" t="Include" />

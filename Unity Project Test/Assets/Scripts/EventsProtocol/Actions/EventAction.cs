@@ -35,6 +35,12 @@ namespace Events.Actions
                 case EventEnum.AssignPlayer:
                     eventAction = new AssignPlayerAction(buffer);
                     break;
+                case EventEnum.Destroy:
+                    eventAction = new DestroyAction(buffer);
+                    break;
+                case EventEnum.ReceiveDamage:
+                    eventAction = new DamageAction(buffer);
+                    break;
                 default:
                     throw new Exception("No implementation for event type " + eventType);
             }
