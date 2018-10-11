@@ -42,9 +42,9 @@ namespace Events.Actions
             buffer.writeInt(_objectId, 0, Int32.MaxValue);
         }
 
-        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
+        public void Extract(Action<int, Vector3, ObjectEnum, int> executor, int clientId)
         {
-            actionDispatcher.ProcessObjectCreation(_creationPosition, clientId, _objectId, _objectType);
+            executor(_objectId, _creationPosition, _objectType, clientId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

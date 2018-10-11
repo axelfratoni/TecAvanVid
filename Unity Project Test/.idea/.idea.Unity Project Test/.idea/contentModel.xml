@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\Axel\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Axel\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Unity Project Test.-1162898584.00" t="ExcludeRecursive" />
-    <e p="D:\Unity Projects\TecAvanVid\Unity Project Test" t="IncludeRecursive">
+    <e p="C:\Users\Axel\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Unity Project Test.897463280.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Axel\Documents\Unity Proyects\TecAvanVid\Unity Project Test" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Libs" t="Include">
@@ -17,7 +17,6 @@
             <e p="ProjectileController.cs" t="Include" />
           </e>
           <e p="EventsProtocol" t="Include">
-            <e p="ActionDispatcher.cs" t="Include" />
             <e p="Actions" t="Include">
               <e p="AssignPlayerAction.cs" t="Include" />
               <e p="ConnectionAction.cs" t="Include" />
@@ -27,17 +26,20 @@
               <e p="MovementAction.cs" t="Include" />
               <e p="SnapshotAction.cs" t="Include" />
             </e>
-            <e p="Connection.cs" t="Include" />
+            <e p="EventManager.cs" t="Include" />
             <e p="Events" t="Include">
               <e p="Event.cs" t="Include" />
               <e p="EventEnum.cs" t="Include" />
               <e p="EventTimeoutTypeEnum.cs" t="Include" />
+              <e p="ReliableEventQueue.cs" t="Include" />
             </e>
-            <e p="ProtocolManagers" t="Include">
-              <e p="EventManager.cs" t="Include" />
+            <e p="Networking" t="Include">
+              <e p="Connection.cs" t="Include" />
+              <e p="NetworkBuffer.cs" t="Include" />
+              <e p="NetworkBuffer2.cs" t="Include" />
               <e p="NetworkManager.cs" t="Include" />
+              <e p="UDPChannel.cs" t="Include" />
             </e>
-            <e p="ReliableEventQueue.cs" t="Include" />
           </e>
           <e p="MainMenu" t="Include">
             <e p="MenuController.cs" t="Include" />
@@ -50,13 +52,6 @@
             <e p="Ball.cs" t="Include" />
             <e p="ObjectEnum.cs" t="Include" />
             <e p="Projectile.cs" t="Include" />
-          </e>
-          <e p="Networking" t="Include">
-            <e p="NetworkBuffer.cs" t="Include" />
-            <e p="NetworkBuffer2.cs" t="Include" />
-            <e p="TCPClient.cs" t="Include" />
-            <e p="TCPServer.cs" t="Include" />
-            <e p="UDPChannel.cs" t="Include" />
           </e>
         </e>
       </e>

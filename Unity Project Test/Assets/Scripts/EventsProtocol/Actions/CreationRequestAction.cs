@@ -37,9 +37,9 @@ namespace Events.Actions
             buffer.writeFloat(_creationPosition.z, -31.0f, 31.0f, 0.1f);
         }
 
-        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
+        public void Extract(Action<int, Vector3, ObjectEnum> executor, int clientId)
         {
-            actionDispatcher.ProcessCreationRequest(clientId, _objectType, _creationPosition);
+            executor(clientId, _creationPosition, _objectType);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

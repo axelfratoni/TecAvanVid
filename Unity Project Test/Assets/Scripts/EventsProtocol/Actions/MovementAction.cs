@@ -35,9 +35,9 @@ namespace Events.Actions
                 buffer.writeInt((int) input, 0, Enum.GetValues(typeof(InputEnum)).Length));
         }
 
-        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
+        public void Extract(Action<double, List<InputEnum>, int> executor, int clientId)
         {
-            actionDispatcher.ProcessInput(_time, _inputList, clientId);
+            executor(_time, _inputList, clientId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Events.Actions;
 using Libs;
 using UnityEngine;
@@ -61,11 +62,6 @@ namespace Events
                                                           .SetTimeoutType(eventTimeoutType)
                                                           .SetPayload(payload);
             return eventBuilder;
-        }
-
-        public void Execute(ActionDispatcher actionDispatcher)
-        {
-            _payload.Execute(actionDispatcher, _clientId);
         }
 
         public int SeqId

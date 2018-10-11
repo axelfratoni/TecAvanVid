@@ -12,10 +12,6 @@ namespace Events.Actions
         {
         }
 
-        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
-        {
-        }
-
         public override EventTimeoutTypeEnum GetTimeoutType()
         {
             return EventTimeoutTypeEnum.TimeOut;

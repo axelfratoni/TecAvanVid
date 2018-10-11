@@ -14,10 +14,6 @@ namespace Events
 
         private ObjectFactory _objectFactory;
         private EventManager _eventManager;
-        private ActionDispatcher _actionDispatcher;
-        
-        private readonly Queue<Ball> _ballCreationRequests = new Queue<Ball>();
-        private readonly Queue<Projectile> _projectileCreationRequests = new Queue<Projectile>();
         
         private readonly List<BallController> _balls = new List<BallController>();
         private readonly List<ProjectileController> _proyectiles = new List<ProjectileController>();
@@ -25,19 +21,27 @@ namespace Events
         private void Start()
         {
             _objectFactory = new ObjectFactory();
-            _actionDispatcher = new ActionDispatcher(this);
-            _eventManager = new EventManager(_actionDispatcher, serverPort);
+            _eventManager = new EventManager(serverPort, null);
         }
         
         public void Update()
         {
-            while (_ballCreationRequests.Count > 0)
+            Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
+            while (pendingEvents.Count > 0)
             {
-                Ball ball = _ballCreationRequests.Dequeue();
-                BallController ballController = Instantiate(ballPrefab).GetComponent<BallController>();
-                ballController.SetBall(ball);
-                _balls.Add(ballController);
+                Event iEvent = pendingEvents.Dequeue();
+                switch (iEvent.GetEventEnum())
+                {
+                    case EventEnum.CreationRequest:
+                        ((CreationRequestAction)iEvent.GetPayload()).Extract(ProcessCreationRequest, iEvent.ClientId);
+                        break;
+                    case EventEnum.Movement:
+                        ((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
+                        break;
+                }
             }
+
+            /*
 
             while (_projectileCreationRequests.Count > 0)
             {
@@ -46,7 +50,7 @@ namespace Events
                     Instantiate(projectilePrefab).GetComponent<ProjectileController>();
                 projectileController.SetProjectile(projectile);
                 _proyectiles.Add(projectileController);
-            }
+            }*/
             
             _balls.ForEach(ball =>
             {
@@ -55,31 +59,33 @@ namespace Events
             });
         }
         
-        public void ProcessInput(double time, List<InputEnum> inputList, int clientId) 
+        private void ProcessInput(double time, List<InputEnum> inputList, int clientId) 
         {
             Debug.Log("Received input");
             BallController ballController = _balls.Find(ball => ball.GetBall().ClientId.Equals(clientId));
             if (ballController != null)
             {
                 ballController.ApplyInput(time, inputList);
-                if (inputList.Contains(InputEnum.ClickLeft))
+                /*if (inputList.Contains(InputEnum.ClickLeft))
                 {
                     Projectile newProjectile =
                         _objectFactory.CreateProjectile(ballController.GetBall().Position, clientId, false);
                     _projectileCreationRequests.Enqueue(newProjectile);
-                }
+                }*/
             }
         }
 
-        public void ProcessCreationRequest(int clientId, ObjectEnum objectType, Vector3 creationPosition)
+        public void ProcessCreationRequest(int clientId, Vector3 creationPosition, ObjectEnum objectType)
         {
             Debug.Log("Creation request received from client " + clientId + " position " + creationPosition);
             if (objectType.Equals(ObjectEnum.Ball))
             {
                 Ball newBall = _objectFactory.CreateBall(creationPosition, clientId);
-                _ballCreationRequests.Enqueue(newBall); 
                 _eventManager.BroadcastEventAction(new CreationAction(newBall.Position, newBall.ObjectId, ObjectEnum.Ball));
-                _eventManager.SendEventAction(new AssignPlayerAction(newBall.ObjectId), clientId);
+                _eventManager.SendEventAction(new AssignPlayerAction(newBall.ObjectId), clientId);                
+                BallController ballController = Instantiate(ballPrefab).GetComponent<BallController>();
+                ballController.SetBall(newBall);
+                _balls.Add(ballController);
             }
         }
         

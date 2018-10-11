@@ -9,14 +9,16 @@ namespace Events
     public class EventManager
     {
         private readonly NetworkManager _networkManager;
-        private readonly ActionDispatcher _actionDispatcher;
-        private readonly Dictionary<EventTimeoutTypeEnum, ReliableEventQueue> _eventQueues;
+        private readonly Queue<Event> _unreadReceivedEvents;
+        private readonly Dictionary<EventTimeoutTypeEnum, ReliableEventQueue> _sendingEventsQueues;
+        private readonly Action<int> _initializationAction;
         
-        public EventManager(ActionDispatcher actionDispatcher, int localPort)
+        public EventManager(int localPort, Action<int> initializationAction)
         {
-            _actionDispatcher = actionDispatcher;
+            _initializationAction = initializationAction;
+            _unreadReceivedEvents = new Queue<Event>();
             _networkManager = new NetworkManager(localPort, this);
-            _eventQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
+            _sendingEventsQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
             {
                 {EventTimeoutTypeEnum.NoTimeOut, new ReliableEventQueue(5, SendEventsInQueue)},
                 {EventTimeoutTypeEnum.TimeOut, new ReliableEventQueue(1000, SendEventsInQueue)}
@@ -55,7 +57,7 @@ namespace Events
             if (!ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
             {
                 ReliableEventQueue eventQueue;
-                if (_eventQueues.TryGetValue(ievent.GetTimeoutType(), out eventQueue))
+                if (_sendingEventsQueues.TryGetValue(ievent.GetTimeoutType(), out eventQueue))
                 {
                     eventQueue.AddEvent(ievent);  
                 }
@@ -69,7 +71,7 @@ namespace Events
         public void ReceiveEvent(Event ievent)
         {
             ReliableEventQueue eventQueue;
-            if (_eventQueues.TryGetValue(ievent.GetTimeoutType(), out eventQueue))
+            if (_sendingEventsQueues.TryGetValue(ievent.GetTimeoutType(), out eventQueue))
             {
                 if (ievent.Ack)
                 {
@@ -79,7 +81,7 @@ namespace Events
                 {
                     if (eventQueue.ShouldProcessEvent(ievent) && ievent.GetPayload() != null)
                     {
-                        ievent.Execute(_actionDispatcher);
+                        _unreadReceivedEvents.Enqueue(ievent);
                     }
                     
                     _networkManager.SendEvent(new EventBuilder(ievent).SetAck(true).Build());
@@ -89,7 +91,7 @@ namespace Events
             {
                 if (ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
                 {
-                    ievent.Execute(_actionDispatcher);
+                    _unreadReceivedEvents.Enqueue(ievent);
                 }
                 else
                 {
@@ -115,14 +117,22 @@ namespace Events
             AddEventToReliableQueue(connectionEvent);
         }
 
+        public Queue<Event> GetPendingEvents()
+        {
+            return _unreadReceivedEvents;
+        }
+
         public void ConfirmConnection(int serverId)
         {
-            _actionDispatcher.InitializeGame(serverId);
+            if (_initializationAction != null)
+            {
+                _initializationAction(serverId);
+            }
         }
 
         public void Disable()
         {
-            foreach (KeyValuePair<EventTimeoutTypeEnum,ReliableEventQueue> eventQueue in _eventQueues)
+            foreach (KeyValuePair<EventTimeoutTypeEnum,ReliableEventQueue> eventQueue in _sendingEventsQueues)
             {
                 eventQueue.Value.Disable();
             }

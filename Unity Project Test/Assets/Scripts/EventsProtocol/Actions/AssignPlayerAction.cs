@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libs;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Events.Actions
 {
     public class AssignPlayerAction : EventAction
     {
-        private int _objectId;
+        private readonly int _objectId;
         
         public AssignPlayerAction(int objectId)
         {
@@ -23,9 +24,9 @@ namespace Events.Actions
             buffer.writeInt(_objectId, 0, Int32.MaxValue);
         }
 
-        public override void Execute(ActionDispatcher actionDispatcher, int clientId)
+        public void Extract(Action<int> executor, int clientId)
         {
-            actionDispatcher.AssignPlayerAction(_objectId);
+            executor(_objectId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

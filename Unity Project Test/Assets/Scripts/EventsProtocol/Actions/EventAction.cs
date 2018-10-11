@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Libs;
 
 namespace Events.Actions
@@ -6,8 +7,6 @@ namespace Events.Actions
     public abstract class EventAction
     {
         public abstract void Serialize(BitBuffer buffer);
-                
-        public abstract void Execute(ActionDispatcher actionDispatcher, int clientId);
 
         public abstract EventTimeoutTypeEnum GetTimeoutType();
 
