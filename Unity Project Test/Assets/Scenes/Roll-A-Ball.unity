@@ -734,7 +734,6 @@ GameObject:
   m_Component:
   - component: {fileID: 535403648}
   - component: {fileID: 535403647}
-  - component: {fileID: 535403649}
   m_Layer: 0
   m_Name: Client1
   m_TagString: Untagged
@@ -750,11 +749,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 535403646}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8e43741e9796254bb9eacf231d46ea7, type: 3}
+  m_Script: {fileID: 11500000, guid: d21a4f06f8c40994f895789fc94b7fa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 1386834863068080, guid: 1457d1f64649f2c48953d30eda26f9ce, type: 2}
-  projectilePrefab: {fileID: 1752738099451206, guid: 086d79e943bef144ebe87d8765fdde7b,
+  ballPrefab: {fileID: 1386834863068080, guid: 0b40ef681433de642bb457cdcf79e309, type: 2}
+  projectilePrefab: {fileID: 1752738099451206, guid: 25b6dcbbb86e4264086e1293d8666712,
     type: 2}
   Camera: {fileID: 1262325610}
   _serverPort: 10000
@@ -773,17 +772,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &535403649
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 535403646}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 232c7dbf4da5486cbeb735aee34c0b24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &627971874
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1336,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1239274667}
   - component: {fileID: 1239274666}
-  - component: {fileID: 1239274668}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -1364,11 +1351,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1239274665}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 211395ef57bd95845b63d2ef402d57d7, type: 3}
+  m_Script: {fileID: 11500000, guid: 834b46fba0caf4c4bae15f37fdaa50b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 1386834863068080, guid: 1457d1f64649f2c48953d30eda26f9ce, type: 2}
-  projectilePrefab: {fileID: 1752738099451206, guid: 086d79e943bef144ebe87d8765fdde7b,
+  ballPrefab: {fileID: 1386834863068080, guid: 0b40ef681433de642bb457cdcf79e309, type: 2}
+  projectilePrefab: {fileID: 1752738099451206, guid: 25b6dcbbb86e4264086e1293d8666712,
     type: 2}
   serverPort: 10000
 --- !u!4 &1239274667
@@ -1384,17 +1371,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1239274668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1239274665}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 232c7dbf4da5486cbeb735aee34c0b24, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1262325610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1421,7 +1397,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1262325610}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a81c476c9a16368469c9730e400fc48e, type: 3}
+  m_Script: {fileID: 11500000, guid: afe599fdfeb6e9743ba85379b328cb4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!81 &1262325612
