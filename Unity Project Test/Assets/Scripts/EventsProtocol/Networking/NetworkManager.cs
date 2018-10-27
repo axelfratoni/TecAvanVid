@@ -5,6 +5,7 @@ using System.Net;
 using Events.Actions;
 using Libs;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Events
 {
@@ -34,6 +35,12 @@ namespace Events
         {
             Connection connection = _connectionList.Find(con => con.IsThisEndpoint(remoteEndpoint));
             int connectionId = connection == null ? -1 : connection.Id;
+            
+            var value = Random.Range(0f,100f);
+            if (value < Data.LOSS_PERCENTAGE)
+            {
+                return;
+            }
             
             Event ievent = Event.Deserialize(receivedBytes).SetClientId(connectionId)
                                                            .Build();    
