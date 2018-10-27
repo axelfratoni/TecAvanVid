@@ -110,10 +110,10 @@ namespace Events
 
         public void UpdateLatency(double deltaTime)
         {
-            List<LatencyEvent> toRemove = new List<LatencyEvent>();
-            foreach (var latencyEvent in _latencyEventList)
+            foreach (var latencyEvent in _latencyEventList.ToList())
             {
                 latencyEvent.Latency -= deltaTime;
+                Debug.Log(latencyEvent.Latency);
                 if (latencyEvent.Latency <= 0)
                 {
                     Connection connection = _connectionList.Find(con => con.Id == latencyEvent.IEvent.ClientId);
@@ -121,7 +121,7 @@ namespace Events
                     {
                         //Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
                         connection.Send(latencyEvent.IEvent);
-                        toRemove.Add(latencyEvent);
+                        _latencyEventList.Add(latencyEvent);
                     }
                     else
                     {
@@ -130,7 +130,6 @@ namespace Events
 
                 }
             }
-            _latencyEventList.RemoveAll(item => toRemove.Contains(item));
         }
         
         
