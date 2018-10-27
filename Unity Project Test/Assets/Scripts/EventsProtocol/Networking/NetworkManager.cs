@@ -5,7 +5,7 @@ using System.Net;
 using Events.Actions;
 using Libs;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 namespace Events
 {
@@ -16,13 +16,16 @@ namespace Events
         private readonly UDPChannel _receiver;
         private readonly ConnectionFactory _connectionFactory;
         private readonly EventManager _eventManager;
+        private readonly Random _random;
 
         public NetworkManager(int localPort, EventManager eventManager)
         {
             _connectionList = new List<Connection>();
+            _latencyEventList = new List<LatencyEvent>();
             _receiver = new UDPChannel(localPort, ReceiveEvent);
             _connectionFactory = new ConnectionFactory(_receiver);
             _eventManager = eventManager;
+            _random = new Random();
         }
         
         public int AddConnection(IPEndPoint remoteEndpoint)
@@ -37,7 +40,7 @@ namespace Events
             Connection connection = _connectionList.Find(con => con.IsThisEndpoint(remoteEndpoint));
             int connectionId = connection == null ? -1 : connection.Id;
             
-            var value = Random.Range(0f,100f);
+            var value = _random.NextDouble() * 100;
             if (value < Data.LOSS_PERCENTAGE)
             {
                 return;
@@ -57,8 +60,8 @@ namespace Events
         public void SendEvent(Event ievent)
         {
             /* Add to latency*/
-            double latency = Random.Range(Data.MIN_LATENCY, Data.MAX_LATENCY);
-            _latencyEventList.Add(new LatencyEvent(ievent,0));
+            double latency = Data.MIN_LATENCY + _random.NextDouble() * Data.MAX_LATENCY;
+            _latencyEventList.Add(new LatencyEvent(ievent,latency));
         }
 
         private Event HandleConnectionEvent(Event ievent, IPEndPoint remoteEndpoint)
@@ -107,6 +110,7 @@ namespace Events
 
         public void UpdateLatency(double deltaTime)
         {
+            List<LatencyEvent> toRemove = new List<LatencyEvent>();
             foreach (var latencyEvent in _latencyEventList)
             {
                 latencyEvent.Latency -= deltaTime;
@@ -117,6 +121,7 @@ namespace Events
                     {
                         //Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
                         connection.Send(latencyEvent.IEvent);
+                        toRemove.Add(latencyEvent);
                     }
                     else
                     {
@@ -125,6 +130,7 @@ namespace Events
 
                 }
             }
+            _latencyEventList.RemoveAll(item => toRemove.Contains(item));
         }
         
         
