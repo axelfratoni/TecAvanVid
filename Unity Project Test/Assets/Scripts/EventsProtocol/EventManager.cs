@@ -130,6 +130,11 @@ namespace Events
             }
         }
 
+        public void UpdateLatency(double deltaTime)
+        {
+            _networkManager.UpdateLatency(deltaTime);
+        }
+
         public void Disable()
         {
             foreach (KeyValuePair<EventTimeoutTypeEnum,ReliableEventQueue> eventQueue in _sendingEventsQueues)

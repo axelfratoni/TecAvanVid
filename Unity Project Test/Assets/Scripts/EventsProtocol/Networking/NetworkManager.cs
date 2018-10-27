@@ -12,6 +12,7 @@ namespace Events
     public class NetworkManager
     {
         private readonly List<Connection> _connectionList;
+        private readonly List<LatencyEvent> _latencyEventList;
         private readonly UDPChannel _receiver;
         private readonly ConnectionFactory _connectionFactory;
         private readonly EventManager _eventManager;
@@ -55,16 +56,9 @@ namespace Events
 
         public void SendEvent(Event ievent)
         {
-            Connection connection = _connectionList.Find(con => con.Id == ievent.ClientId);
-            if (connection != null)
-            {
-                //Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
-                connection.Send(ievent);
-            }
-            else
-            {
-                throw new Exception("No such connection " + ievent.ClientId);
-            }
+            /* Add to latency*/
+            double latency = Random.Range(Data.MIN_LATENCY, Data.MAX_LATENCY);
+            _latencyEventList.Add(new LatencyEvent(ievent,0));
         }
 
         private Event HandleConnectionEvent(Event ievent, IPEndPoint remoteEndpoint)
@@ -110,5 +104,29 @@ namespace Events
             _connectionList.ForEach(con => con.Disable());
             _receiver.Disable();
         }
+
+        public void UpdateLatency(double deltaTime)
+        {
+            foreach (var latencyEvent in _latencyEventList)
+            {
+                latencyEvent.Latency -= deltaTime;
+                if (latencyEvent.Latency <= 0)
+                {
+                    Connection connection = _connectionList.Find(con => con.Id == latencyEvent.IEvent.ClientId);
+                    if (connection != null)
+                    {
+                        //Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
+                        connection.Send(latencyEvent.IEvent);
+                    }
+                    else
+                    {
+                        throw new Exception("No such connection " + latencyEvent.IEvent.ClientId);
+                    }
+
+                }
+            }
+        }
+        
+        
     }
 }

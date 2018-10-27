@@ -54,6 +54,7 @@ namespace Events
                 _eventManager.SendEventAction(new MovementAction(0, inputList), _serverId);
             }
             
+            _eventManager.UpdateLatency(Time.deltaTime);
             /*while (_creationRequests.Count > 0)
             {
                 Ball ball = _creationRequests.Dequeue();

@@ -57,6 +57,7 @@ namespace Events
                 Ball ballData = ball.GetBall();
                 _eventManager.BroadcastEventAction(new SnapshotAction(ballData.ObjectId, ballData.Position, 0));
             });
+            _eventManager.UpdateLatency(Time.deltaTime);
         }
         
         private void ProcessInput(double time, List<InputEnum> inputList, int clientId) 
