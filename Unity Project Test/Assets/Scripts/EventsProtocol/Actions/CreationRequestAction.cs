@@ -52,4 +52,11 @@ namespace Events.Actions
             return EventEnum.CreationRequest;
         }
     }
+    
+    public enum ObjectEnum
+    {
+        Ball = 0,
+        Proyectile = 1,
+        Player = 2
+    }
 }

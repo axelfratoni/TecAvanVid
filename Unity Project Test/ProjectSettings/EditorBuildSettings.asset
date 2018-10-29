@@ -8,7 +8,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/FloatingCubes.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Roll-A-Ball.unity
     guid: 72406d15f51167644a95bc6523b45f8c
+  - enabled: 1
+    path: Assets/Scenes/Shooter.unity
+    guid: caa00d608e9808341b6a016af07ebe69
   m_configObjects: {}

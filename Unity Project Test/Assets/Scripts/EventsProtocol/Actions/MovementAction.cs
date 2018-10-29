@@ -9,17 +9,23 @@ namespace Events.Actions
     {
         private readonly double _time;
         private readonly List<InputEnum> _inputList;
+        private readonly float _mouseX;
 
-        public MovementAction(double time, List<InputEnum> inputList)
+        public MovementAction(double time, float mouseX, List<InputEnum> inputList)
         {
             _time = time;
             _inputList = inputList;
+            _mouseX = mouseX > 10? 10: mouseX < -10? -10: mouseX;
         }
         
         public MovementAction(BitBuffer payload)
         {
             _time = payload.readFloat( 0.0f, 3600.0f, 0.01f);
+            
+            _mouseX = payload.readFloat(-10f, 10f, 0.1f);
+            
             int inputListLength = payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length); 
+            
             _inputList = new List<InputEnum>(inputListLength);
             for (int i = 0; i < inputListLength; i++)
             {
@@ -30,14 +36,18 @@ namespace Events.Actions
         public override void Serialize(BitBuffer buffer)
         {
             buffer.writeFloat((float) _time, 0.0f, 3600.0f, 0.01f);
+            
+            buffer.writeFloat(_mouseX, -10f, 10f, 0.1f);
+            
             buffer.writeInt(_inputList.Count, 0, Enum.GetValues(typeof(InputEnum)).Length); 
+            
             _inputList.ForEach(input => 
                 buffer.writeInt((int) input, 0, Enum.GetValues(typeof(InputEnum)).Length));
         }
 
-        public void Extract(Action<double, List<InputEnum>, int> executor, int clientId)
+        public void Extract(Action<double, double, List<InputEnum>, int> executor, int clientId)
         {
-            executor(_time, _inputList, clientId);
+            executor(_time, _mouseX, _inputList, clientId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()
@@ -58,7 +68,7 @@ namespace Events.Actions
         S = 2, 
         D = 3, 
         ClickLeft = 4, 
-        ClickRight = 5 
+        ClickRight = 5,
     }
 
     public static class InputMapper
@@ -86,7 +96,7 @@ namespace Events.Actions
             {
                 inputList.Add(InputEnum.W);
             }
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetButton("Fire1")) 
             {
                 inputList.Add(InputEnum.ClickLeft);
             }

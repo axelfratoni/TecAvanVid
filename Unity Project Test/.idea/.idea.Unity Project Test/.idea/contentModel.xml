@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ContentModelStore">
     <e p="C:\Users\Axel\.Rider2018.2\system\extResources" t="IncludeRecursive" />
-    <e p="C:\Users\Axel\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Unity Project Test.897463280.00" t="ExcludeRecursive" />
-    <e p="C:\Users\Axel\Documents\Unity Proyects\TecAvanVid\Unity Project Test" t="IncludeRecursive">
+    <e p="C:\Users\Axel\.Rider2018.2\system\resharper-host\Local\Transient\ReSharperHost\v182\SolutionCaches\_Unity Project Test.-1162898584.00" t="ExcludeRecursive" />
+    <e p="D:\Unity Projects\TecAvanVid\Unity Project Test" t="IncludeRecursive">
       <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
       <e p="Assets" t="Include">
         <e p="Libs" t="Include">
@@ -11,10 +11,23 @@
           <e p="UnsignedCircularComparator.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">
-          <e p="Controllers" t="Include">
-            <e p="BallController.cs" t="Include" />
-            <e p="CameraController.cs" t="Include" />
-            <e p="ProjectileController.cs" t="Include" />
+          <e p="BallGame" t="Include">
+            <e p="Camera" t="Include">
+              <e p="CameraFollow.cs" t="Include" />
+            </e>
+            <e p="Controllers" t="Include">
+              <e p="BallController.cs" t="Include" />
+              <e p="CameraController.cs" t="Include" />
+              <e p="ProjectileController.cs" t="Include" />
+            </e>
+            <e p="Managers" t="Include">
+              <e p="ClientManager.cs" t="Include" />
+              <e p="ServerManager.cs" t="Include" />
+            </e>
+            <e p="Models" t="Include">
+              <e p="Ball.cs" t="Include" />
+              <e p="Projectile.cs" t="Include" />
+            </e>
           </e>
           <e p="EventsProtocol" t="Include">
             <e p="Actions" t="Include">
@@ -23,10 +36,10 @@
               <e p="CreationAction.cs" t="Include" />
               <e p="CreationRequestAction.cs" t="Include" />
               <e p="DamageAction.cs" t="Include" />
-              <e p="DestroyAction.cs" t="Include" />
               <e p="EventAction.cs" t="Include" />
               <e p="MovementAction.cs" t="Include" />
               <e p="SnapshotAction.cs" t="Include" />
+              <e p="SpecialAction.cs" t="Include" />
             </e>
             <e p="EventManager.cs" t="Include" />
             <e p="Events" t="Include">
@@ -46,14 +59,23 @@
           <e p="MainMenu" t="Include">
             <e p="MenuController.cs" t="Include" />
           </e>
-          <e p="Managers" t="Include">
-            <e p="ClientManager.cs" t="Include" />
-            <e p="ServerManager.cs" t="Include" />
-          </e>
-          <e p="Models" t="Include">
-            <e p="Ball.cs" t="Include" />
-            <e p="ObjectEnum.cs" t="Include" />
-            <e p="Projectile.cs" t="Include" />
+          <e p="ShooterGame" t="Include">
+            <e p="Controllers" t="Include">
+              <e p="Camera" t="Include">
+                <e p="CameraController.cs" t="Include" />
+              </e>
+              <e p="Player" t="Include">
+                <e p="PlayerController.cs" t="Include" />
+                <e p="PlayerHealth.cs" t="Include" />
+                <e p="PlayerMovement.cs" t="Include" />
+                <e p="PlayerShooting.cs" t="Include" />
+                <e p="PlayerSnapshot.cs" t="Include" />
+              </e>
+            </e>
+            <e p="Managers" t="Include">
+              <e p="ClientManager.cs" t="Include" />
+              <e p="ServerManager.cs" t="Include" />
+            </e>
           </e>
         </e>
       </e>

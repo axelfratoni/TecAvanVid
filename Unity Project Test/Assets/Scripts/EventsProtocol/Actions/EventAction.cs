@@ -35,8 +35,8 @@ namespace Events.Actions
                 case EventEnum.AssignPlayer:
                     eventAction = new AssignPlayerAction(buffer);
                     break;
-                case EventEnum.Destroy:
-                    eventAction = new DestroyAction(buffer);
+                case EventEnum.Special:
+                    eventAction = new SpecialAction(buffer);
                     break;
                 case EventEnum.ReceiveDamage:
                     eventAction = new DamageAction(buffer);
