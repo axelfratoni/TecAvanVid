@@ -74,7 +74,7 @@ namespace ShooterGame.Managers
         {
             Debug.Log("Received Snapshot");
             PlayerController playerCont = _players.Find(player => player.ObjectId.Equals(objectId));
-            if(playerCont != null) playerCont.ApplySnapshot(timeStamp, objectPosition, rotation);
+            if(playerCont != null) playerCont.ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
         }
         
         private void ProcessObjectCreation(int objectId, Vector3 creationPosition, ObjectEnum objectType, int clientId)
