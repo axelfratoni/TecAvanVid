@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Events;
 using Events.Actions;
 using ShooterGame.Controllers;
@@ -12,14 +13,14 @@ public class ServerManager : MonoBehaviour {
 
 	private EventManager _eventManager;
 	private ObjectIdManager _objectIdManager;
-	private readonly List<PlayerController> _players = new List<PlayerController>();
-	
-	void Start () {
+	private List<PlayerController> _players = new List<PlayerController>();
+
+	private void Start () {
 		_objectIdManager = new ObjectIdManager();
 		_eventManager = new EventManager(ServerPort, null);
 	}
-	
-	void Update () {
+
+	private void Update () {
 		Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
 		while (pendingEvents.Count > 0)
 		{
@@ -27,11 +28,13 @@ public class ServerManager : MonoBehaviour {
 			if(iEvent == null) continue;
 			switch (iEvent.GetEventEnum())
 			{
+				case EventEnum.Connection:
+					ProcessConnection(iEvent.ClientId);
+					break;
 				case EventEnum.CreationRequest:
 					((CreationRequestAction)iEvent.GetPayload()).Extract(ProcessCreationRequest, iEvent.ClientId);
 					break;
 				case EventEnum.Movement:
-					((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
 					((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
 					break;
 			}
@@ -44,6 +47,24 @@ public class ServerManager : MonoBehaviour {
 			_eventManager.BroadcastEventAction(new SnapshotAction(player.ObjectId, position, rotation, 0));
 		});
 	}
+
+	private void HealthWatcher(int currentHealth, int objectId, int clientId)
+	{
+		_eventManager.BroadcastEventAction(new DamageAction(currentHealth, objectId));
+		if (currentHealth == 0)
+		{
+			_players = _players.Where(player => !player.ObjectId.Equals(objectId)).ToList();
+		}
+	}
+
+	private void ProcessConnection(int clientId)
+	{
+		_players.ForEach(player =>
+		{
+			Vector3 position = player.transform.position;
+			_eventManager.SendEventAction(new CreationAction(position, player.ObjectId, ObjectEnum.Player), clientId);
+		});
+	}
 	
 	private void ProcessInput(double time, double mouseX, List<InputEnum> inputList, int clientId) 
 	{
@@ -52,7 +73,7 @@ public class ServerManager : MonoBehaviour {
 		if (playerController != null)
 		{
 			bool isFiring = inputList.Contains(InputEnum.ClickLeft);
-			if ((isFiring && !playerController.IsFiring()) || (!isFiring && playerController.IsFiring()))
+			if (isFiring && !playerController.IsFiring() || !isFiring && playerController.IsFiring())
 			{
 				_eventManager.BroadcastEventAction(new SpecialAction(isFiring? SpecialActionEnum.FiringStart : 
 																			   SpecialActionEnum.FiringStop,
@@ -71,6 +92,7 @@ public class ServerManager : MonoBehaviour {
 			int objectId = _objectIdManager.GetNext();
 			PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
 			playerController.Initialize(objectId, clientId, creationPosition);
+			playerController.SetHealthWatcher(HealthWatcher);
 			_players.Add(playerController);
 			
 			_eventManager.BroadcastEventAction(new CreationAction(creationPosition, objectId, objectType));

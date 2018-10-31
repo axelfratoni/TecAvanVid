@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Events.Actions;
 using UnityEngine;
@@ -13,12 +14,14 @@ namespace ShooterGame.Controllers
         private PlayerMovement _playerMovement;
         private PlayerShooting _playerShooting;
         private PlayerSnapshot _playerSnapshot;
+        private PlayerHealth _playerHealth;
 
         private void Awake()
         {
             _playerMovement = GetComponent<PlayerMovement>();
             _playerShooting = GetComponentInChildren<PlayerShooting>();
             _playerSnapshot = GetComponent<PlayerSnapshot>();
+            _playerHealth = GetComponent<PlayerHealth>();
 
             _playerSnapshot.enabled = false;
         }
@@ -28,6 +31,11 @@ namespace ShooterGame.Controllers
             ClientId = clientId;
             ObjectId = objectId;
             _playerSnapshot.SetPosition(initialPosition);
+        }
+
+        public void SetHealthWatcher(Action<int, int, int> healthWatcher)
+        {
+            _playerHealth.SetHealthWatcher(healthWatcher);
         }
 
         public void ToggleInputSnapshotController(bool isControlledByInput)
@@ -65,6 +73,16 @@ namespace ShooterGame.Controllers
         public bool IsFiring()
         {
             return _playerShooting.GetFiring();
+        }
+
+        public void SetShootableLayer(bool isShootable)
+        {
+            gameObject.layer = isShootable ? 9 : 0;
+        }
+
+        public void UpdateHealth(int health)
+        {
+            _playerHealth.UpdateHealth(health);
         }
     }
     

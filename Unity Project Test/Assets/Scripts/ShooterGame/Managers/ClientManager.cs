@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Timers;
 using Events;
 using Events.Actions;
 using ShooterGame.Camera;
@@ -21,7 +23,7 @@ namespace ShooterGame.Managers
         private EventManager _eventManager;
         private bool _isConnected;
         private int _serverId;
-        private readonly List<PlayerController> _players = new List<PlayerController>();
+        private List<PlayerController> _players = new List<PlayerController>();
         private int _playerObjectId;
         
         private void Start()
@@ -49,6 +51,9 @@ namespace ShooterGame.Managers
                         break;
                     case EventEnum.Special:
                         ((SpecialAction)iEvent.GetPayload()).Extract(ProcessSpecialAction, iEvent.ClientId);
+                        break;
+                    case EventEnum.ReceiveDamage:
+                        ((DamageAction)iEvent.GetPayload()).Extract(ProcessHealthUpdate, iEvent.ClientId);
                         break;
                 }
             }
@@ -85,6 +90,7 @@ namespace ShooterGame.Managers
                 PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
                 playerController.Initialize(objectId, clientId, creationPosition);
                 playerController.ToggleInputSnapshotController(false);
+                playerController.SetShootableLayer(false);
                 _players.Add(playerController);
                 
                 if(objectId.Equals(_playerObjectId)) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
@@ -96,6 +102,39 @@ namespace ShooterGame.Managers
             _playerObjectId = objectId;
             PlayerController playerController = _players.Find(player => player.ObjectId.Equals(objectId));
             if(playerController != null) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
+        }
+
+        private void ProcessHealthUpdate(int currentHealth, int objectId)
+        {
+            PlayerController playerController = _players.Find(player => player.ObjectId.Equals(objectId));
+            if (playerController != null)
+            {
+                playerController.UpdateHealth(currentHealth);
+                if (currentHealth == 0)
+                {
+                    Death(playerController);
+                }
+            }
+        }
+
+        private void Death(PlayerController playerController)
+        {
+            _players = _players.Where(player => !player.ObjectId.Equals(playerController.ObjectId)).ToList();
+
+            if (playerController.ObjectId.Equals(_playerObjectId))
+            {
+                Camera.GetComponent<CameraController>().PlayerDeath();
+            }
+            
+            Timer aTimer = new Timer();
+            aTimer.Elapsed += delegate
+            {
+                aTimer.Dispose();
+                _isConnected = false;
+                InitializeGame(_serverId);
+            };
+            aTimer.Interval = 5000;
+            aTimer.Enabled = true;
         }
 
         private void ProcessSpecialAction(SpecialActionEnum action, int objectId)

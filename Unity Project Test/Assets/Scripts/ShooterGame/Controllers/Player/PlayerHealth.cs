@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using ShooterGame.Controllers;
 using UnityEngine.SceneManagement;
 
 
@@ -14,28 +16,30 @@ public class PlayerHealth : MonoBehaviour
     public float flashSpeed = 5f;
     public Color flashColour = new Color(1f, 0f, 0f, 0.1f);
 
-
-    Animator anim;
-    AudioSource playerAudio;
-    PlayerMovement playerMovement;
-    PlayerShooting playerShooting;
-    bool isDead;
-    bool damaged;
+    private Action<int, int, int> _healthWatcher;
+    private Animator _anim;
+    private AudioSource _playerAudio;
+    private PlayerMovement _playerMovement;
+    private PlayerShooting _playerShooting;
+    private PlayerController _playerController;
+    private bool _isDead;
+    private bool _damaged;
 
 
     void Awake ()
     {
-        anim = GetComponent <Animator> ();
-        playerAudio = GetComponent <AudioSource> ();
-        playerMovement = GetComponent <PlayerMovement> ();
-        playerShooting = GetComponentInChildren <PlayerShooting> ();
+        _anim = GetComponent <Animator> ();
+        _playerAudio = GetComponent <AudioSource> ();
+        _playerMovement = GetComponent <PlayerMovement> ();
+        _playerShooting = GetComponentInChildren <PlayerShooting> ();
+        _playerController = GetComponent <PlayerController> ();
         currentHealth = startingHealth;
     }
 
 
     void Update ()
     {
-        if(damaged)
+        if(_damaged)
         {
             //damageImage.color = flashColour;
         }
@@ -43,39 +47,53 @@ public class PlayerHealth : MonoBehaviour
         {
             //damageImage.color = Color.Lerp (damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
         }
-        damaged = false;
+        _damaged = false;
     }
 
-
-    public void TakeDamage (int amount, Vector3 hitPoint)
+    public void SetHealthWatcher(Action<int, int, int> healthWatcher)
     {
-        damaged = true;
+        _healthWatcher = healthWatcher;
+    }
 
-        currentHealth -= amount;
-
+    public void TakeDamage (int amount)
+    {
+        _damaged = true;
+        currentHealth  = currentHealth - amount < 0 ? 0 : currentHealth - amount;
         //healthSlider.value = currentHealth;
-
-        playerAudio.Play ();
-
-        if(currentHealth <= 0 && !isDead)
+        _playerAudio.Play ();
+        if (_healthWatcher != null)
+        {
+            _healthWatcher(currentHealth, _playerController.ObjectId, _playerController.ClientId);
+        }
+        
+        if(currentHealth <= 0 && !_isDead)
         {
             Death ();
         }
     }
 
+    public void UpdateHealth(int health)
+    {
+        if (health < currentHealth)
+        {
+            TakeDamage(currentHealth - health);
+        }
+    }
 
     void Death ()
     {
-        isDead = true;
+        _isDead = true;
 
-        //playerShooting.DisableEffects ();
+        _playerShooting.DisableEffects ();
 
-        anim.SetTrigger ("Die");
+        _anim.SetTrigger ("Die");
 
-        playerAudio.clip = deathClip;
-        playerAudio.Play ();
+        //_playerAudio.clip = deathClip;
+        //_playerAudio.Play ();
 
-        //playerMovement.enabled = false;
-        //playerShooting.enabled = false;
+        _playerMovement.enabled = false;
+        _playerShooting.enabled = false;
+        
+        Destroy (gameObject, 5f);
     }
 }
