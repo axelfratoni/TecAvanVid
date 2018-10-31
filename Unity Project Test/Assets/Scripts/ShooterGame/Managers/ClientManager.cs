@@ -124,17 +124,17 @@ namespace ShooterGame.Managers
             if (playerController.ObjectId.Equals(_playerObjectId))
             {
                 Camera.GetComponent<CameraController>().PlayerDeath();
+                Timer aTimer = new Timer();
+                aTimer.Elapsed += delegate
+                {
+                    aTimer.Dispose();
+                    _isConnected = false;
+                    InitializeGame(_serverId);
+                };
+                aTimer.Interval = 5000;
+                aTimer.Enabled = true;
             }
             
-            Timer aTimer = new Timer();
-            aTimer.Elapsed += delegate
-            {
-                aTimer.Dispose();
-                _isConnected = false;
-                InitializeGame(_serverId);
-            };
-            aTimer.Interval = 5000;
-            aTimer.Enabled = true;
         }
 
         private void ProcessSpecialAction(SpecialActionEnum action, int objectId)
