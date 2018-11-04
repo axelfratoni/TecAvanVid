@@ -47,11 +47,11 @@ public class ServerManager : MonoBehaviour {
 
 		if (_snapshotManager.ShouldSendSnapshot())
 		{
-			_objects.ForEach(player =>
+			_objects.ForEach(obj =>
 			{
-				Vector3 position = player.transform.position;
-				Quaternion rotation = player.transform.rotation;
-				_eventManager.BroadcastEventAction(new SnapshotAction(player.ObjectId, position, rotation, 0));
+					Vector3 position = obj.transform.position;
+					Quaternion rotation = obj.transform.rotation;
+					_eventManager.BroadcastEventAction(new SnapshotAction(obj.ObjectId, position, rotation, 0));
 			});
 			
 			_snapshotManager.SetFlag(false);
@@ -65,6 +65,12 @@ public class ServerManager : MonoBehaviour {
 		{
 			_objects = _objects.Where(player => !player.ObjectId.Equals(objectId)).ToList();
 		}
+	}
+
+	private void ExplosionWatcher(int objectId)
+	{
+		_objects = _objects.Where(obj => !obj.ObjectId.Equals(objectId)).ToList();
+		_eventManager.BroadcastEventAction(new SpecialAction(SpecialActionEnum.Destroy, objectId));
 	}
 
 	private void ProcessConnection(int clientId)
@@ -108,7 +114,10 @@ public class ServerManager : MonoBehaviour {
 		Vector3 forwardDirection = shooter.gameObject.transform.forward;
 		Vector3 creationPosition = shooter.gameObject.transform.position + forwardDirection * 1 + new Vector3(0, 1f, 0);
 		ProjectileController projectileController = Instantiate(ProjectilePrefab).GetComponent<ProjectileController>();
-		projectileController.Initialize(objectId, clientId, creationPosition, forwardDirection);
+		projectileController.InitializeServer(objectId, clientId, creationPosition, forwardDirection, ExplosionWatcher);
+		_objects.Add(projectileController);
+		
+		_eventManager.BroadcastEventAction(new CreationAction(creationPosition, objectId, ObjectEnum.Projectile));
 	}
 
 	public void ProcessCreationRequest(int clientId, Vector3 creationPosition, ObjectEnum objectType)

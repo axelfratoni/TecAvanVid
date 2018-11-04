@@ -13,6 +13,7 @@ namespace ShooterGame.Controllers
         private PlayerShooting _playerShooting;
         private PlayerSnapshot _playerSnapshot;
         private PlayerHealth _playerHealth;
+        private int _shootableMask;
 
         public PlayerController()
         {
@@ -25,7 +26,8 @@ namespace ShooterGame.Controllers
             _playerShooting = GetComponentInChildren<PlayerShooting>();
             _playerSnapshot = GetComponent<PlayerSnapshot>();
             _playerHealth = GetComponent<PlayerHealth>();
-
+            _shootableMask = LayerMask.GetMask ("Shootable");
+            
             _playerSnapshot.enabled = false;
         }
 
@@ -35,7 +37,14 @@ namespace ShooterGame.Controllers
             ObjectId = objectId;
             _playerSnapshot.SetPosition(initialPosition);
         }
-
+        
+        public void InitializeClient(int objectId, int clientId, Vector3 initialPosition)
+        {
+            Initialize(objectId, clientId, initialPosition);
+            ToggleInputSnapshotController(false);
+            SetShootableLayer(false);
+        }
+        
         public void SetHealthWatcher(Action<int, int, int> healthWatcher)
         {
             _playerHealth.SetHealthWatcher(healthWatcher);
@@ -65,7 +74,7 @@ namespace ShooterGame.Controllers
 
         public void SetShootableLayer(bool isShootable)
         {
-            gameObject.layer = isShootable ? 9 : 0;
+            gameObject.layer = isShootable ? _shootableMask : 0;
         }
 
         public void UpdateHealth(int health)

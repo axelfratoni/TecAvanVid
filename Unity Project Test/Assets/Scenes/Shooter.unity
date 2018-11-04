@@ -355,6 +355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 1517692998825812, guid: 7ae1af8ce302fb0479f6117df583d25a,
     type: 2}
+  ProjectilePrefab: {fileID: 1751898700465280, guid: 0b54092a5c4cd6541a614e9788d7e5c1,
+    type: 2}
   Camera: {fileID: 232809670}
   ServerPort: 10000
   ClientPort: 10001

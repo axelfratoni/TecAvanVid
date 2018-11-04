@@ -8,6 +8,7 @@ using Events;
 using Events.Actions;
 using ShooterGame.Camera;
 using ShooterGame.Controllers;
+using ShooterGame.Controllers.Projectile;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Event = Events.Event;
@@ -17,6 +18,7 @@ namespace ShooterGame.Managers
     public class ClientManager : MonoBehaviour
     {
         public GameObject PlayerPrefab;
+        public GameObject ProjectilePrefab;
         public GameObject Camera;
         public int ServerPort = 10000;
         public int ClientPort = 10001;
@@ -79,14 +81,19 @@ namespace ShooterGame.Managers
         
         private void ProcessSnapshot(int objectId, Vector3 objectPosition, Quaternion rotation, double timeStamp)
         {
-            Debug.Log("Received Snapshot");
-            ObjectController playerCont = _objects.Find(obj => obj.ObjectId.Equals(objectId));
-            if (playerCont != null)
+//            Debug.Log("Received Snapshot");
+            ObjectController objectController = _objects.Find(obj => obj.ObjectId.Equals(objectId));
+            if (objectController != null)
             {
-                switch (playerCont.ObjectType)
+                switch (objectController.ObjectType)
                 {
                     case ObjectEnum.Player:
-                        ((PlayerController)playerCont).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                        Debug.Log("Received Snapshot for player");
+                        ((PlayerController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                        break;
+                    case ObjectEnum.Projectile:
+                        Debug.Log("Received Snapshot for projectile");
+                        ((ProjectileController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,0,1));
                         break;
                 }
             }
@@ -95,15 +102,21 @@ namespace ShooterGame.Managers
         private void ProcessObjectCreation(int objectId, Vector3 creationPosition, ObjectEnum objectType, int clientId)
         {
             Debug.Log("Creation action received from server.");
-            if (objectType.Equals(ObjectEnum.Player))
+            switch (objectType)
             {
-                PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
-                playerController.Initialize(objectId, clientId, creationPosition);
-                playerController.ToggleInputSnapshotController(false);
-                playerController.SetShootableLayer(false);
-                _objects.Add(playerController);
+                case ObjectEnum.Player:
+                    PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
+                    playerController.InitializeClient(objectId, clientId, creationPosition);
+                    _objects.Add(playerController);
                 
-                if(objectId.Equals(_playerObjectId)) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
+                    if(objectId.Equals(_playerObjectId)) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);    
+                    break;
+                
+                case ObjectEnum.Projectile:
+                    ProjectileController projectileController = Instantiate(ProjectilePrefab).GetComponent<ProjectileController>();
+                    projectileController.InitializeClient(objectId, clientId, creationPosition + new Vector3(1,1,1));
+                    _objects.Add(projectileController);
+                    break;
             }
         }
 
@@ -151,18 +164,25 @@ namespace ShooterGame.Managers
         private void ProcessSpecialAction(SpecialActionEnum action, int objectId)
         {
             Debug.Log("Received special action " + action);
-            ObjectController objectController = _objects.Find(ply => ply.ObjectId.Equals(objectId));
-            if (objectController != null)
+            ObjectController objectCtrlr = _objects.Find(ply => ply.ObjectId.Equals(objectId));
+            if (objectCtrlr != null)
             {
                 switch (action)
                 {
                     case SpecialActionEnum.FiringStart:
-                        if(objectController.ObjectType.Equals(ObjectEnum.Player))
-                            ((PlayerController)objectController).SetFiring(true);                        
+                        if(objectCtrlr.ObjectType.Equals(ObjectEnum.Player))
+                            ((PlayerController)objectCtrlr).SetFiring(true);                        
                         break;
                     case SpecialActionEnum.FiringStop:
-                        if(objectController.ObjectType.Equals(ObjectEnum.Player))
-                            ((PlayerController)objectController).SetFiring(false);  
+                        if(objectCtrlr.ObjectType.Equals(ObjectEnum.Player))
+                            ((PlayerController)objectCtrlr).SetFiring(false);  
+                        break;
+                    case SpecialActionEnum.Destroy:
+                        if (objectCtrlr.ObjectType.Equals(ObjectEnum.Projectile))
+                        {
+                            ((ProjectileController)objectCtrlr).Explode();
+                            _objects = _objects.Where(obj => !obj.ObjectId.Equals(objectCtrlr.ObjectId)).ToList();
+                        }
                         break;
                 }
             }

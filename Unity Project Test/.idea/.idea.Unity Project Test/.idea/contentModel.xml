@@ -74,6 +74,7 @@
               </e>
               <e p="Projectile" t="Include">
                 <e p="ProjectileController.cs" t="Include" />
+                <e p="ProjectileExplosion.cs" t="Include" />
                 <e p="ProjectileSnapshot.cs" t="Include" />
               </e>
             </e>
