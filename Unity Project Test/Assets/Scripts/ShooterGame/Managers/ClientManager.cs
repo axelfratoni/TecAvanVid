@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Timers;
@@ -8,6 +9,7 @@ using Events.Actions;
 using ShooterGame.Camera;
 using ShooterGame.Controllers;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 using Event = Events.Event;
 
 namespace ShooterGame.Managers
@@ -23,7 +25,7 @@ namespace ShooterGame.Managers
         private EventManager _eventManager;
         private bool _isConnected;
         private int _serverId;
-        private List<PlayerController> _players = new List<PlayerController>();
+        private List<ObjectController> _objects = new List<ObjectController>();
         private int _playerObjectId;
         
         private void Start()
@@ -58,11 +60,11 @@ namespace ShooterGame.Managers
                 }
             }
             
-            List<InputEnum> inputList = InputMapper.ExtractInput();
+            Dictionary<InputEnum, bool> inputMap = InputMapper.ExtractInput();
             float mouseX = Input.GetAxisRaw("Mouse X");
-            if (inputList.Count > 0 || Math.Abs(mouseX) > 0.01)
+            if (inputMap.Count > 0 || Math.Abs(mouseX) > 0.01)
             {
-                _eventManager.SendEventAction(new MovementAction(0, mouseX, inputList), _serverId);
+                _eventManager.SendEventAction(new MovementAction(0, mouseX, inputMap), _serverId);
             }
         }
         
@@ -78,8 +80,16 @@ namespace ShooterGame.Managers
         private void ProcessSnapshot(int objectId, Vector3 objectPosition, Quaternion rotation, double timeStamp)
         {
             Debug.Log("Received Snapshot");
-            PlayerController playerCont = _players.Find(player => player.ObjectId.Equals(objectId));
-            if(playerCont != null) playerCont.ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+            ObjectController playerCont = _objects.Find(obj => obj.ObjectId.Equals(objectId));
+            if (playerCont != null)
+            {
+                switch (playerCont.ObjectType)
+                {
+                    case ObjectEnum.Player:
+                        ((PlayerController)playerCont).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                        break;
+                }
+            }
         }
         
         private void ProcessObjectCreation(int objectId, Vector3 creationPosition, ObjectEnum objectType, int clientId)
@@ -91,7 +101,7 @@ namespace ShooterGame.Managers
                 playerController.Initialize(objectId, clientId, creationPosition);
                 playerController.ToggleInputSnapshotController(false);
                 playerController.SetShootableLayer(false);
-                _players.Add(playerController);
+                _objects.Add(playerController);
                 
                 if(objectId.Equals(_playerObjectId)) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
             }
@@ -100,13 +110,14 @@ namespace ShooterGame.Managers
         private void ProcessAssignPlayerAction(int objectId)
         {
             _playerObjectId = objectId;
-            PlayerController playerController = _players.Find(player => player.ObjectId.Equals(objectId));
+            ObjectController playerController = _objects.Find(player => player.ObjectId.Equals(objectId));
             if(playerController != null) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
         }
 
         private void ProcessHealthUpdate(int currentHealth, int objectId)
         {
-            PlayerController playerController = _players.Find(player => player.ObjectId.Equals(objectId));
+            PlayerController playerController = (PlayerController) _objects.Find(player => player.ObjectId.Equals(objectId) &&
+                                                                                           player.ObjectType.Equals(ObjectEnum.Player));
             if (playerController != null)
             {
                 playerController.UpdateHealth(currentHealth);
@@ -119,7 +130,7 @@ namespace ShooterGame.Managers
 
         private void Death(PlayerController playerController)
         {
-            _players = _players.Where(player => !player.ObjectId.Equals(playerController.ObjectId)).ToList();
+            _objects = _objects.Where(player => !player.ObjectId.Equals(playerController.ObjectId)).ToList();
 
             if (playerController.ObjectId.Equals(_playerObjectId))
             {
@@ -140,16 +151,18 @@ namespace ShooterGame.Managers
         private void ProcessSpecialAction(SpecialActionEnum action, int objectId)
         {
             Debug.Log("Received special action " + action);
-            PlayerController player = _players.Find(ply => ply.ObjectId.Equals(objectId));
-            if (player != null)
+            ObjectController objectController = _objects.Find(ply => ply.ObjectId.Equals(objectId));
+            if (objectController != null)
             {
                 switch (action)
                 {
                     case SpecialActionEnum.FiringStart:
-                        player.SetFiring(true);                        
+                        if(objectController.ObjectType.Equals(ObjectEnum.Player))
+                            ((PlayerController)objectController).SetFiring(true);                        
                         break;
                     case SpecialActionEnum.FiringStop:
-                        player.SetFiring(false);
+                        if(objectController.ObjectType.Equals(ObjectEnum.Player))
+                            ((PlayerController)objectController).SetFiring(false);  
                         break;
                 }
             }

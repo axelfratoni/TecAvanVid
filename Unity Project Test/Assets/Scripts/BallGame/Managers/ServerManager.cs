@@ -37,7 +37,7 @@ namespace Events
                         ((CreationRequestAction)iEvent.GetPayload()).Extract(ProcessCreationRequest, iEvent.ClientId);
                         break;
                     case EventEnum.Movement:
-                        ((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
+                        //((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
                         break;
                 }
             }

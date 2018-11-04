@@ -1,22 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Timers;
 using Events;
 using Events.Actions;
 using ShooterGame.Controllers;
+using ShooterGame.Controllers.Projectile;
 using UnityEngine;
 using Event = Events.Event;
 
 public class ServerManager : MonoBehaviour {
 
 	public GameObject PlayerPrefab;
+	public GameObject ProjectilePrefab;
 	public int ServerPort = 10000;
 
 	private EventManager _eventManager;
 	private ObjectIdManager _objectIdManager;
-	private List<PlayerController> _players = new List<PlayerController>();
+	private SnapshotManager _snapshotManager;
+	private List<ObjectController> _objects = new List<ObjectController>();
 
 	private void Start () {
 		_objectIdManager = new ObjectIdManager();
+		_snapshotManager = new SnapshotManager(100);
 		_eventManager = new EventManager(ServerPort, null);
 	}
 
@@ -39,13 +44,18 @@ public class ServerManager : MonoBehaviour {
 					break;
 			}
 		}
-		
-		_players.ForEach(player =>
+
+		if (_snapshotManager.ShouldSendSnapshot())
 		{
-			Vector3 position = player.transform.position;
-			Quaternion rotation = player.transform.rotation;
-			_eventManager.BroadcastEventAction(new SnapshotAction(player.ObjectId, position, rotation, 0));
-		});
+			_objects.ForEach(player =>
+			{
+				Vector3 position = player.transform.position;
+				Quaternion rotation = player.transform.rotation;
+				_eventManager.BroadcastEventAction(new SnapshotAction(player.ObjectId, position, rotation, 0));
+			});
+			
+			_snapshotManager.SetFlag(false);
+		}
 	}
 
 	private void HealthWatcher(int currentHealth, int objectId, int clientId)
@@ -53,35 +63,52 @@ public class ServerManager : MonoBehaviour {
 		_eventManager.BroadcastEventAction(new DamageAction(currentHealth, objectId));
 		if (currentHealth == 0)
 		{
-			_players = _players.Where(player => !player.ObjectId.Equals(objectId)).ToList();
+			_objects = _objects.Where(player => !player.ObjectId.Equals(objectId)).ToList();
 		}
 	}
 
 	private void ProcessConnection(int clientId)
 	{
-		_players.ForEach(player =>
+		_objects.ForEach(player =>
 		{
 			Vector3 position = player.transform.position;
 			_eventManager.SendEventAction(new CreationAction(position, player.ObjectId, ObjectEnum.Player), clientId);
 		});
 	}
 	
-	private void ProcessInput(double time, double mouseX, List<InputEnum> inputList, int clientId) 
+	private void ProcessInput(double time, double mouseX, Dictionary<InputEnum, bool> inputMap, int clientId) 
 	{
 		Debug.Log("Received input");
-		PlayerController playerController = _players.Find(player => player.ClientId.Equals(clientId));
+		PlayerController playerController = (PlayerController) _objects.Find(player => player.ClientId.Equals(clientId) &&
+																					   player.ObjectType.Equals(ObjectEnum.Player));
 		if (playerController != null)
 		{
-			bool isFiring = inputList.Contains(InputEnum.ClickLeft);
-			if (isFiring && !playerController.IsFiring() || !isFiring && playerController.IsFiring())
+			bool isFiring;
+			if (inputMap.TryGetValue(InputEnum.ClickLeft, out isFiring))
 			{
+				playerController.SetFiring(isFiring);
 				_eventManager.BroadcastEventAction(new SpecialAction(isFiring? SpecialActionEnum.FiringStart : 
 																			   SpecialActionEnum.FiringStop,
-																	playerController.ObjectId));
+																		playerController.ObjectId));
+			}
+
+			bool isThrowingProjectile;
+			if (inputMap.TryGetValue(InputEnum.ClickRight, out isThrowingProjectile) && isThrowingProjectile)
+			{
+				ShootProjectile(playerController, clientId);
 			}
 			
-			playerController.ApplyInput(time, mouseX, inputList);
+			playerController.ApplyInput(time, mouseX, inputMap);
 		}
+	}
+
+	private void ShootProjectile(PlayerController shooter, int clientId)
+	{
+		int objectId = _objectIdManager.GetNext();
+		Vector3 forwardDirection = shooter.gameObject.transform.forward;
+		Vector3 creationPosition = shooter.gameObject.transform.position + forwardDirection * 1 + new Vector3(0, 1f, 0);
+		ProjectileController projectileController = Instantiate(ProjectilePrefab).GetComponent<ProjectileController>();
+		projectileController.Initialize(objectId, clientId, creationPosition, forwardDirection);
 	}
 
 	public void ProcessCreationRequest(int clientId, Vector3 creationPosition, ObjectEnum objectType)
@@ -93,7 +120,7 @@ public class ServerManager : MonoBehaviour {
 			PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
 			playerController.Initialize(objectId, clientId, creationPosition);
 			playerController.SetHealthWatcher(HealthWatcher);
-			_players.Add(playerController);
+			_objects.Add(playerController);
 			
 			_eventManager.BroadcastEventAction(new CreationAction(creationPosition, objectId, objectType));
 			_eventManager.SendEventAction(new AssignPlayerAction(objectId), clientId);
@@ -104,6 +131,7 @@ public class ServerManager : MonoBehaviour {
 	private void OnDisable()
 	{
 		_eventManager.Disable();
+		_snapshotManager.Disable();
 	}
 
 	private class ObjectIdManager
@@ -113,6 +141,35 @@ public class ServerManager : MonoBehaviour {
 		public int GetNext()
 		{
 			return _nextObjectId++;
+		}
+	}
+	
+	private class SnapshotManager
+	{
+		private bool _shouldSendSnapshot;
+		private readonly Timer _timer;
+
+		public SnapshotManager(double timeInterval)
+		{
+			_timer = new Timer();
+			_timer.Elapsed += delegate { _shouldSendSnapshot = true; };
+			_timer.Interval = timeInterval;
+			_timer.Enabled = true;
+		}
+
+		public bool ShouldSendSnapshot()
+		{
+			return _shouldSendSnapshot;
+		}
+
+		public void SetFlag(bool shouldSendSnapshot)
+		{
+			_shouldSendSnapshot = shouldSendSnapshot;
+		}
+
+		public void Disable()
+		{
+			_timer.Dispose();
 		}
 	}
 }

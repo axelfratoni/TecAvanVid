@@ -8,13 +8,14 @@ namespace Events.Actions
     public class MovementAction : EventAction
     {
         private readonly double _time;
-        private readonly List<InputEnum> _inputList;
+        private readonly Dictionary<InputEnum, bool> _inputMap;
         private readonly float _mouseX;
 
-        public MovementAction(double time, float mouseX, List<InputEnum> inputList)
+        // The input dictionary represents a key down or up, being true down and false up.
+        public MovementAction(double time, float mouseX, Dictionary<InputEnum, bool> inputMap)
         {
             _time = time;
-            _inputList = inputList;
+            _inputMap = inputMap;
             _mouseX = mouseX > 10? 10: mouseX < -10? -10: mouseX;
         }
         
@@ -26,10 +27,12 @@ namespace Events.Actions
             
             int inputListLength = payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length); 
             
-            _inputList = new List<InputEnum>(inputListLength);
+            _inputMap = new Dictionary<InputEnum, bool>();
             for (int i = 0; i < inputListLength; i++)
             {
-                _inputList.Add((InputEnum) payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length));
+                InputEnum input = (InputEnum) payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length);
+                bool keyPress = payload.readBit();
+                _inputMap.Add(input, keyPress);
             }
         }
 
@@ -39,15 +42,18 @@ namespace Events.Actions
             
             buffer.writeFloat(_mouseX, -10f, 10f, 0.1f);
             
-            buffer.writeInt(_inputList.Count, 0, Enum.GetValues(typeof(InputEnum)).Length); 
+            buffer.writeInt(_inputMap.Count, 0, Enum.GetValues(typeof(InputEnum)).Length); 
             
-            _inputList.ForEach(input => 
-                buffer.writeInt((int) input, 0, Enum.GetValues(typeof(InputEnum)).Length));
+            foreach(KeyValuePair<InputEnum, bool> entry in _inputMap)
+            {
+                buffer.writeInt((int) entry.Key, 0, Enum.GetValues(typeof(InputEnum)).Length);
+                buffer.writeBit(entry.Value);
+            }
         }
 
-        public void Extract(Action<double, double, List<InputEnum>, int> executor, int clientId)
+        public void Extract(Action<double, double, Dictionary<InputEnum, bool>, int> executor, int clientId)
         {
-            executor(_time, _mouseX, _inputList, clientId);
+            executor(_time, _mouseX, _inputMap, clientId);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()
@@ -73,39 +79,61 @@ namespace Events.Actions
 
     public static class InputMapper
     {
-        public static List<InputEnum> ExtractInput()
+        public static Dictionary<InputEnum, bool> ExtractInput()
         {
-            List<InputEnum> inputList = new List<InputEnum>();
+            Dictionary<InputEnum, bool> inputMap = new Dictionary<InputEnum, bool>();
 
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
-
-            if (h < 0)
+            if (Input.GetKeyDown(KeyCode.A))
             {
-                inputList.Add(InputEnum.A);
+                inputMap.Add(InputEnum.A, true);
             }
-            if (h > 0)
+            if (Input.GetKeyDown(KeyCode.S))
             {
-                inputList.Add(InputEnum.D);
+                inputMap.Add(InputEnum.S, true);
             }
-            if (v < 0)
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                inputList.Add(InputEnum.S);
+                inputMap.Add(InputEnum.D, true);
             }
-            if (v > 0)
+            if (Input.GetKeyDown(KeyCode.W))
             {
-                inputList.Add(InputEnum.W);
+                inputMap.Add(InputEnum.W, true);
             }
-            if (Input.GetButton("Fire1")) 
+            if (Input.GetMouseButtonDown(0)) 
             {
-                inputList.Add(InputEnum.ClickLeft);
+                inputMap.Add(InputEnum.ClickLeft, true);
             }
             if (Input.GetMouseButtonDown(1))
             {
-                inputList.Add(InputEnum.ClickRight);
+                inputMap.Add(InputEnum.ClickRight, true);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.A))
+            {
+                inputMap.Add(InputEnum.A, false);
+            }
+            if (Input.GetKeyUp(KeyCode.S))
+            {
+                inputMap.Add(InputEnum.S, false);
+            }
+            if (Input.GetKeyUp(KeyCode.D))
+            {
+                inputMap.Add(InputEnum.D, false);
+            }
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                inputMap.Add(InputEnum.W, false);
+            }
+            if (Input.GetMouseButtonUp(0)) 
+            {
+                inputMap.Add(InputEnum.ClickLeft, false);
+            }
+            if (Input.GetMouseButtonUp(1))
+            {
+                inputMap.Add(InputEnum.ClickRight, false);
             }
 
-            return inputList;
+            return inputMap;
         }
     }
 }

@@ -48,11 +48,11 @@ namespace Events
                 }
             }
             
-            List<InputEnum> inputList = InputMapper.ExtractInput();
+            /*List<InputEnum> inputList = InputMapper.ExtractInput();
             if (inputList.Count > 0)
             {
                 _eventManager.SendEventAction(new MovementAction(0,0, inputList), _serverId);
-            }
+            }*/
             
             /*while (_creationRequests.Count > 0)
             {

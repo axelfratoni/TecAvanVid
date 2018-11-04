@@ -56,7 +56,7 @@ namespace Events.Actions
     public enum ObjectEnum
     {
         Ball = 0,
-        Proyectile = 1,
+        Projectile = 1,
         Player = 2
     }
 }
