@@ -6,7 +6,8 @@ namespace ShooterGame.Controllers.Projectile
     public class ProjectileController : ObjectController
     {
         public float ThrowForce = 400;
-        public float TimeToExplosion = 2;
+        public float TimeToExplosion = 1.5f;
+        public GameObject ExplosionPrefab;
         
         private Rigidbody _rigidBody;
         private float _elapsedTime;
@@ -26,8 +27,16 @@ namespace ShooterGame.Controllers.Projectile
             _elapsedTime += Time.deltaTime;
             if (_elapsedTime > TimeToExplosion)
             {
-                Destroy(gameObject);
+                Explode();
             }
+        }
+
+        private void Explode()
+        {
+            GameObject explosion = Instantiate(ExplosionPrefab);
+            explosion.transform.position = transform.position;
+            Destroy(gameObject);
+            Destroy(explosion, 1);
         }
 
 

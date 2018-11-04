@@ -357,7 +357,7 @@ MonoBehaviour:
     type: 2}
   Camera: {fileID: 232809670}
   ServerPort: 10000
-  ClientPort: 10002
+  ClientPort: 10001
   ServerIP: 127.0.0.1
 --- !u!4 &863066847
 Transform:
@@ -387,19 +387,21 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &981514330
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 981514329}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b17aa6ea52a601748be95f3001ab46f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerPrefab: {fileID: 1517692998825812, guid: 7ae1af8ce302fb0479f6117df583d25a,
+    type: 2}
+  ProjectilePrefab: {fileID: 1751898700465280, guid: 0b54092a5c4cd6541a614e9788d7e5c1,
     type: 2}
   ServerPort: 10000
 --- !u!4 &981514331
@@ -459,6 +461,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 51, y: 3, z: 1}
   m_Center: {x: -1, y: -13.5, z: -0.6}
+--- !u!1 &1291497979 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 103286, guid: 149d6dcc67e8d1240bbc0dd6ddf0c1bd,
+    type: 2}
+  m_PrefabInternal: {fileID: 673235056}
+--- !u!65 &1291497982
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1291497979}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 100, y: 0.3, z: 100}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1364625458
 GameObject:
   m_ObjectHideFlags: 0
