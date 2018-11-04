@@ -3,6 +3,7 @@ using System.Linq;
 using System.Timers;
 using Events;
 using Events.Actions;
+using Libs;
 using ShooterGame.Controllers;
 using ShooterGame.Controllers.Projectile;
 using UnityEngine;
@@ -17,15 +18,26 @@ public class ServerManager : MonoBehaviour {
 	private EventManager _eventManager;
 	private ObjectIdManager _objectIdManager;
 	private SnapshotManager _snapshotManager;
+	private TimeManager _timeManager;
 	private List<ObjectController> _objects = new List<ObjectController>();
 
-	private void Start () {
+	private void Start () 
+	{
 		_objectIdManager = new ObjectIdManager();
 		_snapshotManager = new SnapshotManager(100);
 		_eventManager = new EventManager(ServerPort, null);
+		_timeManager = new TimeManager(SnapshotAction.MaxCycleTime);
 	}
 
-	private void Update () {
+	private void Update () 
+	{
+		_timeManager.UpdateTime(Time.deltaTime);
+		HandlePendingEvents();
+		SendSnapshots();
+	}
+
+	private void HandlePendingEvents()
+	{
 		Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
 		while (pendingEvents.Count > 0)
 		{
@@ -44,14 +56,18 @@ public class ServerManager : MonoBehaviour {
 					break;
 			}
 		}
+	}
 
+	private void SendSnapshots()
+	{
 		if (_snapshotManager.ShouldSendSnapshot())
 		{
 			_objects.ForEach(obj =>
 			{
-					Vector3 position = obj.transform.position;
-					Quaternion rotation = obj.transform.rotation;
-					_eventManager.BroadcastEventAction(new SnapshotAction(obj.ObjectId, position, rotation, 0));
+				Vector3 position = obj.transform.position;
+				Quaternion rotation = obj.transform.rotation;
+				float timeStamp = _timeManager.GetCurrentTime();
+				_eventManager.BroadcastEventAction(new SnapshotAction(obj.ObjectId, position, rotation, timeStamp));
 			});
 			
 			_snapshotManager.SetFlag(false);

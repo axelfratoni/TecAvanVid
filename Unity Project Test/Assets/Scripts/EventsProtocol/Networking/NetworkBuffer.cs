@@ -1,86 +1,68 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using Libs;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
-public class NetworkBuffer<T> {
-
-    Queue<NetworkItem<T>> networkQueue;
-    private List<NetworkItem<T>> networkItemList = new List<NetworkItem<T>>(5);
-    private float lastTime;
-
-    public NetworkBuffer()
+namespace Events
+{
+    public class NetworkBuffer<T>
     {
-        networkQueue = new Queue<NetworkItem<T>>();
-        lastTime = 0;
-    }
-
-    public void AddItem(T item, float time)
-    {
-        networkQueue.Enqueue(new NetworkItem<T>(item, time));
-    }
-
-    public InterpolatedItem<T> GetNextItem()
-    {
-        while (networkQueue.Count > 0)
+        private readonly LinkedList<TimeStampedItem<T>> _itemList = new LinkedList<TimeStampedItem<T>>();
+        private float _elapsedTime;
+        
+        public void Reset()
         {
-            NetworkItem<T> m = networkQueue.Dequeue();
-            if (networkItemList.Count == networkItemList.Capacity)
-            {
-                networkItemList.RemoveAt(0);
-            }
-            networkItemList.Add(m);
+            _itemList.Clear();
         }
-        if (networkItemList.Count > 3)
+        
+        public void AddItem(T item, float time)
         {
-            if (lastTime == 0)
+            bool shouldAdd = _itemList.Count == 0 || _itemList.Last.Value.Time < time;
+            if (shouldAdd)
             {
-                NetworkItem<T> m = networkItemList[0];
-                lastTime = m.time;
-                return new InterpolatedItem<T>(networkItemList[0].item, networkItemList[1].item, 0);
+                TimeStampedItem<T> nextItem = new TimeStampedItem<T>(time, item);
+                _itemList.AddLast(nextItem);
             }
-            else
+        }
+            
+        public delegate T Interpolate(T first, T second, float percentage);
+
+        public T GetNextItem(Interpolate interpolationFunction, float deltaTime)
+        {
+            T interpolatedItem = _itemList.First.Value.Item;
+            
+            if (_itemList.First.Next != null)
             {
-                float time = lastTime + Time.deltaTime;
-                NetworkItem<T> m;
-                NetworkItem<T> lastNetworkItem;
-                int i = 1;
-                do
+                _elapsedTime += deltaTime;
+                float timeWindow = _itemList.First.Next.Value.Time - _itemList.First.Value.Time;
+                while (timeWindow < _elapsedTime && _itemList.Count > 2)
                 {
-                    m = networkItemList[i];
-                    lastNetworkItem = networkItemList[i - 1];
-                    i++;
-                } while (m.time < time && i < networkItemList.Count);
-
-                float interpolation = (time - lastNetworkItem.time) / (m.time - lastNetworkItem.time);
-                lastTime += Time.deltaTime;
-                return new InterpolatedItem<T>(lastNetworkItem.item, m.item, interpolation);
+                    _itemList.RemoveFirst();
+                    _elapsedTime -= timeWindow;
+                    timeWindow = _itemList.First.Next.Value.Time - _itemList.First.Value.Time;
+                }
+                
+                float interpolation = _elapsedTime / timeWindow;
+                
+                interpolatedItem = interpolationFunction(_itemList.First.Value.Item, _itemList.First.Next.Value.Item, interpolation);
             }
+
+            return interpolatedItem;
         }
-        return null;
-    }
-
-    public class InterpolatedItem<R>
-    {
-        public R previous;
-        public R next;
-        public float interpolation;
-
-        public InterpolatedItem(R previous, R next, float interpolation)
+        
+        private class TimeStampedItem<TR>
         {
-            this.previous = previous;
-            this.next = next;
-            this.interpolation = interpolation;
-        }
-    }
+            public float Time { get; private set; }
+            public TR Item { get; private set; }
 
-    private class NetworkItem<S>
-    {
-        public S item;
-        public float time;
-
-        public NetworkItem(S item, float time)
-        {
-            this.item = item;
-            this.time = time;
+            public TimeStampedItem(float time, TR item)
+            {
+                Time = time;
+                Item = item;
+            }
         }
     }
 }

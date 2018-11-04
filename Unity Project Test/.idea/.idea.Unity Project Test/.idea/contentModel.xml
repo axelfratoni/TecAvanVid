@@ -8,6 +8,7 @@
       <e p="Assets" t="Include">
         <e p="Libs" t="Include">
           <e p="BitBuffer.cs" t="Include" />
+          <e p="TimeManager.cs" t="Include" />
           <e p="UnsignedCircularComparator.cs" t="Include" />
         </e>
         <e p="Scripts" t="Include">

@@ -38,6 +38,12 @@ namespace ShooterGame.Managers
         
          public void Update()
         {
+            HandlePendingEvents();
+            HandleInput();
+        }
+
+        private void HandlePendingEvents()
+        {
             Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
             while (pendingEvents.Count > 0)
             {
@@ -61,7 +67,10 @@ namespace ShooterGame.Managers
                         break;
                 }
             }
-            
+        }
+
+        private void HandleInput()
+        {
             Dictionary<InputEnum, bool> inputMap = InputMapper.ExtractInput();
             float mouseX = Input.GetAxisRaw("Mouse X");
             if (inputMap.Count > 0 || Math.Abs(mouseX) > 0.01)
@@ -81,18 +90,16 @@ namespace ShooterGame.Managers
         
         private void ProcessSnapshot(int objectId, Vector3 objectPosition, Quaternion rotation, double timeStamp)
         {
-//            Debug.Log("Received Snapshot");
+            Debug.Log("Received Snapshot");
             ObjectController objectController = _objects.Find(obj => obj.ObjectId.Equals(objectId));
             if (objectController != null)
             {
                 switch (objectController.ObjectType)
                 {
                     case ObjectEnum.Player:
-                        Debug.Log("Received Snapshot for player");
                         ((PlayerController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
                         break;
                     case ObjectEnum.Projectile:
-                        Debug.Log("Received Snapshot for projectile");
                         ((ProjectileController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,0,1));
                         break;
                 }
