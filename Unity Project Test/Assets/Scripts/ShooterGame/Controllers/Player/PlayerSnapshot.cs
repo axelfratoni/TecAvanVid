@@ -26,10 +26,10 @@ namespace ShooterGame.Controllers
                            Math.Abs(_position.z - _playerRigidBody.position.z) > 0.01;
             _anim.SetBool ("IsWalking", walking);
 
-            _position = _positionBuffer.GetNextItem(Vector3.Lerp, Time.deltaTime);
-            _rotation = _rotationBuffer.GetNextItem(Quaternion.Lerp, Time.deltaTime);
-            _playerRigidBody.MovePosition(_position);
-            _playerRigidBody.MoveRotation(_rotation.normalized);
+            if (_positionBuffer.GetNextItem(Vector3.Lerp, Time.deltaTime, out _position))
+                _playerRigidBody.MovePosition(_position);
+            if (_rotationBuffer.GetNextItem(Quaternion.Lerp, Time.deltaTime, out _rotation))
+                _playerRigidBody.MoveRotation(_rotation.normalized);
         }
 
         public void SetPosition(Vector3 position)

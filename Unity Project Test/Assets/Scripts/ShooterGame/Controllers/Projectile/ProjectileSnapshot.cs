@@ -16,8 +16,8 @@ namespace ShooterGame.Controllers.Projectile
 
         private void Update()
         {            
-            _position = _positionBuffer.GetNextItem(Vector3.Lerp, Time.deltaTime);
-            _rigidBody.MovePosition(_position);
+            if (_positionBuffer.GetNextItem(Vector3.Lerp, Time.deltaTime, out _position))
+                _rigidBody.MovePosition(_position);
         }
 
         public void AddSnapshot(double time, Vector3 position)

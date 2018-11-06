@@ -30,11 +30,11 @@ namespace Events
             
         public delegate T Interpolate(T first, T second, float percentage);
 
-        public T GetNextItem(Interpolate interpolationFunction, float deltaTime)
+        public bool GetNextItem(Interpolate interpolationFunction, float deltaTime, out T interpolatedItem)
         {
-            T interpolatedItem = _itemList.First.Value.Item;
+            interpolatedItem = default(T);
             
-            if (_itemList.First.Next != null)
+            if (_itemList.First != null && _itemList.First.Next != null)
             {
                 _elapsedTime += deltaTime;
                 float timeWindow = _itemList.First.Next.Value.Time - _itemList.First.Value.Time;
@@ -48,9 +48,11 @@ namespace Events
                 float interpolation = _elapsedTime / timeWindow;
                 
                 interpolatedItem = interpolationFunction(_itemList.First.Value.Item, _itemList.First.Next.Value.Item, interpolation);
+
+                return true;
             }
 
-            return interpolatedItem;
+            return false;
         }
         
         private class TimeStampedItem<TR>
