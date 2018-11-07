@@ -51,14 +51,17 @@ namespace ShooterGame.Controllers
             Move move = new Move(movement, rotation);
             TimeStampedItem<Move> nextMove = new TimeStampedItem<Move>(timeStamp, move);
             _movementBuffer.AddLast(nextMove);
-            
-            Vector3 forward = _lastPredictedPosition.Item.Rotation * Vector3.forward;
-            Vector3 right = _lastPredictedPosition.Item.Rotation * Vector3.right;
-            Vector3 nextPosition = _lastPredictedPosition.Item.Movement + forward * movement.z + right * movement.x;
-            Quaternion nextRotation = _lastPredictedPosition.Item.Rotation * rotation;
-            
-            Move nextPrediction = new Move(nextPosition, nextRotation);
-            _lastPredictedPosition = new TimeStampedItem<Move>(timeStamp, nextPrediction);
+
+            if (_lastPredictedPosition != null)
+            {
+                Vector3 forward = _lastPredictedPosition.Item.Rotation * Vector3.forward;
+                Vector3 right = _lastPredictedPosition.Item.Rotation * Vector3.right;
+                Vector3 nextPosition = _lastPredictedPosition.Item.Movement + forward * movement.z + right * movement.x;
+                Quaternion nextRotation = _lastPredictedPosition.Item.Rotation * rotation;
+                
+                Move nextPrediction = new Move(nextPosition, nextRotation);
+                _lastPredictedPosition = new TimeStampedItem<Move>(timeStamp, nextPrediction);
+            }
         }
 
         public void ApplySnapshot(double time, Vector3 position, Quaternion rotation)

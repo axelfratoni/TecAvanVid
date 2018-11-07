@@ -24,7 +24,7 @@ namespace Events
 
         private void Start()
         {
-            _eventManager = new EventManager(_clientPort, InitializeGame);
+            _eventManager = new EventManager(_clientPort, InitializeGame, 0, 0);
             _eventManager.ConnectToServer(new IPEndPoint(IPAddress.Parse(serverIP), _serverPort));
         }
 

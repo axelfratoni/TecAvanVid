@@ -24,6 +24,8 @@ namespace ShooterGame.Managers
         public int ClientPort = 10001;
         public string ServerIP = "127.0.0.1";
         public bool Prediction;
+        public int Delay;
+        public float PacketLoss;
 
         private EventManager _eventManager;
         private bool _isConnected;
@@ -33,7 +35,7 @@ namespace ShooterGame.Managers
         
         private void Start()
         {
-            _eventManager = new EventManager(ClientPort, InitializeGame);
+            _eventManager = new EventManager(ClientPort, InitializeGame, Delay, PacketLoss);
             _eventManager.ConnectToServer(new IPEndPoint(IPAddress.Parse(ServerIP), ServerPort));
         }
         
@@ -49,6 +51,7 @@ namespace ShooterGame.Managers
             while (pendingEvents.Count > 0)
             {
                 Event iEvent = pendingEvents.Dequeue();
+                if (iEvent == null) continue;
                 switch (iEvent.GetEventEnum())
                 {
                     case EventEnum.Snapshot:

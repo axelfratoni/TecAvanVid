@@ -1,26 +1,31 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using Events.Actions;
-using Libs;
-using UnityEngine;
+using System.Timers;
+using Random = System.Random;
 
 namespace Events
 {
     public class NetworkManager
     {
+        private float _packetLoss;
+        private int _delay;
+        private readonly Random _random = new Random();
+        
         private readonly List<Connection> _connectionList;
         private readonly UDPChannel _receiver;
         private readonly ConnectionFactory _connectionFactory;
         private readonly EventManager _eventManager;
 
-        public NetworkManager(int localPort, EventManager eventManager)
+        public NetworkManager(int localPort, EventManager eventManager, int delay, float packetLoss)
         {
             _connectionList = new List<Connection>();
-            _receiver = new UDPChannel(localPort, ReceiveEvent);
+            _receiver = new UDPChannel(localPort, ReceiveEventFakingLatencyAndPacketLoss);
             _connectionFactory = new ConnectionFactory(_receiver);
             _eventManager = eventManager;
+
+            _delay = delay;
+            _packetLoss = packetLoss;
         }
         
         public int AddConnection(IPEndPoint remoteEndpoint)
@@ -28,6 +33,43 @@ namespace Events
             Connection connection = _connectionFactory.GetNewConnection(remoteEndpoint);
             _connectionList.Add(connection);
             return connection.Id;
+        }
+
+        private void ReceiveEventFakingLatencyAndPacketLoss(byte[] receivedBytes, IPEndPoint remoteEndpoint)
+        {
+            if (_random.NextDouble() * 100 > _packetLoss)
+            {
+                if (_delay > 0)
+                {
+                    Timer aTimer = new Timer();
+                    aTimer.Elapsed += delegate
+                    {
+                        aTimer.Dispose();
+                        ReceiveEvent(receivedBytes, remoteEndpoint);
+                    };
+                    aTimer.Interval = _delay <= 0? 1 : _delay;
+                    aTimer.Enabled = true;
+                }
+                else
+                {
+                    ReceiveEvent(receivedBytes, remoteEndpoint);
+                }
+            }
+        }
+        
+        public void SendEventFakingLatencyAndPacketLoss(Event iEvent)
+        {
+//            if (_random.NextDouble() * 100 > _packetLoss)
+//            {
+//                Timer aTimer = new Timer();
+//                aTimer.Elapsed += delegate
+//                {
+//                    aTimer.Dispose();
+                    SendEvent(iEvent);
+//                };
+//                aTimer.Interval = _delay <= 0? 1 : _delay;
+//                aTimer.Enabled = true;
+//            }
         }
         
         private void ReceiveEvent(byte[] receivedBytes, IPEndPoint remoteEndpoint)
@@ -46,17 +88,17 @@ namespace Events
             _eventManager.ReceiveEvent(ievent);
         }
 
-        public void SendEvent(Event ievent)
+        public void SendEvent(Event iEvent)
         {
-            Connection connection = _connectionList.Find(con => con.Id == ievent.ClientId);
+            Connection connection = _connectionList.Find(con => con.Id == iEvent.ClientId);
             if (connection != null)
             {
                 //Debug.Log("Sending to: " + connection.GetSendingEndpoint() + "\nclient: "+ ievent.ClientId + " - seqId: " + ievent.SeqId + " - ack: " + ievent.Ack + " - timeout: " + ievent.GetTimeoutType() + " - type: " + ievent.GetEventEnum());
-                connection.Send(ievent);
+                connection.Send(iEvent);
             }
             else
             {
-                throw new Exception("No such connection " + ievent.ClientId);
+                throw new Exception("No such connection " + iEvent.ClientId);
             }
         }
 

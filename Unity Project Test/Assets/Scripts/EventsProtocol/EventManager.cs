@@ -13,11 +13,11 @@ namespace Events
         private readonly Dictionary<EventTimeoutTypeEnum, ReliableEventQueue> _sendingEventsQueues;
         private readonly Action<int> _initializationAction;
         
-        public EventManager(int localPort, Action<int> initializationAction)
+        public EventManager(int localPort, Action<int> initializationAction, int delay, float packetLoss)
         {
             _initializationAction = initializationAction;
             _unreadReceivedEvents = new Queue<Event>();
-            _networkManager = new NetworkManager(localPort, this);
+            _networkManager = new NetworkManager(localPort, this, delay, packetLoss);
             _sendingEventsQueues = new Dictionary<EventTimeoutTypeEnum, ReliableEventQueue>
             {
                 {EventTimeoutTypeEnum.NoTimeOut, new ReliableEventQueue(5, SendEventsInQueue)},
@@ -29,7 +29,7 @@ namespace Events
         {
             eventQueue.ForEach(ev =>
             {
-                _networkManager.SendEvent(ev);
+                _networkManager.SendEventFakingLatencyAndPacketLoss(ev);
             });
         }
 
@@ -42,7 +42,7 @@ namespace Events
                                        .SetEventType(eventAction.GetEventType())
                                        .SetPayload(eventAction)
                                        .Build();
-            _networkManager.SendEvent(ievent);
+            _networkManager.SendEventFakingLatencyAndPacketLoss(ievent);
 
             AddEventToReliableQueue(ievent);
         }
@@ -82,9 +82,10 @@ namespace Events
                     if (eventQueue.ShouldProcessEvent(ievent) && ievent.GetPayload() != null)
                     {
                         _unreadReceivedEvents.Enqueue(ievent);
+                        eventQueue.AckEvent(ievent);
                     }
                     
-                    _networkManager.SendEvent(new EventBuilder(ievent).SetAck(true).Build());
+                    _networkManager.SendEventFakingLatencyAndPacketLoss(new EventBuilder(ievent).SetAck(true).Build());
                 }
             }
             else
@@ -112,7 +113,7 @@ namespace Events
                                                 .SetEventType(connectionAction.GetEventType())
                                                 .SetPayload(connectionAction)
                                                 .Build();
-            _networkManager.SendEvent(connectionEvent);
+            _networkManager.SendEventFakingLatencyAndPacketLoss(connectionEvent);
             
             AddEventToReliableQueue(connectionEvent);
         }

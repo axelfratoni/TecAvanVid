@@ -22,7 +22,7 @@ namespace Events
         private void Start()
         {
             _objectFactory = new ObjectFactory();
-            _eventManager = new EventManager(serverPort, null);
+            _eventManager = new EventManager(serverPort, null, 0, 0);
         }
         
         public void Update()

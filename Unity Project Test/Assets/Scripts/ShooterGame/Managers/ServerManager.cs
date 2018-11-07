@@ -15,6 +15,8 @@ public class ServerManager : MonoBehaviour {
 	public GameObject ProjectilePrefab;
 	public int ServerPort = 10000;
 	public int SnapshotInterval = 100;
+	public int Delay;
+	public float PacketLoss;
 
 	private EventManager _eventManager;
 	private ObjectIdManager _objectIdManager;
@@ -26,7 +28,7 @@ public class ServerManager : MonoBehaviour {
 	{
 		_objectIdManager = new ObjectIdManager();
 		_snapshotManager = new SnapshotManager(SnapshotInterval);
-		_eventManager = new EventManager(ServerPort, null);
+		_eventManager = new EventManager(ServerPort, null, Delay, PacketLoss);
 		_timeManager = new TimeManager(SnapshotAction.MaxCycleTime);
 	}
 

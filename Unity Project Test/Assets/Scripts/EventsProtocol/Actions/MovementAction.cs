@@ -85,52 +85,63 @@ namespace Events.Actions
 
             if (Input.GetKeyDown(KeyCode.A))
             {
-                inputMap.Add(InputEnum.A, true);
+                inputMap[InputEnum.A] = true;
             }
             if (Input.GetKeyDown(KeyCode.S))
             {
-                inputMap.Add(InputEnum.S, true);
+                inputMap[InputEnum.S] = true;
+                //inputMap.Add(InputEnum.S, true);
             }
             if (Input.GetKeyDown(KeyCode.D))
             {
-                inputMap.Add(InputEnum.D, true);
+                inputMap[InputEnum.D] = true;
+                //inputMap.Add(InputEnum.D, true);
             }
             if (Input.GetKeyDown(KeyCode.W))
             {
-                inputMap.Add(InputEnum.W, true);
+                inputMap[InputEnum.W] = true;
+                //inputMap.Add(InputEnum.W, true);
             }
             if (Input.GetMouseButtonDown(0)) 
             {
-                inputMap.Add(InputEnum.ClickLeft, true);
+                inputMap[InputEnum.ClickLeft] = true;
+                //inputMap.Add(InputEnum.ClickLeft, true);
             }
             if (Input.GetMouseButtonDown(1))
             {
-                inputMap.Add(InputEnum.ClickRight, true);
+                inputMap[InputEnum.ClickRight] = true;
+                //inputMap.Add(InputEnum.ClickRight, true);
             }
             
             if (Input.GetKeyUp(KeyCode.A))
             {
-                inputMap.Add(InputEnum.A, false);
+                inputMap[InputEnum.A] = false;
+                //inputMap.Add(InputEnum.A, false);
             }
             if (Input.GetKeyUp(KeyCode.S))
             {
-                inputMap.Add(InputEnum.S, false);
+                inputMap[InputEnum.S] = false;
+                //inputMap.Add(InputEnum.S, false);
             }
             if (Input.GetKeyUp(KeyCode.D))
             {
-                inputMap.Add(InputEnum.D, false);
+                inputMap[InputEnum.D] = false;
+                //inputMap.Add(InputEnum.D, false);
             }
             if (Input.GetKeyUp(KeyCode.W))
             {
-                inputMap.Add(InputEnum.W, false);
+                inputMap[InputEnum.W] = false;
+                //inputMap.Add(InputEnum.W, false);
             }
             if (Input.GetMouseButtonUp(0)) 
             {
-                inputMap.Add(InputEnum.ClickLeft, false);
+                inputMap[InputEnum.ClickLeft] = false;
+                //inputMap.Add(InputEnum.ClickLeft, false);
             }
             if (Input.GetMouseButtonUp(1))
             {
-                inputMap.Add(InputEnum.ClickRight, false);
+                inputMap[InputEnum.ClickRight] = false;
+                //inputMap.Add(InputEnum.ClickRight, false);
             }
 
             return inputMap;
