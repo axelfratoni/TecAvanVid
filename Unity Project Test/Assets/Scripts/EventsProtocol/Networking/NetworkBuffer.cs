@@ -1,10 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Libs;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
 
 namespace Events
 {
@@ -12,11 +7,6 @@ namespace Events
     {
         private readonly LinkedList<TimeStampedItem<T>> _itemList = new LinkedList<TimeStampedItem<T>>();
         private float _elapsedTime;
-        
-        public void Reset()
-        {
-            _itemList.Clear();
-        }
         
         public void AddItem(T item, float time)
         {
@@ -53,18 +43,6 @@ namespace Events
             }
 
             return false;
-        }
-        
-        private class TimeStampedItem<TR>
-        {
-            public float Time { get; private set; }
-            public TR Item { get; private set; }
-
-            public TimeStampedItem(float time, TR item)
-            {
-                Time = time;
-                Item = item;
-            }
         }
     }
 }

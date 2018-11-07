@@ -80,20 +80,21 @@ public class PlayerHealth : MonoBehaviour
         }
     }
 
-    void Death ()
+    private void Death ()
     {
         _isDead = true;
-
         _playerShooting.DisableEffects ();
-
         _anim.SetTrigger ("Die");
-
-        //_playerAudio.clip = deathClip;
-        //_playerAudio.Play ();
-
+        
         _playerMovement.enabled = false;
         _playerShooting.enabled = false;
         
         Destroy (gameObject, 5f);
+    }
+
+    public void PlayDeathSong()
+    {
+        _playerAudio.clip = deathClip;
+        _playerAudio.Play ();
     }
 }

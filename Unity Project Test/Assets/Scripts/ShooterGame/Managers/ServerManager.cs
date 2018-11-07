@@ -14,6 +14,7 @@ public class ServerManager : MonoBehaviour {
 	public GameObject PlayerPrefab;
 	public GameObject ProjectilePrefab;
 	public int ServerPort = 10000;
+	public int SnapshotInterval = 100;
 
 	private EventManager _eventManager;
 	private ObjectIdManager _objectIdManager;
@@ -24,7 +25,7 @@ public class ServerManager : MonoBehaviour {
 	private void Start () 
 	{
 		_objectIdManager = new ObjectIdManager();
-		_snapshotManager = new SnapshotManager(100);
+		_snapshotManager = new SnapshotManager(SnapshotInterval);
 		_eventManager = new EventManager(ServerPort, null);
 		_timeManager = new TimeManager(SnapshotAction.MaxCycleTime);
 	}
@@ -143,8 +144,7 @@ public class ServerManager : MonoBehaviour {
 		{
 			int objectId = _objectIdManager.GetNext();
 			PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
-			playerController.Initialize(objectId, clientId, creationPosition);
-			playerController.SetHealthWatcher(HealthWatcher);
+			playerController.InitializeServer(objectId, clientId, creationPosition, HealthWatcher);
 			_objects.Add(playerController);
 			
 			_eventManager.BroadcastEventAction(new CreationAction(creationPosition, objectId, objectType));

@@ -22,6 +22,7 @@ namespace ShooterGame.Camera
 
         public void PlayerDeath()
         {
+            _player.GetComponent<PlayerHealth>().PlayDeathSong();
             _player = null;
             transform.position += transform.forward * -2f + new Vector3(0, 2f, 0);
             transform.Rotate(45, 0, 0);

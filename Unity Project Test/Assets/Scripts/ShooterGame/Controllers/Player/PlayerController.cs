@@ -8,12 +8,13 @@ namespace ShooterGame.Controllers
 {
     public class PlayerController : ObjectController
     {
-        
         private PlayerMovement _playerMovement;
         private PlayerShooting _playerShooting;
         private PlayerSnapshot _playerSnapshot;
         private PlayerHealth _playerHealth;
+        private PlayerPrediction _playerPrediction;
         private int _shootableMask;
+        private Rigidbody _rigidBody;
 
         public PlayerController()
         {
@@ -26,28 +27,40 @@ namespace ShooterGame.Controllers
             _playerShooting = GetComponentInChildren<PlayerShooting>();
             _playerSnapshot = GetComponent<PlayerSnapshot>();
             _playerHealth = GetComponent<PlayerHealth>();
+            _playerPrediction = GetComponent<PlayerPrediction>();
             _shootableMask = LayerMask.GetMask ("Shootable");
-            
-            _playerSnapshot.enabled = false;
+            _rigidBody = GetComponent<Rigidbody>();
         }
 
-        public void Initialize(int objectId, int clientId, Vector3 initialPosition)
+        private void Initialize(int objectId, int clientId, Vector3 initialPosition)
         {
             ClientId = clientId;
             ObjectId = objectId;
-            _playerSnapshot.SetPosition(initialPosition);
+            _rigidBody.MovePosition(initialPosition);
+        }
+
+        public void InitializeServer(int objectId, int clientId, Vector3 initialPosition, Action<int, int, int> healthWatcher)
+        {
+            Initialize(objectId, clientId, initialPosition);
+            _playerHealth.SetHealthWatcher(healthWatcher);
+            
+            SetUpComponents(false, false);
         }
         
-        public void InitializeClient(int objectId, int clientId, Vector3 initialPosition)
+        public void InitializeClient(int objectId, int clientId, Vector3 initialPosition, bool prediction)
         {
             Initialize(objectId, clientId, initialPosition);
             ToggleInputSnapshotController(false);
             SetShootableLayer(false);
+
+            SetUpComponents(true, prediction);
         }
-        
-        public void SetHealthWatcher(Action<int, int, int> healthWatcher)
+
+        public void SetUpComponents(bool isClient, bool hasPrediction)
         {
-            _playerHealth.SetHealthWatcher(healthWatcher);
+            _playerMovement.enabled = !isClient;
+            _playerSnapshot.enabled = isClient && !hasPrediction;
+            _playerPrediction.enabled = isClient && hasPrediction;
         }
 
         public void ToggleInputSnapshotController(bool isControlledByInput)
@@ -66,6 +79,16 @@ namespace ShooterGame.Controllers
         {
             _playerSnapshot.AddSnapshot(time, position, rotation);
         }
+        
+        public void ApplyInputPrediction(double mouseX, Dictionary<InputEnum, bool> inputMap)
+        {
+            _playerPrediction.ApplyInput(inputMap, (float) mouseX);
+        }
+        
+        public void ApplySnapshotPrediction(double time, Vector3 position, Quaternion rotation)
+        {
+            _playerPrediction.ApplySnapshot(time, position, rotation);
+        }
 
         public void SetFiring(bool firing)
         {
@@ -82,15 +105,4 @@ namespace ShooterGame.Controllers
             _playerHealth.UpdateHealth(health);
         }
     }
-    
-    /*private void Update()
-    {
-        float h = Input.GetAxisRaw("Horizontal");
-        float v = Input.GetAxisRaw("Vertical");
-        float mouseX = Input.GetAxisRaw("Mouse X");
-        bool fire = Input.GetButton("Fire1");
-        
-        _playerMovement.SetMovementAndRotation(h, v, mouseX);
-        _playerShooting.SetFiring(fire);
-    }*/
 }

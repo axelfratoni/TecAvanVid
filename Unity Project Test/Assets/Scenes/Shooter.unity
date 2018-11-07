@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.496413, b: 0.5748175, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -361,6 +361,7 @@ MonoBehaviour:
   ServerPort: 10000
   ClientPort: 10001
   ServerIP: 127.0.0.1
+  Prediction: 1
 --- !u!4 &863066847
 Transform:
   m_ObjectHideFlags: 0
@@ -406,6 +407,7 @@ MonoBehaviour:
   ProjectilePrefab: {fileID: 1751898700465280, guid: 0b54092a5c4cd6541a614e9788d7e5c1,
     type: 2}
   ServerPort: 10000
+  SnapshotInterval: 100
 --- !u!4 &981514331
 Transform:
   m_ObjectHideFlags: 0

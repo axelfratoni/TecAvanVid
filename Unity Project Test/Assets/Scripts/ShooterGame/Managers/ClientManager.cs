@@ -23,6 +23,7 @@ namespace ShooterGame.Managers
         public int ServerPort = 10000;
         public int ClientPort = 10001;
         public string ServerIP = "127.0.0.1";
+        public bool Prediction;
 
         private EventManager _eventManager;
         private bool _isConnected;
@@ -77,6 +78,15 @@ namespace ShooterGame.Managers
             {
                 _eventManager.SendEventAction(new MovementAction(0, mouseX, inputMap), _serverId);
             }
+
+            if (Prediction)
+            {
+                ObjectController playerController = _objects.Find(obj => obj.ObjectId.Equals(_playerObjectId));
+                if (playerController != null && playerController.ObjectType.Equals(ObjectEnum.Player))
+                {
+                    ((PlayerController)playerController).ApplyInputPrediction(mouseX, inputMap);
+                }
+            }
         }
         
         private void InitializeGame(int serverId)
@@ -97,7 +107,14 @@ namespace ShooterGame.Managers
                 switch (objectController.ObjectType)
                 {
                     case ObjectEnum.Player:
-                        ((PlayerController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                        if (Prediction && objectController.ObjectId.Equals(_playerObjectId))
+                        {
+                            ((PlayerController)objectController).ApplySnapshotPrediction(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                        }
+                        else
+                        {
+                            ((PlayerController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                        }
                         break;
                     case ObjectEnum.Projectile:
                         ((ProjectileController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,0,1));
@@ -113,10 +130,11 @@ namespace ShooterGame.Managers
             {
                 case ObjectEnum.Player:
                     PlayerController playerController = Instantiate(PlayerPrefab).GetComponent<PlayerController>();
-                    playerController.InitializeClient(objectId, clientId, creationPosition);
+                    bool isPlayer = objectId.Equals(_playerObjectId);
+                    playerController.InitializeClient(objectId, clientId, creationPosition, Prediction && isPlayer);
                     _objects.Add(playerController);
                 
-                    if(objectId.Equals(_playerObjectId)) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);    
+                    if(isPlayer) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);    
                     break;
                 
                 case ObjectEnum.Projectile:
@@ -131,7 +149,11 @@ namespace ShooterGame.Managers
         {
             _playerObjectId = objectId;
             ObjectController playerController = _objects.Find(player => player.ObjectId.Equals(objectId));
-            if(playerController != null) Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
+            if (playerController != null && playerController.ObjectType.Equals(ObjectEnum.Player))
+            {
+                Camera.GetComponent<CameraController>().SetPlayer(playerController.gameObject);
+                ((PlayerController)playerController).SetUpComponents(true, Prediction);
+            }
         }
 
         private void ProcessHealthUpdate(int currentHealth, int objectId)
