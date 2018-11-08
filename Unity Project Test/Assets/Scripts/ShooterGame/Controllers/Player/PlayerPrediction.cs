@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Events.Actions;
 using Libs;
 using UnityEngine;
@@ -9,23 +10,22 @@ namespace ShooterGame.Controllers
     public class PlayerPrediction : MonoBehaviour
     {
         private PlayerMovement _playerMovement;
-        private TimeManager _timeManager;
         private readonly LinkedList<TimeStampedItem<Move>> _movementBuffer = new LinkedList<TimeStampedItem<Move>>();
         private TimeStampedItem<Move> _lastPredictedPosition;
         private Rigidbody _rigidBody;
         private Animator _anim;
+        private double _lastSnapTime = 0;
 
         private void Awake()
         {
             _anim = GetComponent<Animator>();
             _playerMovement = GetComponent<PlayerMovement>();
             _rigidBody = GetComponent<Rigidbody>();
-            _timeManager = new TimeManager(SnapshotAction.MaxCycleTime);
         }
 
         private void Update()
         {
-            _timeManager.UpdateTime(Time.deltaTime);
+            
             if (_lastPredictedPosition != null)
             {
                 bool walking = Math.Abs(_lastPredictedPosition.Item.Movement.x - transform.position.x) > 0.01 || 
@@ -39,10 +39,8 @@ namespace ShooterGame.Controllers
             }
         }
 
-        public void ApplyInput(Dictionary<InputEnum, bool> inputMap, float mouseX)
+        public void ApplyInput(Dictionary<InputEnum, bool> inputMap, float mouseX, float timeStamp)
         {
-            float timeStamp = _timeManager.GetCurrentTime();
-            
             _playerMovement.ApplyInput(inputMap);
             Vector3 movement = _playerMovement.GetMovement();
 
@@ -62,27 +60,23 @@ namespace ShooterGame.Controllers
                 Move nextPrediction = new Move(nextPosition, nextRotation);
                 _lastPredictedPosition = new TimeStampedItem<Move>(timeStamp, nextPrediction);
             }
+            //Debug.Log("Client time " + timeStamp);
         }
 
-        public void ApplySnapshot(double time, Vector3 position, Quaternion rotation)
+        public void ApplySnapshot(double time, Vector3 position, Quaternion rotation, double lastAckInput)
         {
-            if (_lastPredictedPosition != null && time < _lastPredictedPosition.Time)
+            if (_lastPredictedPosition != null && time < _lastSnapTime)
             {
-                Debug.Log("Returning");
                 return;
             }
-            
-            while (_movementBuffer.First != null && _movementBuffer.First.Value.Time < time)
+            //Debug.Log("Ack time " + lastAckInput);
+            //if(_movementBuffer.Last != null)Debug.Log("Last input " + _movementBuffer.Last.Value.Time);
+              
+            while (_movementBuffer.First != null && _movementBuffer.First.Value.Time <= lastAckInput)
             {
                 _movementBuffer.RemoveFirst();
             }
-
-            if (_lastPredictedPosition == null || _movementBuffer.Count == 0)
-            {
-                _timeManager.SetElapsedTime((float) time);
-                _movementBuffer.Clear();
-            }
-
+            
             foreach (var timeStampedItem in _movementBuffer)
             {
                 Vector3 forward = rotation * Vector3.forward;
@@ -91,7 +85,8 @@ namespace ShooterGame.Controllers
                 rotation *= timeStampedItem.Item.Rotation;
             }
             Move predictedPosition = new Move(position, rotation);
-            _lastPredictedPosition = new TimeStampedItem<Move>((float) time, predictedPosition);
+            _lastPredictedPosition = new TimeStampedItem<Move>( (float) time, predictedPosition);
+            _lastSnapTime = time;
         }
         
         private class Move

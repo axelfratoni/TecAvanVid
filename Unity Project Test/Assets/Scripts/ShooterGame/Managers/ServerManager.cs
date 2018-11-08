@@ -65,12 +65,14 @@ public class ServerManager : MonoBehaviour {
 	{
 		if (_snapshotManager.ShouldSendSnapshot())
 		{
+			float timeStamp = _timeManager.GetCurrentTime();
 			_objects.ForEach(obj =>
 			{
 				Vector3 position = obj.transform.position;
 				Quaternion rotation = obj.transform.rotation;
-				float timeStamp = _timeManager.GetCurrentTime();
-				_eventManager.BroadcastEventAction(new SnapshotAction(obj.ObjectId, position, rotation, timeStamp));
+				double lastInput = obj.LastClientInputTime;
+
+				_eventManager.BroadcastEventAction(new SnapshotAction(obj.ObjectId, position, rotation, timeStamp, lastInput));
 			});
 			
 			_snapshotManager.SetFlag(false);
@@ -103,7 +105,7 @@ public class ServerManager : MonoBehaviour {
 	
 	private void ProcessInput(double time, double mouseX, Dictionary<InputEnum, bool> inputMap, int clientId) 
 	{
-		Debug.Log("Received input");
+		//Debug.Log("Received input");
 		PlayerController playerController = (PlayerController) _objects.Find(player => player.ClientId.Equals(clientId) &&
 																					   player.ObjectType.Equals(ObjectEnum.Player));
 		if (playerController != null)

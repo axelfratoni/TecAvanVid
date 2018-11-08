@@ -16,6 +16,7 @@ namespace ShooterGame.Controllers
         private int _shootableMask;
         private Rigidbody _rigidBody;
 
+
         public PlayerController()
         {
             ObjectType = ObjectEnum.Player; 
@@ -73,6 +74,7 @@ namespace ShooterGame.Controllers
         {
             _playerMovement.ApplyInput(inputMap);
             _playerMovement.SetRotation((float)mouseX);
+            LastClientInputTime = (float) time;
         }
 
         public void ApplySnapshot(double time, Vector3 position, Quaternion rotation)
@@ -80,14 +82,14 @@ namespace ShooterGame.Controllers
             _playerSnapshot.AddSnapshot(time, position, rotation);
         }
         
-        public void ApplyInputPrediction(double mouseX, Dictionary<InputEnum, bool> inputMap)
+        public void ApplyInputPrediction(double mouseX, Dictionary<InputEnum, bool> inputMap, double timeStamp)
         {
-            _playerPrediction.ApplyInput(inputMap, (float) mouseX);
+            _playerPrediction.ApplyInput(inputMap, (float) mouseX, (float) timeStamp);
         }
         
-        public void ApplySnapshotPrediction(double time, Vector3 position, Quaternion rotation)
+        public void ApplySnapshotPrediction(double time, Vector3 position, Quaternion rotation, double lastACKInput)
         {
-            _playerPrediction.ApplySnapshot(time, position, rotation);
+            _playerPrediction.ApplySnapshot(time, position, rotation, lastACKInput);
         }
 
         public void SetFiring(bool firing)

@@ -45,7 +45,7 @@ namespace Events
             _balls.ForEach(ball =>
             {
                 Ball ballData = ball.GetBall();
-                _eventManager.BroadcastEventAction(new SnapshotAction(ballData.ObjectId, ballData.Position, new Quaternion(), 0));
+                _eventManager.BroadcastEventAction(new SnapshotAction(ballData.ObjectId, ballData.Position, new Quaternion(), 0, 0));
             });
         }
         

@@ -6,6 +6,7 @@ using System.Net;
 using System.Timers;
 using Events;
 using Events.Actions;
+using Libs;
 using ShooterGame.Camera;
 using ShooterGame.Controllers;
 using ShooterGame.Controllers.Projectile;
@@ -32,6 +33,7 @@ namespace ShooterGame.Managers
         private int _serverId;
         private List<ObjectController> _objects = new List<ObjectController>();
         private int _playerObjectId;
+        private readonly TimeManager _timeManager = new TimeManager(SnapshotAction.MaxCycleTime);
         
         private void Start()
         {
@@ -41,6 +43,7 @@ namespace ShooterGame.Managers
         
          public void Update()
         {
+            _timeManager.UpdateTime(Time.deltaTime);
             HandlePendingEvents();
             HandleInput();
         }
@@ -55,7 +58,7 @@ namespace ShooterGame.Managers
                 switch (iEvent.GetEventEnum())
                 {
                     case EventEnum.Snapshot:
-                        ((SnapshotAction)iEvent.GetPayload()).Extract(ProcessSnapshot, iEvent.ClientId);
+                        ProcessSnapshot((SnapshotAction)iEvent.GetPayload());
                         break;
                     case EventEnum.AssignPlayer:
                         ((AssignPlayerAction)iEvent.GetPayload()).Extract(ProcessAssignPlayerAction, iEvent.ClientId);
@@ -77,19 +80,21 @@ namespace ShooterGame.Managers
         {
             Dictionary<InputEnum, bool> inputMap = InputMapper.ExtractInput();
             float mouseX = Input.GetAxisRaw("Mouse X");
+            float timeStamp = _timeManager.GetCurrentTime();
             if (inputMap.Count > 0 || Math.Abs(mouseX) > 0.01)
             {
-                _eventManager.SendEventAction(new MovementAction(0, mouseX, inputMap), _serverId);
+                _eventManager.SendEventAction(new MovementAction(timeStamp, mouseX, inputMap), _serverId);
+                
             }
-
             if (Prediction)
             {
                 ObjectController playerController = _objects.Find(obj => obj.ObjectId.Equals(_playerObjectId));
                 if (playerController != null && playerController.ObjectType.Equals(ObjectEnum.Player))
                 {
-                    ((PlayerController)playerController).ApplyInputPrediction(mouseX, inputMap);
+                    ((PlayerController)playerController).ApplyInputPrediction(mouseX, inputMap, timeStamp);
                 }
             }
+
         }
         
         private void InitializeGame(int serverId)
@@ -101,9 +106,16 @@ namespace ShooterGame.Managers
             _eventManager.SendEventAction(new CreationRequestAction(new Vector3(0, (float) 0.3, 0), ObjectEnum.Player), serverId);
         }
         
-        private void ProcessSnapshot(int objectId, Vector3 objectPosition, Quaternion rotation, double timeStamp)
+        private void ProcessSnapshot(SnapshotAction snapshotAction)
         {
-            Debug.Log("Received Snapshot");
+            //Debug.Log("Received Snapshot");
+            int objectId = snapshotAction.ObjectId;
+            double timeStamp = snapshotAction.TimeStamp;
+            Vector3 objectPosition = snapshotAction.ObjectPosition;
+            Quaternion rotation = snapshotAction.ObjectRotation;
+            double lastAckInputTime = snapshotAction.LastClientInputTime;
+            
+            
             ObjectController objectController = _objects.Find(obj => obj.ObjectId.Equals(objectId));
             if (objectController != null)
             {
@@ -112,7 +124,7 @@ namespace ShooterGame.Managers
                     case ObjectEnum.Player:
                         if (Prediction && objectController.ObjectId.Equals(_playerObjectId))
                         {
-                            ((PlayerController)objectController).ApplySnapshotPrediction(timeStamp, objectPosition + new Vector3(1,1,1), rotation);
+                            ((PlayerController)objectController).ApplySnapshotPrediction(timeStamp, objectPosition + new Vector3(1,1,1), rotation, lastAckInputTime);
                         }
                         else
                         {
