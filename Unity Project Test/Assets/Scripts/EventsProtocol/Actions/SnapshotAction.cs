@@ -27,7 +27,7 @@ namespace Events.Actions
             _objectId = payload.readInt(0, Int32.MaxValue);
             
             float x = payload.readFloat(-31.0f, 31.0f, 0.1f);
-            float y = payload.readFloat(0.0f, 3.0f, 0.1f);
+            float y = payload.readFloat(0.0f, 10.0f, 0.1f);
             float z = payload.readFloat(-31.0f, 31.0f, 0.1f);
             
             _objectPosition = new Vector3(x, y, z);
@@ -46,7 +46,7 @@ namespace Events.Actions
             bitBuffer.writeInt(_objectId, 0, Int32.MaxValue);
                 
             bitBuffer.writeFloat(_objectPosition.x, -31.0f, 31.0f, 0.1f);
-            bitBuffer.writeFloat(_objectPosition.y, 0.0f, 3.0f, 0.1f);
+            bitBuffer.writeFloat(_objectPosition.y, 0.0f, 10.0f, 0.1f);
             bitBuffer.writeFloat(_objectPosition.z, -31.0f, 31.0f, 0.1f);
             
             bitBuffer.writeFloat(_objectRotation.x, -1, 1, 0.1f);

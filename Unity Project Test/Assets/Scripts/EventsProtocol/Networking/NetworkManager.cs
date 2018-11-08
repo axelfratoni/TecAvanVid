@@ -11,6 +11,7 @@ namespace Events
         private float _packetLoss;
         private int _delay;
         private readonly Random _random = new Random();
+        private readonly HashSet<Timer> _timerSet = new HashSet<Timer>();
         
         private readonly List<Connection> _connectionList;
         private readonly UDPChannel _receiver;
@@ -39,14 +40,23 @@ namespace Events
         {
             if (_random.NextDouble() * 100 > _packetLoss)
             {
+                
                 if (_delay > 0)
                 {
                     Timer aTimer = new Timer();
                     aTimer.Elapsed += delegate
                     {
+                        lock (this)
+                        {
+                            _timerSet.Remove(aTimer);
+                        }
                         aTimer.Dispose();
                         ReceiveEvent(receivedBytes, remoteEndpoint);
                     };
+                    lock (this)
+                    {
+                        _timerSet.Add(aTimer);
+                    }
                     aTimer.Interval = _delay <= 0? 1 : _delay;
                     aTimer.Enabled = true;
                 }
@@ -144,6 +154,10 @@ namespace Events
         {
             _connectionList.ForEach(con => con.Disable());
             _receiver.Disable();
+            foreach (Timer timer in _timerSet)
+            {
+                timer.Dispose();
+            }
         }
     }
 }

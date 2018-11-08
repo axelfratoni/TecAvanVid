@@ -362,7 +362,7 @@ MonoBehaviour:
   ClientPort: 10001
   ServerIP: 127.0.0.1
   Prediction: 1
-  Delay: 1000
+  Delay: 100
   PacketLoss: 0
 --- !u!4 &863066847
 Transform:
@@ -410,7 +410,7 @@ MonoBehaviour:
     type: 2}
   ServerPort: 10000
   SnapshotInterval: 100
-  Delay: 1000
+  Delay: 100
   PacketLoss: 0
 --- !u!4 &981514331
 Transform:

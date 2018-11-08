@@ -66,6 +66,12 @@ namespace ShooterGame.Controllers
 
         public void ApplySnapshot(double time, Vector3 position, Quaternion rotation)
         {
+            if (_lastPredictedPosition != null && time < _lastPredictedPosition.Time)
+            {
+                Debug.Log("Returning");
+                return;
+            }
+            
             while (_movementBuffer.First != null && _movementBuffer.First.Value.Time < time)
             {
                 _movementBuffer.RemoveFirst();
