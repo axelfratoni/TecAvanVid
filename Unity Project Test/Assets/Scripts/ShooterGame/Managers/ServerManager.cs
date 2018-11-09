@@ -57,6 +57,9 @@ public class ServerManager : MonoBehaviour {
 				case EventEnum.Movement:
 					((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
 					break;
+				case EventEnum.Rotation:
+					((RotationAction)iEvent.GetPayload()).Extract(ProcessRotation, iEvent.ClientId);
+					break;
 			}
 		}
 	}
@@ -103,9 +106,9 @@ public class ServerManager : MonoBehaviour {
 		});
 	}
 	
-	private void ProcessInput(double time, double mouseX, Dictionary<InputEnum, bool> inputMap, int clientId) 
+	private void ProcessInput(double time, Dictionary<InputEnum, bool> inputMap, int clientId) 
 	{
-		//Debug.Log("Received input");
+		//Debug.Log("Received input" + InputMapper.InputMapToInt(inputMap));
 		PlayerController playerController = (PlayerController) _objects.Find(player => player.ClientId.Equals(clientId) &&
 																					   player.ObjectType.Equals(ObjectEnum.Player));
 		if (playerController != null)
@@ -114,18 +117,18 @@ public class ServerManager : MonoBehaviour {
 			if (inputMap.TryGetValue(InputEnum.ClickLeft, out isFiring))
 			{
 				playerController.SetFiring(isFiring);
-				_eventManager.BroadcastEventAction(new SpecialAction(isFiring? SpecialActionEnum.FiringStart : 
-																			   SpecialActionEnum.FiringStop,
-																		playerController.ObjectId));
+				//_eventManager.BroadcastEventAction(new SpecialAction(isFiring? SpecialActionEnum.FiringStart : 
+				//															   SpecialActionEnum.FiringStop,
+				//														playerController.ObjectId));
 			}
 
 			bool isThrowingProjectile;
 			if (inputMap.TryGetValue(InputEnum.ClickRight, out isThrowingProjectile) && isThrowingProjectile)
 			{
-				ShootProjectile(playerController, clientId);
+				//ShootProjectile(playerController, clientId);
 			}
 			
-			playerController.ApplyInput(time, mouseX, inputMap);
+			playerController.ApplyInput(time, inputMap);
 		}
 	}
 
@@ -154,6 +157,16 @@ public class ServerManager : MonoBehaviour {
 			_eventManager.BroadcastEventAction(new CreationAction(creationPosition, objectId, objectType));
 			_eventManager.SendEventAction(new AssignPlayerAction(objectId), clientId);
 			
+		}
+	}
+
+	public void ProcessRotation(int clientId, Quaternion rotation)
+	{
+		PlayerController playerController = (PlayerController) _objects.Find(player => player.ClientId.Equals(clientId) &&
+		                                                                               player.ObjectType.Equals(ObjectEnum.Player));
+		if (playerController != null)
+		{
+			playerController.ApplyRotation(rotation);
 		}
 	}
 	

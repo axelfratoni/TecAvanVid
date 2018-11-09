@@ -39,5 +39,10 @@ namespace ShooterGame.Controllers
             _positionBuffer.AddItem(position, (float) time);
             _rotationBuffer.AddItem(rotation, (float) time);
         }
+
+        public void AddSnapshot(double time, Vector3 position)
+        {
+            _positionBuffer.AddItem(position, (float) time);
+        }
     }
 }

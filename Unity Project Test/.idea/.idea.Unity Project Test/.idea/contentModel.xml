@@ -40,6 +40,7 @@
               <e p="DamageAction.cs" t="Include" />
               <e p="EventAction.cs" t="Include" />
               <e p="MovementAction.cs" t="Include" />
+              <e p="RotationAction.cs" t="Include" />
               <e p="SnapshotAction.cs" t="Include" />
               <e p="SpecialAction.cs" t="Include" />
             </e>

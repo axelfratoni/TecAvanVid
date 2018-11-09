@@ -34,6 +34,7 @@ namespace ShooterGame.Managers
         private List<ObjectController> _objects = new List<ObjectController>();
         private int _playerObjectId;
         private readonly TimeManager _timeManager = new TimeManager(SnapshotAction.MaxCycleTime);
+        private Dictionary<InputEnum, bool> _lastInputSent = new Dictionary<InputEnum, bool>();
         
         private void Start()
         {
@@ -81,20 +82,29 @@ namespace ShooterGame.Managers
             Dictionary<InputEnum, bool> inputMap = InputMapper.ExtractInput();
             float mouseX = Input.GetAxisRaw("Mouse X");
             float timeStamp = _timeManager.GetCurrentTime();
-            if (inputMap.Count > 0 || Math.Abs(mouseX) > 0.01)
+            bool isSameInputAsBefore = InputMapper.CompareInputs(inputMap, _lastInputSent);
+            if (!isSameInputAsBefore)
             {
+                //Debug.Log("Send input" + InputMapper.InputMapToInt(inputMap));
                 _eventManager.SendEventAction(new MovementAction(timeStamp, mouseX, inputMap), _serverId);
+                _lastInputSent = inputMap;
                 
             }
-            if (Prediction)
+            
+            ObjectController playerController = _objects.Find(obj => obj.ObjectId.Equals(_playerObjectId));
+            if (playerController != null && playerController.ObjectType.Equals(ObjectEnum.Player))
             {
-                ObjectController playerController = _objects.Find(obj => obj.ObjectId.Equals(_playerObjectId));
-                if (playerController != null && playerController.ObjectType.Equals(ObjectEnum.Player))
+                if (Math.Abs(mouseX) > 0.01f)
                 {
-                    ((PlayerController)playerController).ApplyInputPrediction(mouseX, inputMap, timeStamp);
+                    ((PlayerController)playerController).ApplyMouseInput(mouseX);
+                    Quaternion rotation = ((PlayerController) playerController).GetRotation();
+                    _eventManager.SendEventAction(new RotationAction(rotation), _serverId);
+                }
+                if (Prediction)
+                {
+                    ((PlayerController)playerController).ApplyInputPrediction(inputMap, mouseX, timeStamp);
                 }
             }
-
         }
         
         private void InitializeGame(int serverId)
@@ -122,9 +132,16 @@ namespace ShooterGame.Managers
                 switch (objectController.ObjectType)
                 {
                     case ObjectEnum.Player:
-                        if (Prediction && objectController.ObjectId.Equals(_playerObjectId))
+                        if (objectController.ObjectId.Equals(_playerObjectId))
                         {
-                            ((PlayerController)objectController).ApplySnapshotPrediction(timeStamp, objectPosition + new Vector3(1,1,1), rotation, lastAckInputTime);
+                            if (Prediction)
+                            {
+                                ((PlayerController)objectController).ApplySnapshotPrediction(timeStamp, objectPosition + new Vector3(1,1,1), rotation, lastAckInputTime);
+                            }
+                            else
+                            {
+                                ((PlayerController)objectController).ApplySnapshot(timeStamp, objectPosition + new Vector3(1,1,1));
+                            }
                         }
                         else
                         {

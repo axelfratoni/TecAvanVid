@@ -11,5 +11,6 @@ public enum EventEnum
 	Movement = 4,
 	AssignPlayer = 5,
 	Special = 6,
-	ReceiveDamage = 7
+	ReceiveDamage = 7,
+	Rotation = 8
 }

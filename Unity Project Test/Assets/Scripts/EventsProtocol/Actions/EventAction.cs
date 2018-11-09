@@ -41,6 +41,9 @@ namespace Events.Actions
                 case EventEnum.ReceiveDamage:
                     eventAction = new DamageAction(buffer);
                     break;
+                case EventEnum.Rotation:
+                    eventAction = new RotationAction(buffer);
+                    break;
                 default:
                     throw new Exception("No implementation for event type " + eventType);
             }

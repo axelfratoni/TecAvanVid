@@ -70,11 +70,15 @@ namespace ShooterGame.Controllers
             _playerMovement.enabled = isControlledByInput;
         }
 
-        public void ApplyInput(double time, double mouseX, Dictionary<InputEnum, bool> inputMap)
+        public void ApplyInput(double time, Dictionary<InputEnum, bool> inputMap)
         {
             _playerMovement.ApplyInput(inputMap);
-            _playerMovement.SetRotation((float)mouseX);
             LastClientInputTime = (float) time;
+        }
+
+        public void ApplyMouseInput(double mouseX)
+        {
+            _playerMovement.SetRotation((float) mouseX);
         }
 
         public void ApplySnapshot(double time, Vector3 position, Quaternion rotation)
@@ -82,9 +86,14 @@ namespace ShooterGame.Controllers
             _playerSnapshot.AddSnapshot(time, position, rotation);
         }
         
-        public void ApplyInputPrediction(double mouseX, Dictionary<InputEnum, bool> inputMap, double timeStamp)
+        public void ApplySnapshot(double time, Vector3 position)
         {
-            _playerPrediction.ApplyInput(inputMap, (float) mouseX, (float) timeStamp);
+            _playerSnapshot.AddSnapshot(time, position);
+        }
+        
+        public void ApplyInputPrediction(Dictionary<InputEnum, bool> inputMap, float mouseX, double timeStamp)
+        {
+            _playerPrediction.ApplyInput(inputMap, mouseX, (float) timeStamp);
         }
         
         public void ApplySnapshotPrediction(double time, Vector3 position, Quaternion rotation, double lastACKInput)
@@ -105,6 +114,16 @@ namespace ShooterGame.Controllers
         public void UpdateHealth(int health)
         {
             _playerHealth.UpdateHealth(health);
+        }
+
+        public Quaternion GetRotation()
+        {
+            return _rigidBody.rotation;
+        }
+
+        public void ApplyRotation(Quaternion rotation)
+        {
+            _rigidBody.MoveRotation(rotation.normalized);
         }
     }
 }

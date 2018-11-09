@@ -34,8 +34,8 @@ namespace ShooterGame.Controllers
 
                 Vector3 movement = Vector3.Lerp(transform.position, _lastPredictedPosition.Item.Movement, Time.deltaTime * _playerMovement.Speed);
                 _rigidBody.MovePosition(movement);
-                Quaternion rotation = Quaternion.Lerp(transform.rotation, _lastPredictedPosition.Item.Rotation, Time.deltaTime * _playerMovement.MouseSensitivity);
-                _rigidBody.MoveRotation(rotation.normalized);
+                /*Quaternion rotation = Quaternion.Lerp(transform.rotation, _lastPredictedPosition.Item.Rotation, Time.deltaTime * _playerMovement.MouseSensitivity);
+                _rigidBody.MoveRotation(rotation.normalized);*/
             }
         }
 
@@ -71,11 +71,13 @@ namespace ShooterGame.Controllers
             }
             //Debug.Log("Ack time " + lastAckInput);
             //if(_movementBuffer.Last != null)Debug.Log("Last input " + _movementBuffer.Last.Value.Time);
-              
+            
+            //Debug.Log("Before filter " + _movementBuffer.Count);
             while (_movementBuffer.First != null && _movementBuffer.First.Value.Time <= lastAckInput)
             {
                 _movementBuffer.RemoveFirst();
             }
+            //Debug.Log("After filter " + _movementBuffer.Count);
             
             foreach (var timeStampedItem in _movementBuffer)
             {
@@ -87,6 +89,7 @@ namespace ShooterGame.Controllers
             Move predictedPosition = new Move(position, rotation);
             _lastPredictedPosition = new TimeStampedItem<Move>( (float) time, predictedPosition);
             _lastSnapTime = time;
+            _movementBuffer.Clear();
         }
         
         private class Move
