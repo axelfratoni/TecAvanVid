@@ -92,7 +92,10 @@ namespace ShooterGame.Managers
                     //Debug.Log("Send input" + InputMapper.InputMapToInt(inputMap));
                     _eventManager.SendEventAction(new MovementAction(timeStamp, inputMap, rotation), _serverId);
                     _lastInputSent = inputMap;
-                    
+                }
+                if (Prediction)
+                {
+                    ((PlayerController)playerController).ApplyInputPrediction(inputMap, mouseX, timeStamp);
                 }
                 if (Math.Abs(mouseX) > 0.1f)
                 {
@@ -100,10 +103,7 @@ namespace ShooterGame.Managers
                     
                     //_eventManager.SendEventAction(new RotationAction(rotation), _serverId);
                 }
-                if (Prediction)
-                {
-                    ((PlayerController)playerController).ApplyInputPrediction(inputMap, mouseX, timeStamp);
-                }
+                
             }
         }
         

@@ -12,12 +12,12 @@ namespace ShooterGame.Controllers
     {
         private PlayerMovement _playerMovement;
         private readonly LinkedList<TimeStampedItem<Vector3>> _movementBuffer = new LinkedList<TimeStampedItem<Vector3>>();
-        private Vector3 _lastPredictedWithInput;
-        private Vector3 _lastPredictedWithSnapshot;
-        private bool _receivedSnapshot;
         private Rigidbody _rigidBody;
         private Animator _anim;
-        private double _lastACKTime = 0;
+        private double _lastSnapTime;
+        private double _lastAckTime;
+        private Vector3 _lastPredictedPosition;
+        private bool _hasReceivedSnap;
 
         private void Awake()
         {
@@ -28,14 +28,14 @@ namespace ShooterGame.Controllers
 
         private void Update()
         {
-            if (_receivedSnapshot)
+            if (_hasReceivedSnap)
             {
-                _receivedSnapshot = false;
-                _rigidBody.MovePosition(_lastPredictedWithSnapshot);
+                _hasReceivedSnap = false;
+                _rigidBody.MovePosition(_lastPredictedPosition);
             }
             else
             {
-                _rigidBody.MovePosition(_lastPredictedWithInput);
+                _playerMovement.SetMovement(_playerMovement.GetMovement());
             }
         }
 
@@ -44,45 +44,48 @@ namespace ShooterGame.Controllers
             _playerMovement.ApplyInput(inputMap);
             Vector3 movement = _playerMovement.GetMovement();
             Vector3 directedMovement = transform.forward * movement.z + transform.right * movement.x;
-            if (!directedMovement.magnitude.Equals(0))
+            bool walking = !directedMovement.magnitude.Equals(0);
+            if (walking)
             {
                 TimeStampedItem<Vector3> timeStampedMovement = new TimeStampedItem<Vector3>(timeStamp, directedMovement);
                 _movementBuffer.AddLast(timeStampedMovement);
                 Vector3 nextPosition = transform.position + directedMovement;
                 //_rigidBody.MovePosition(nextPosition);
-                _lastPredictedWithInput = nextPosition;
             }
-
-            
-            //Debug.Log("Predicted " + nextPosition + " at " + timeStamp);
-            
-            bool walking = Math.Abs(directedMovement.x) > 0.01 || 
-                           Math.Abs(directedMovement.z) > 0.01;
             _anim.SetBool ("IsWalking", walking);
         }
 
         public void ApplySnapshot(double time, Vector3 position, Quaternion rotation, double lastAckInput)
         {
-            if (lastAckInput <= _lastACKTime) { return; }
+            if (time < _lastSnapTime) { return; }
             
-            //Debug.Log("Ack time " + lastAckInput);
-            //Debug.Log("Last time " + _movementBuffer.Last.Value.Time);
-            //if(_movementBuffer.Last != null)Debug.Log("Last input " + _movementBuffer.Last.Value.Time);
+            bool isSameAck = _lastAckTime >= lastAckInput;
+            if (isSameAck)
+            {
+                _lastAckTime += time - _lastSnapTime;
+            }
+            else
+            {            
+                _lastAckTime = lastAckInput;
+            }
             
-            //Debug.Log("Before filter " + _movementBuffer.Count);
-            while (_movementBuffer.First != null && !(_movementBuffer.First.Value.Time > lastAckInput))
+            while (_movementBuffer.First != null && !(_movementBuffer.First.Value.Time > _lastAckTime))
             {
                 _movementBuffer.RemoveFirst();
             }
-            //Debug.Log("After filter " + _movementBuffer.Count);
             
             foreach (var movement in _movementBuffer)
             {
                 position += movement.Item;
             }
-            _lastPredictedWithSnapshot = position;
-            _receivedSnapshot = true;
-            _lastACKTime = lastAckInput;
+            
+            //Debug.Log("Buffer " + _movementBuffer.Count);
+            //if(_movementBuffer.First != null)Debug.Log("First " + _movementBuffer.First.Value.Time);
+            //Debug.Log("Last ack " + lastAckInput);
+            //_rigidBody.MovePosition(position);
+            _lastSnapTime = time;
+            _hasReceivedSnap = true;
+            _lastPredictedPosition = position;
         }
         
         private class Move
