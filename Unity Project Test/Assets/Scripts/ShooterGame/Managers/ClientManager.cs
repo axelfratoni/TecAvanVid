@@ -79,26 +79,26 @@ namespace ShooterGame.Managers
 
         private void HandleInput()
         {
-            Dictionary<InputEnum, bool> inputMap = InputMapper.ExtractInput();
-            float mouseX = Input.GetAxisRaw("Mouse X");
-            float timeStamp = _timeManager.GetCurrentTime();
-            bool isSameInputAsBefore = InputMapper.CompareInputs(inputMap, _lastInputSent);
-            if (!isSameInputAsBefore)
-            {
-                //Debug.Log("Send input" + InputMapper.InputMapToInt(inputMap));
-                _eventManager.SendEventAction(new MovementAction(timeStamp, mouseX, inputMap), _serverId);
-                _lastInputSent = inputMap;
-                
-            }
-            
             ObjectController playerController = _objects.Find(obj => obj.ObjectId.Equals(_playerObjectId));
             if (playerController != null && playerController.ObjectType.Equals(ObjectEnum.Player))
             {
-                if (Math.Abs(mouseX) > 0.01f)
+                Dictionary<InputEnum, bool> inputMap = InputMapper.ExtractInput();
+                float mouseX = Input.GetAxisRaw("Mouse X");
+                float timeStamp = _timeManager.GetCurrentTime();
+                Quaternion rotation = ((PlayerController) playerController).GetRotation();
+                bool isSameInputAsBefore = InputMapper.CompareInputs(inputMap, _lastInputSent);
+                if (!isSameInputAsBefore)
+                {
+                    //Debug.Log("Send input" + InputMapper.InputMapToInt(inputMap));
+                    _eventManager.SendEventAction(new MovementAction(timeStamp, inputMap, rotation), _serverId);
+                    _lastInputSent = inputMap;
+                    
+                }
+                if (Math.Abs(mouseX) > 0.1f)
                 {
                     ((PlayerController)playerController).ApplyMouseInput(mouseX);
-                    Quaternion rotation = ((PlayerController) playerController).GetRotation();
-                    _eventManager.SendEventAction(new RotationAction(rotation), _serverId);
+                    
+                    //_eventManager.SendEventAction(new RotationAction(rotation), _serverId);
                 }
                 if (Prediction)
                 {

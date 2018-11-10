@@ -9,28 +9,29 @@ namespace Events.Actions
     {
         private readonly double _time;
         private readonly Dictionary<InputEnum, bool> _inputMap;
-        //private readonly float _mouseX;
+        private readonly Quaternion _rotation;
 
         // The input dictionary represents a key down or up, being true down and false up.
-        public MovementAction(double time, float mouseX, Dictionary<InputEnum, bool> inputMap)
+        public MovementAction(double time, Dictionary<InputEnum, bool> inputMap, Quaternion rotation)
         {
             _time = time;
             _inputMap = inputMap;
-            //_mouseX = mouseX > 10? 10: mouseX < -10? -10: mouseX;
+            _rotation = rotation;
         }
         
         public MovementAction(BitBuffer payload)
         {
             _time = payload.readFloat( 0.0f, 3600.0f, 0.01f);
             
-            //_mouseX = payload.readFloat(-10f, 10f, 0.1f);
-            
-            //int inputListLength = payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length); 
+            float x = payload.readFloat(-1, 1, 0.1f);
+            float y = payload.readFloat(-1, 1, 0.1f);
+            float z = payload.readFloat(-1, 1, 0.1f);
+            float w = payload.readFloat(-1, 1, 0.1f);
+            _rotation = new Quaternion(x, y, z, w); 
             
             _inputMap = new Dictionary<InputEnum, bool>();
             for (int i = 0; i < Enum.GetValues(typeof(InputEnum)).Length; i++)
             {
-                //InputEnum input = (InputEnum) payload.readInt(0, Enum.GetValues(typeof(InputEnum)).Length);
                 bool keyPress = payload.readBit();
                 _inputMap.Add((InputEnum)i, keyPress);
             }
@@ -40,32 +41,22 @@ namespace Events.Actions
         {
             buffer.writeFloat((float) _time, 0.0f, 3600.0f, 0.01f);
             
-            //buffer.writeFloat(_mouseX, -10f, 10f, 0.1f);
-
-
-            //int count = 0;
+            buffer.writeFloat(_rotation.x, -1, 1, 0.1f);
+            buffer.writeFloat(_rotation.y, -1, 1, 0.1f);
+            buffer.writeFloat(_rotation.z, -1, 1, 0.1f);
+            buffer.writeFloat(_rotation.w, -1, 1, 0.1f);
+            
             for (int i = 0; i < Enum.GetValues(typeof(InputEnum)).Length; i++)
             {
                 bool isPressed;
                 _inputMap.TryGetValue((InputEnum) i, out isPressed);
                 buffer.writeBit(isPressed);
-                //count <<= 1;
-                //count |= isPressed? 1 : 0;
             }
-            //Debug.Log("Input serial " + count);
-            
-            /*buffer.writeInt(_inputMap.Count, 0, Enum.GetValues(typeof(InputEnum)).Length); 
-            
-            foreach(KeyValuePair<InputEnum, bool> entry in _inputMap)
-            {
-                buffer.writeInt((int) entry.Key, 0, Enum.GetValues(typeof(InputEnum)).Length);
-                buffer.writeBit(entry.Value);
-            }*/
         }
 
-        public void Extract(Action<double, Dictionary<InputEnum, bool>, int> executor, int clientId)
+        public void Extract(Action<double, Dictionary<InputEnum, bool>, int, Quaternion> executor, int clientId)
         {
-            executor(_time, _inputMap, clientId);
+            executor(_time, _inputMap, clientId, _rotation);
         }
 
         public override EventTimeoutTypeEnum GetTimeoutType()

@@ -106,13 +106,15 @@ public class ServerManager : MonoBehaviour {
 		});
 	}
 	
-	private void ProcessInput(double time, Dictionary<InputEnum, bool> inputMap, int clientId) 
+	private void ProcessInput(double time, Dictionary<InputEnum, bool> inputMap, int clientId, Quaternion rotation) 
 	{
 		//Debug.Log("Received input" + InputMapper.InputMapToInt(inputMap));
 		PlayerController playerController = (PlayerController) _objects.Find(player => player.ClientId.Equals(clientId) &&
 																					   player.ObjectType.Equals(ObjectEnum.Player));
 		if (playerController != null)
 		{
+			playerController.ApplyRotation(rotation);
+			playerController.ApplyInput(time, inputMap);
 			bool isFiring;
 			if (inputMap.TryGetValue(InputEnum.ClickLeft, out isFiring))
 			{
@@ -128,7 +130,6 @@ public class ServerManager : MonoBehaviour {
 				//ShootProjectile(playerController, clientId);
 			}
 			
-			playerController.ApplyInput(time, inputMap);
 		}
 	}
 
