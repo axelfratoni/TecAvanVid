@@ -60,7 +60,7 @@ namespace ShooterGame.Controllers
         public void SetUpComponents(bool isClient, bool hasPrediction)
         {
             _playerMovement.enabled = !isClient;
-            _playerSnapshot.enabled = isClient && !hasPrediction;
+            _playerSnapshot.enabled = isClient;
             _playerPrediction.enabled = isClient && hasPrediction;
         }
 
