@@ -81,7 +81,10 @@ namespace Events
                 {
                     if (eventQueue.ShouldProcessEvent(ievent) && ievent.GetPayload() != null)
                     {
-                        _unreadReceivedEvents.Enqueue(ievent);
+                        lock (_unreadReceivedEvents)
+                        {
+                            _unreadReceivedEvents.Enqueue(ievent);
+                        }
                         eventQueue.AckEvent(ievent);
                     }
                     
@@ -92,7 +95,10 @@ namespace Events
             {
                 if (ievent.GetTimeoutType().Equals(EventTimeoutTypeEnum.Unreliable))
                 {
-                    _unreadReceivedEvents.Enqueue(ievent);
+                    lock (_unreadReceivedEvents)
+                    {
+                        _unreadReceivedEvents.Enqueue(ievent);
+                    }
                 }
                 else
                 {
@@ -118,9 +124,15 @@ namespace Events
             AddEventToReliableQueue(connectionEvent);
         }
 
-        public Queue<Event> GetPendingEvents()
+        public bool GetNextPendingEvent(out Event iEvent)
         {
-            return _unreadReceivedEvents;
+            lock (_unreadReceivedEvents)
+            {
+                iEvent = null;
+                if (_unreadReceivedEvents.Count <= 0) return false;
+                iEvent = _unreadReceivedEvents.Dequeue();
+                return true;
+            }
         }
 
         public void ConfirmConnection(int serverId)

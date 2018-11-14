@@ -27,7 +27,7 @@ namespace Events
         
         public void Update()
         {
-            Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
+            /*Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
             while (pendingEvents.Count > 0)
             {
                 Event iEvent = pendingEvents.Dequeue();
@@ -40,7 +40,7 @@ namespace Events
                         //((MovementAction)iEvent.GetPayload()).Extract(ProcessInput, iEvent.ClientId);
                         break;
                 }
-            }
+            }*/
             
             _balls.ForEach(ball =>
             {

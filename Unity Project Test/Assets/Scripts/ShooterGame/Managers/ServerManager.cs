@@ -41,11 +41,9 @@ public class ServerManager : MonoBehaviour {
 
 	private void HandlePendingEvents()
 	{
-		Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
-		while (pendingEvents.Count > 0)
+		Event iEvent;
+		while (_eventManager.GetNextPendingEvent(out iEvent))
 		{
-			Event iEvent = pendingEvents.Dequeue();
-			if(iEvent == null) continue;
 			switch (iEvent.GetEventEnum())
 			{
 				case EventEnum.Connection:
@@ -116,18 +114,19 @@ public class ServerManager : MonoBehaviour {
 			playerController.ApplyRotation(rotation);
 			playerController.ApplyInput(time, inputMap);
 			bool isFiring;
-			if (inputMap.TryGetValue(InputEnum.ClickLeft, out isFiring))
+			inputMap.TryGetValue(InputEnum.ClickLeft, out isFiring);
+			if (playerController.IsFiring() != isFiring)
 			{
 				playerController.SetFiring(isFiring);
-				//_eventManager.BroadcastEventAction(new SpecialAction(isFiring? SpecialActionEnum.FiringStart : 
-				//															   SpecialActionEnum.FiringStop,
-				//														playerController.ObjectId));
+				_eventManager.BroadcastEventAction(new SpecialAction(isFiring? SpecialActionEnum.FiringStart : 
+																			   SpecialActionEnum.FiringStop,
+																		playerController.ObjectId));
 			}
 
 			bool isThrowingProjectile;
 			if (inputMap.TryGetValue(InputEnum.ClickRight, out isThrowingProjectile) && isThrowingProjectile)
 			{
-				//ShootProjectile(playerController, clientId);
+				ShootProjectile(playerController, clientId);
 			}
 			
 		}

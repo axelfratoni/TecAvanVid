@@ -51,11 +51,9 @@ namespace ShooterGame.Managers
 
         private void HandlePendingEvents()
         {
-            Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
-            while (pendingEvents.Count > 0)
+            Event iEvent;
+            while (_eventManager.GetNextPendingEvent(out iEvent))
             {
-                Event iEvent = pendingEvents.Dequeue();
-                if (iEvent == null) continue;
                 switch (iEvent.GetEventEnum())
                 {
                     case EventEnum.Snapshot:
@@ -224,7 +222,7 @@ namespace ShooterGame.Managers
 
         private void ProcessSpecialAction(SpecialActionEnum action, int objectId)
         {
-            Debug.Log("Received special action " + action);
+            //Debug.Log("Received special action " + action);
             ObjectController objectCtrlr = _objects.Find(ply => ply.ObjectId.Equals(objectId));
             if (objectCtrlr != null)
             {

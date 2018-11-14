@@ -30,7 +30,7 @@ namespace Events
 
         public void Update()
         {
-            Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
+            /*Queue<Event> pendingEvents = _eventManager.GetPendingEvents();
             while (pendingEvents.Count > 0)
             {
                 Event iEvent = pendingEvents.Dequeue();
@@ -46,7 +46,7 @@ namespace Events
                         ((CreationAction)iEvent.GetPayload()).Extract(ProcessObjectCreation, iEvent.ClientId);
                         break;
                 }
-            }
+            }*/
             
             /*List<InputEnum> inputList = InputMapper.ExtractInput();
             if (inputList.Count > 0)

@@ -106,6 +106,11 @@ namespace ShooterGame.Controllers
             _playerShooting.SetFiring(firing);
         }
 
+        public bool IsFiring()
+        {
+            return _playerShooting.GetFiring();
+        }
+
         public void SetShootableLayer(bool isShootable)
         {
             gameObject.layer = isShootable ? _shootableMask : 0;
