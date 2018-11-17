@@ -27,7 +27,7 @@ Para correr nuestro proyecto se debe:
    * Cliente
      * Client Port: Puerto desde el cual se conecta el cliente
      * Server IP: Direccion IP del servidor
-     * Prediction (True/False): Activa desactiva prediction 
+     * Prediction (True/False): Activa desactiva prediction   
    Aclaracion: Se puede tener un cliente y un server corriendo en la misma instacia de Unity, pero se veran de manera
    duplicada la ubicacion de los juegadores
 1. Ejecutar el juego o buildearlo.
